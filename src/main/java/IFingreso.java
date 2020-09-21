@@ -1,3 +1,20 @@
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -163,8 +180,72 @@ public class IFingreso extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IFingreso().setVisible(true);
+            public void run() 
+        {
+        new IFingreso().setVisible(true);
+        File dir = new File("C:\\MEIA");
+        String patron="(Rol)(\\:)(	| |)*(\\d)";
+        Pattern rol = Pattern.compile(patron);
+        File[] matches = dir.listFiles(new FilenameFilter()
+        {
+         public boolean accept(File dir, String name)
+        {
+         return name.startsWith("usuarios") && name.endsWith(".txt");
+        }
+          
+        });
+        JOptionPane.showMessageDialog(null, matches);
+        if(matches.toString()=="")
+        {
+            //NO HAY ARCHIVOS, PRIMER USUARIO ADMIN
+            JOptionPane.showMessageDialog(null, "sin archivos");
+        }
+        else
+        {
+            try 
+            {
+         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuarios.txt"));
+             
+             for (int i = 0; i < lineas.size(); i++) 
+             {
+		   Matcher m = rol.matcher(lineas.get(i));
+                   
+                   
+                   
+                 if(m.find())
+                 {
+                     if(m.group(4).contains("1"))
+                     {
+                     //Encontro un rol de admin
+                     JOptionPane.showMessageDialog(null, "Admin encontrado");
+                     break;
+                     }
+                     else
+                     {
+                     }
+                     
+                 }
+                 else
+                 {
+                     //No hay admins
+                     
+                 }
+                 
+                 
+             }
+                        
+                       
+                        
+             } 
+             catch (IOException ex) 
+             {
+                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+             }
+            
+        }
+        
             }
         });
     }
