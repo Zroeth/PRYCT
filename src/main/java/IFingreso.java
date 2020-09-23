@@ -32,6 +32,80 @@ public class IFingreso extends javax.swing.JFrame {
      */
     public IFingreso() {
         initComponents();
+        
+        
+        File dir = new File("C:\\MEIA");
+        String patron="(Rol)(\\:)(	| |)*(\\d)";
+        Pattern rol = Pattern.compile(patron);
+        File[] matches = dir.listFiles(new FilenameFilter()
+        {
+         public boolean accept(File dir, String name)
+        {
+         return name.startsWith("usuarios") && name.endsWith(".txt");
+        }
+          
+        });
+        JOptionPane.showMessageDialog(null, matches);
+        if(matches.toString()=="")
+        {
+            //NO HAY ARCHIVOS, PRIMER USUARIO ADMIN
+            JOptionPane.showMessageDialog(null, "sin archivos");
+             controlesAct(false);
+        }
+        else
+        {
+            try 
+            {
+         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+             
+             for (int i = 0; i < lineas.size(); i++) 
+             {
+		   Matcher m = rol.matcher(lineas.get(i));
+                 
+                   if(m.find())
+               
+                   {
+                     if(m.group(4).contains("1"))
+                     {
+                     //Encontro un rol de admin
+                     JOptionPane.showMessageDialog(null, "Admin encontrado");
+                         controlesAct(true);
+                     break;
+                     }
+                     else
+                     {
+                         //no son admi
+                         controlesAct(false);
+                     }
+                     
+                   }
+                 else
+                   {
+                     //No hay admins
+                     controlesAct(false);
+                   }
+                 
+                 
+             }
+                        
+                       
+                        
+             } 
+             catch (IOException ex) 
+             {
+                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+             }
+            
+        }
+    }
+    
+    public void controlesAct(boolean accion)
+    {
+        txtContraseña.setEnabled(accion);
+        txtUsuario.setEnabled(accion);
+        entrar.setEnabled(accion);
     }
 
     /**
@@ -45,11 +119,11 @@ public class IFingreso extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        txtContraseña = new javax.swing.JPasswordField();
+        crearCuenta = new javax.swing.JButton();
+        entrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,26 +134,26 @@ public class IFingreso extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         jLabel2.setText("Usuario");
 
-        jTextField1.setName(""); // NOI18N
+        txtUsuario.setName(""); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         jLabel3.setText("Contraseña");
 
-        jPasswordField1.setText("jPasswordField1");
+        txtContraseña.setText("jPasswordField1");
 
-        jButton1.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        jButton1.setText("Crear Cuenta");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        crearCuenta.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        crearCuenta.setText("Crear Cuenta");
+        crearCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                crearCuentaActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Sylfaen", 0, 36)); // NOI18N
-        jButton2.setText("Ingresar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        entrar.setFont(new java.awt.Font("Sylfaen", 0, 36)); // NOI18N
+        entrar.setText("Ingresar");
+        entrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                entrarActionPerformed(evt);
             }
         });
 
@@ -97,20 +171,20 @@ public class IFingreso extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(88, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(191, 191, 191))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(294, 294, 294))))
         );
         layout.setVerticalGroup(
@@ -120,23 +194,23 @@ public class IFingreso extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(108, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCuentaActionPerformed
         // TODO add your handling code here:
         
            Registro rgstr= new Registro();
@@ -145,11 +219,11 @@ public class IFingreso extends javax.swing.JFrame {
            rgstr.setDefaultCloseOperation(EXIT_ON_CLOSE);
            this.dispose();
                 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_crearCuentaActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_entrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,81 +257,21 @@ public class IFingreso extends javax.swing.JFrame {
             public void run() 
         {
         new IFingreso().setVisible(true);
-        File dir = new File("C:\\MEIA");
-        String patron="(Rol)(\\:)(	| |)*(\\d)";
-        Pattern rol = Pattern.compile(patron);
-        File[] matches = dir.listFiles(new FilenameFilter()
-        {
-         public boolean accept(File dir, String name)
-        {
-         return name.startsWith("usuarios") && name.endsWith(".txt");
-        }
-          
-        });
-        JOptionPane.showMessageDialog(null, matches);
-        if(matches.toString()=="")
-        {
-            //NO HAY ARCHIVOS, PRIMER USUARIO ADMIN
-            JOptionPane.showMessageDialog(null, "sin archivos");
-        }
-        else
-        {
-            try 
-            {
-         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
-             List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuarios.txt"));
-             
-             for (int i = 0; i < lineas.size(); i++) 
-             {
-		   Matcher m = rol.matcher(lineas.get(i));
-                   
-                   
-                   
-                 if(m.find())
-                 {
-                     if(m.group(4).contains("1"))
-                     {
-                     //Encontro un rol de admin
-                     JOptionPane.showMessageDialog(null, "Admin encontrado");
-                     break;
-                     }
-                     else
-                     {
-                         //son admi
-                     }
-                     
-                 }
-                 else
-                 {
-                     //No hay admins
-                     
-                 }
-                 
-                 
-             }
-                        
-                       
-                        
-             } 
-             catch (IOException ex) 
-             {
-                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
-             }
-            
-        }
+  
         
             }
         });
     }
+    
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton crearCuenta;
+    private javax.swing.JButton entrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField txtContraseña;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
