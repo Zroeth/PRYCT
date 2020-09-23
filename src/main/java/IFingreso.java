@@ -224,6 +224,7 @@ public class IFingreso extends javax.swing.JFrame {
                      }
                      else
                      {
+                         //son admi
                      }
                      
                  }
