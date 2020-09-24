@@ -8,16 +8,20 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -116,6 +120,24 @@ public class Registro extends javax.swing.JFrame {
         txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtUsuarioFocusLost(evt);
+            }
+        });
+
+        txtApellido.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtApellidoFocusLost(evt);
+            }
+        });
+
+        txtNombre.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtNombreFocusLost(evt);
+            }
+        });
+
+        txtContraseña.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtContraseñaFocusLost(evt);
             }
         });
 
@@ -289,60 +311,131 @@ public class Registro extends javax.swing.JFrame {
         String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern rol = Pattern.compile(patron);
         
-        if(txtUsuario.getText().contains("|"))
-            {
-            JOptionPane.showMessageDialog(null, "El nombre de usuario no puede contener |");
-            txtUsuario.requestFocus();
-            return;
-            }
-        if(txtUsuario.getText().length()>20)
-        {
-            JOptionPane.showMessageDialog(null, "El nombre de usuario no puede ser mayor a 20");
-            txtUsuario.requestFocus();
-        }
-        else
-        {
-            
-           
-            try {
+        Verificar(txtUsuario, 20);
+         
+        try {
                   List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-             for (int i = 0; i < lineas.size(); i++) 
-             {
-               Matcher m = rol.matcher(lineas.get(i));
-                
-                   if(m.find())
-                   {
-                     if(m.group(4).contains(txtUsuario.getText()))
-                     {
+                for (int i = 0; i < lineas.size(); i++)
+                {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    if(m.find())
+                    {
+                        if(m.group(4).contains(txtUsuario.getText()))
+                        {
                      //Usuario ya existe
-                     
                      JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
                      txtUsuario.requestFocus();
                      return;
-                     }
-                     else
-                     {
+                        }
+                        else
+                        {
                          //El usuario no existe :D
-                        
-                     }
-                     
-                   }
+                        }
+                    }
                  else
                    {
-                     //No hay usuarios
-                      
+                     //No hay usuarios     
                    }
-             }
-              JOptionPane.showMessageDialog(null, "Su nombre de usuario es correcto");
-            } catch (IOException ex) {
+                }
+            } 
+            catch (IOException ex) {
                 Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
             }
-             
-             
-        }
+  
+        
     }//GEN-LAST:event_txtUsuarioFocusLost
 
+    private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
+        // TODO add your handling code here:
+         
+         Verificar(txtNombre,30);
+       
+         
+    }//GEN-LAST:event_txtNombreFocusLost
+
+    private void txtApellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApellidoFocusLost
+        // TODO add your handling code here:
+       Verificar(txtNombre,30);
+    }//GEN-LAST:event_txtApellidoFocusLost
+
+    public void Verificar(JTextField txt,int limite)
+    {
+         if(txt.getText().contains("|"))
+           {
+            JOptionPane.showMessageDialog(null, "Este campo no puede contener |");
+            txt.requestFocus();
+            return;
+            }
+         if(txt.getText().length()>limite)
+        {
+            JOptionPane.showMessageDialog(null, "Este campo no puede ser mayor a "+limite);
+            txt.requestFocus();
+        }
+    }
+    
+    
+    private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
+        // TODO add your handling code here:
+           Verificar(txtNombre,30);
+         
+    }//GEN-LAST:event_txtContraseñaFocusLost
+
+    
+    
+    byte[] cifrado = null;
+    public byte[] cifra(String sinCifrar) throws Exception {
+            final byte[] bytes = sinCifrar.getBytes("UTF-8");
+            final Cipher aes = obtieneCipher(true);
+            final byte[] cifrado = aes.doFinal(bytes);
+            return cifrado;
+    }
+
+    public String descifra(byte[] cifrado) throws Exception {
+            final Cipher aes = obtieneCipher(false);
+            final byte[] bytes = aes.doFinal(cifrado);
+            final String sinCifrar = new String(bytes, "UTF-8");
+            return sinCifrar;
+    }
+    
+    private Cipher obtieneCipher(boolean paraCifrar) throws Exception {
+	final String frase = "FraseLargaConDiferentesLetrasNumerosYCaracteresEspeciales_áÁéÉíÍóÓúÚüÜñÑ1234567890!#%$&()=%NO_USAR_ESTA_FRASE!";
+	final MessageDigest digest = MessageDigest.getInstance("SHA");
+	digest.update(frase.getBytes("UTF-8"));
+	final SecretKeySpec key = new SecretKeySpec(digest.digest(), 0, 16, "AES");
+
+	final Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
+	if (paraCifrar) {
+		aes.init(Cipher.ENCRYPT_MODE, key);
+	} else {
+		aes.init(Cipher.DECRYPT_MODE, key);
+	}
+
+	return aes;
+}
+    
+    private void bContraActionPerformed(java.awt.event.ActionEvent evt) {                                        
+    // TODO add your handling code here:    
+        String result = txtContraseña.getText();
+       // cifrado = cifra(result); 
+        result = null;
+        for(int i = 0; i < cifrado.length; i++)
+        {
+            result += cifrado[i];
+        }
+        
+      //  rContra.setText(result);
+    }                                       
+
+    private void dContraActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+     //  rdContra.setText(descifra(cifrado));
+    }
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
