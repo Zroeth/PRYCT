@@ -72,6 +72,8 @@ public class Registro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordField2 = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -84,7 +86,6 @@ public class Registro extends javax.swing.JFrame {
         txtUsuario = new javax.swing.JTextField();
         txtApellido = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
-        txtContraseña = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
@@ -94,6 +95,11 @@ public class Registro extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         opEstatus = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
+        txtContraseña = new javax.swing.JPasswordField();
+
+        jPasswordField1.setText("jPasswordField1");
+
+        jPasswordField2.setText("jPasswordField2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -139,12 +145,6 @@ public class Registro extends javax.swing.JFrame {
         txtNombre.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtNombreFocusLost(evt);
-            }
-        });
-
-        txtContraseña.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtContraseñaFocusLost(evt);
             }
         });
 
@@ -199,6 +199,12 @@ public class Registro extends javax.swing.JFrame {
             }
         });
 
+        txtContraseña.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtContraseñaFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -214,16 +220,8 @@ public class Registro extends javax.swing.JFrame {
                                 .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -240,7 +238,7 @@ public class Registro extends javax.swing.JFrame {
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                                         .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
@@ -252,7 +250,15 @@ public class Registro extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(41, 41, 41)
                                         .addComponent(jLabel10)
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                                    .addComponent(txtContraseña)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(169, 169, 169)
                         .addComponent(jButton1)
@@ -279,9 +285,11 @@ public class Registro extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
-                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)))
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
@@ -337,7 +345,7 @@ public class Registro extends javax.swing.JFrame {
            
         try 
         {
-            if(Verificar(txtUsuario, 20)==false)
+            if(Verificar(txtUsuario, 20,1)==false)
             {
                 return;
             }
@@ -369,7 +377,7 @@ public class Registro extends javax.swing.JFrame {
         // TODO add your handling code here:
         //
         
-        if(Verificar(txtUsuario, 20)==false)
+        if(Verificar(txtUsuario, 20,1)==false)
         {
             return;
         }
@@ -383,17 +391,17 @@ public class Registro extends javax.swing.JFrame {
     private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
         // TODO add your handling code here:
          
-         Verificar(txtNombre,30);
+         Verificar(txtNombre,30,4);
        
          
     }//GEN-LAST:event_txtNombreFocusLost
 
     private void txtApellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApellidoFocusLost
         // TODO add your handling code here:
-       Verificar(txtApellido,30);
+       Verificar(txtApellido,30,4);
     }//GEN-LAST:event_txtApellidoFocusLost
 
-    public boolean Verificar(JTextField txt,int limite)
+    public boolean Verificar(JTextField txt,int maximo,int minimo)
     {
          if(txt.getText().contains("|"))
            {
@@ -401,15 +409,15 @@ public class Registro extends javax.swing.JFrame {
             txt.requestFocus();
             return false;
             }
-         if(txt.getText().length()>limite)
+         if(txt.getText().length()>maximo)
          {
-            JOptionPane.showMessageDialog(null, "Este campo no puede ser mayor a "+limite);
+            JOptionPane.showMessageDialog(null, "Este campo no puede ser mayor a "+maximo);
             txt.requestFocus();
              return false;
          }
-         else if(txt.getText().length()==0)
+         else if(txt.getText().length()< minimo)
          {
-             JOptionPane.showMessageDialog(null, "Este campo no puede estar vacio");
+             JOptionPane.showMessageDialog(null, "Este campo no puede ser menor a "+minimo);
             txt.requestFocus();
             return false;
          }
@@ -456,21 +464,14 @@ public class Registro extends javax.swing.JFrame {
         }
       return true;
     }
-    private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
-        // TODO add your handling code here:
-         Verificar(txtContraseña,30);
-         
-         
-    }//GEN-LAST:event_txtContraseñaFocusLost
-
     private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
         // TODO add your handling code here:
-        Verificar(txtCorreo, 40);
+        Verificar(txtCorreo, 40,4);
     }//GEN-LAST:event_txtCorreoFocusLost
 
     private void txtTelefonoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelefonoFocusLost
         // TODO add your handling code here:
-         Verificar(txtTelefono, 20);
+         Verificar(txtTelefono, 20,8);
          String patron="^(\\d)+$";
          Pattern rol = Pattern.compile(patron);
          
@@ -508,9 +509,10 @@ public class Registro extends javax.swing.JFrame {
             return;
         }
         
-       if(txtUsuario.getText().isEmpty()||txtNombre.getText().isEmpty()||txtApellido.getText().isEmpty()||txtCorreo.getText().isEmpty()||txtTelefono.getText().isEmpty()||txtContraseña.getText().isEmpty())
+       if(txtUsuario.getText().isEmpty()||txtNombre.getText().isEmpty()||txtApellido.getText().isEmpty()||txtCorreo.getText().isEmpty()||txtTelefono.getText().isEmpty()||password.isEmpty())
        {
             JOptionPane.showMessageDialog(null,"Llene todos los campos" );
+            return;
        }
        else
        {
@@ -536,7 +538,7 @@ public class Registro extends javax.swing.JFrame {
                opEstatusValor=0;
            }
            String s = System.lineSeparator() + "Usuario:"+txtUsuario.getText()+"|"+"Nombre:"+txtNombre.getText()+
-                   "|"+"Apellido:"+txtApellido.getText()+"|"+"Rol:"+opRolValor+"|"+"Fecha de nacimiento:"+jfecha+
+                   "|"+"Apellido:"+txtApellido.getText()+"|"+"Contraseña:"+password+"|"+"Rol:"+opRolValor+"|"+"Fecha de nacimiento:"+jfecha+
                    "|"+"Correo alterno:"+txtCorreo.getText()+"|"+"Telefono:"+txtTelefono.getText()+"|"+"Path_Fotografia:"+pathFotografia+"|"+"Estatus:"+opEstatusValor;
            
            
@@ -558,10 +560,72 @@ public class Registro extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    
+    private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
+        // TODO add your handling code here:
+        
+           if(!Verificar(txtContraseña,30,5))
+           {
+               return;
+           }
+           
+           if(VerificarContraseña())
+           {
+               //JOptionPane.showMessageDialog(null,password );
+               try 
+               {  
+                   password=String.valueOf(txtContraseña.getPassword());
+                   cifrado=cifra(password);
+                   password="";
+                   for(int i = 0; i < cifrado.length; i++)
+                   {
+                       password += cifrado[i];
+                   }
+               } 
+               catch (Exception e) 
+               {
+                   JOptionPane.showMessageDialog(null,"Soy una estupidez" );
+               }
+             
+           }
+       
+
+           //JOptionPane.showMessageDialog(null,myPass );
+    }//GEN-LAST:event_txtContraseñaFocusLost
+
+    public boolean VerificarContraseña()
+    {
+           String myPass=String.valueOf(txtContraseña.getPassword());
+
+           if(myPass.contains(" ")|myPass.contains("	"))
+           {
+               JOptionPane.showMessageDialog(null,"No puede tener espacios en blanco");
+               txtContraseña.requestFocus();
+               return false;
+           }
+           if(!myPass.matches(".*\\d.*"))
+           {
+               JOptionPane.showMessageDialog(null,"Debe tener almenos un numero");
+               txtContraseña.requestFocus();
+               return false;
+           }
+           if(!myPass.matches(".*[A-Z].*"))
+           {
+               JOptionPane.showMessageDialog(null,"Debe tener almenos una letra mayuscula");
+               txtContraseña.requestFocus();
+               return false;
+           }
+           if(!myPass.matches(".*[a-z].*"))
+           {
+               JOptionPane.showMessageDialog(null,"Debe tener almenos una letra minuscula");
+               txtContraseña.requestFocus();
+               return false;
+           }
+           return true;
+    }
     
     byte[] cifrado = null;
     String pathFotografia;
+    String password;
     public byte[] cifra(String sinCifrar) throws Exception {
             final byte[] bytes = sinCifrar.getBytes("UTF-8");
             final Cipher aes = obtieneCipher(true);
@@ -667,10 +731,12 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JCheckBox opEstatus;
     private javax.swing.JCheckBox opRol;
     private javax.swing.JTextField txtApellido;
-    private javax.swing.JTextField txtContraseña;
+    private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
