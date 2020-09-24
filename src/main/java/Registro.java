@@ -3,12 +3,17 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -87,6 +93,7 @@ public class Registro extends javax.swing.JFrame {
         Foto = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         opEstatus = new javax.swing.JCheckBox();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,6 +148,18 @@ public class Registro extends javax.swing.JFrame {
             }
         });
 
+        txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCorreoFocusLost(evt);
+            }
+        });
+
+        txtTelefono.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTelefonoFocusLost(evt);
+            }
+        });
+
         opRol.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         opRol.setAlignmentX(0.5F);
         opRol.setBorder(null);
@@ -173,62 +192,75 @@ public class Registro extends javax.swing.JFrame {
         opEstatus.setPreferredSize(new java.awt.Dimension(18, 13));
         opEstatus.setRolloverEnabled(false);
 
+        jButton2.setText("Crear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(Foto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(opRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(opEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Foto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(jLabel10)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(opRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(opEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(41, 41, 41)
+                                        .addComponent(jLabel10)
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(169, 169, 169)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(169, 169, 169)
-                .addComponent(jButton1)
+                .addGap(199, 199, 199)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -276,7 +308,9 @@ public class Registro extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addComponent(jButton2)
                 .addContainerGap())
         );
 
@@ -293,57 +327,57 @@ public class Registro extends javax.swing.JFrame {
         {
         File archivo=escogerImagen.getSelectedFile();
         String obtener = archivo.getAbsolutePath();
-            JOptionPane.showMessageDialog(null, obtener);
+        //JOptionPane.showMessageDialog(null, obtener);
         ImageIcon imIc= new ImageIcon(obtener);
         Image ajustarImg = imIc.getImage();
         Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
         
         Foto.setIcon(new ImageIcon(ajustarTamaño));
         
+           
+        try 
+        {
+            if(Verificar(txtUsuario, 20)==false)
+            {
+                return;
+            }
+            if(VerificarUsuario()==false)
+            {
+                return;
+            }
+                
+                ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
+                pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
+        } 
+         
+        catch (IOException ex) 
+        {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private static String getFileExtension(File file) {
+        String fileName = file.getName();
+        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+        return fileName.substring(fileName.lastIndexOf(".")+1);
+        else return "";
+    }
     private void txtUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusLost
         // TODO add your handling code here:
         //
         
-        String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-        Pattern rol = Pattern.compile(patron);
-        
-        Verificar(txtUsuario, 20);
-         
-        try {
-                  List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-                for (int i = 0; i < lineas.size(); i++)
-                {
-                    Matcher m = rol.matcher(lineas.get(i));
-                    if(m.find())
-                    {
-                        if(m.group(4).contains(txtUsuario.getText()))
-                        {
-                     //Usuario ya existe
-                     JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
-                     txtUsuario.requestFocus();
-                     return;
-                        }
-                        else
-                        {
-                         //El usuario no existe :D
-                        }
-                    }
-                 else
-                   {
-                     //No hay usuarios     
-                   }
-                }
-            } 
-            catch (IOException ex) {
-                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-            }
-  
-        
+        if(Verificar(txtUsuario, 20)==false)
+        {
+            return;
+        }
+         if(VerificarUsuario()==false)
+         {
+             return;
+         }
+      
     }//GEN-LAST:event_txtUsuarioFocusLost
 
     private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
@@ -356,34 +390,178 @@ public class Registro extends javax.swing.JFrame {
 
     private void txtApellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApellidoFocusLost
         // TODO add your handling code here:
-       Verificar(txtNombre,30);
+       Verificar(txtApellido,30);
     }//GEN-LAST:event_txtApellidoFocusLost
 
-    public void Verificar(JTextField txt,int limite)
+    public boolean Verificar(JTextField txt,int limite)
     {
          if(txt.getText().contains("|"))
            {
             JOptionPane.showMessageDialog(null, "Este campo no puede contener |");
             txt.requestFocus();
-            return;
+            return false;
             }
          if(txt.getText().length()>limite)
-        {
+         {
             JOptionPane.showMessageDialog(null, "Este campo no puede ser mayor a "+limite);
             txt.requestFocus();
-        }
+             return false;
+         }
+         else if(txt.getText().length()==0)
+         {
+             JOptionPane.showMessageDialog(null, "Este campo no puede estar vacio");
+            txt.requestFocus();
+            return false;
+         }
+         
+         return true;
     }
     
-    
+     public boolean VerificarUsuario()
+    {
+        String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern rol = Pattern.compile(patron);
+        try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++)
+                {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    if(m.find())
+                    {   
+                        if(m.group(4).contains(txtUsuario.getText()))
+                        {
+                     //Usuario ya existe
+                     JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
+                     txtUsuario.requestFocus();
+                     return false;
+                        }
+                        else
+                        {
+                         //El usuario no existe :D
+                            
+                        }
+                    }
+                    else
+                    {
+                     //No hay usuarios     
+                       
+                    }
+                }
+        }
+            
+        catch (IOException ex)    
+        {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      return true;
+    }
     private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
         // TODO add your handling code here:
-           Verificar(txtNombre,30);
+         Verificar(txtContraseña,30);
+         
          
     }//GEN-LAST:event_txtContraseñaFocusLost
+
+    private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
+        // TODO add your handling code here:
+        Verificar(txtCorreo, 40);
+    }//GEN-LAST:event_txtCorreoFocusLost
+
+    private void txtTelefonoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelefonoFocusLost
+        // TODO add your handling code here:
+         Verificar(txtTelefono, 20);
+         String patron="^(\\d)+$";
+         Pattern rol = Pattern.compile(patron);
+         
+         Matcher m = rol.matcher(txtTelefono.getText());
+                    if(!m.find())
+                    {
+                     JOptionPane.showMessageDialog(null, "Numero invalido");
+                     txtTelefono.requestFocus();
+                     return;
+                    }
+                    else
+                    {
+                     //Numero correct 
+                        
+                    }
+    }//GEN-LAST:event_txtTelefonoFocusLost
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Date fecha= jDateChooser1.getDate();
+        String jfecha;
+        try 
+        {
+              jfecha=DateFormat.getDateInstance().format(fecha);
+        } 
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Fecha incorrecta!" );
+            jDateChooser1.requestFocus();
+            return;
+        }
+        if(pathFotografia==null)
+        {
+            JOptionPane.showMessageDialog(null,"Debe agregar una foto de perfil!" );
+            return;
+        }
+        
+       if(txtUsuario.getText().isEmpty()||txtNombre.getText().isEmpty()||txtApellido.getText().isEmpty()||txtCorreo.getText().isEmpty()||txtTelefono.getText().isEmpty()||txtContraseña.getText().isEmpty())
+       {
+            JOptionPane.showMessageDialog(null,"Llene todos los campos" );
+       }
+       else
+       {
+           //"C:\\MEIA\\usuario.txt"
+           Path p = Paths.get("C:\\\\MEIA\\\\usuario.txt");
+           int opRolValor;
+           int opEstatusValor;
+           if(opRol.isSelected())
+           {
+               opRolValor=1;
+           }
+           else
+           {
+               opRolValor=0;
+           }
+           
+            if(opEstatus.isSelected())
+           {
+               opEstatusValor=1;
+           }
+           else
+           {
+               opEstatusValor=0;
+           }
+           String s = System.lineSeparator() + "Usuario:"+txtUsuario.getText()+"|"+"Nombre:"+txtNombre.getText()+
+                   "|"+"Apellido:"+txtApellido.getText()+"|"+"Rol:"+opRolValor+"|"+"Fecha de nacimiento:"+jfecha+
+                   "|"+"Correo alterno:"+txtCorreo.getText()+"|"+"Telefono:"+txtTelefono.getText()+"|"+"Path_Fotografia:"+pathFotografia+"|"+"Estatus:"+opEstatusValor;
+           
+           
+           
+           try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) 
+           {
+               writer.write(s);
+               JOptionPane.showMessageDialog(null,"Usuario creado!" );
+               IFingreso Ifingreso=new IFingreso();
+               Ifingreso.setVisible(true);
+               Ifingreso.pack();
+               Ifingreso.setLocationRelativeTo(null);
+               dispose();
+           } 
+           catch (IOException ioe) 
+           {
+               System.err.format("IOException: %s%n", ioe);
+           }
+       }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     
     byte[] cifrado = null;
+    String pathFotografia;
     public byte[] cifra(String sinCifrar) throws Exception {
             final byte[] bytes = sinCifrar.getBytes("UTF-8");
             final Cipher aes = obtieneCipher(true);
@@ -477,6 +655,7 @@ public class Registro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Foto;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
