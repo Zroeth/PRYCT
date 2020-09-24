@@ -5,6 +5,14 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -31,7 +39,12 @@ public class Registro extends javax.swing.JFrame {
      */
     public Registro(boolean rol) {
         //JOptionPane.showMessageDialog(null, rol);
-        initComponents();
+         initComponents();
+         
+        opRol.setEnabled(!rol);
+        opRol.setSelected(!rol);
+        
+       
         
     }
     
@@ -99,6 +112,12 @@ public class Registro extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
         jLabel10.setText("Foto");
+
+        txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUsuarioFocusLost(evt);
+            }
+        });
 
         opRol.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         opRol.setAlignmentX(0.5F);
@@ -262,6 +281,67 @@ public class Registro extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusLost
+        // TODO add your handling code here:
+        //
+        
+        String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern rol = Pattern.compile(patron);
+        
+        if(txtUsuario.getText().contains("|"))
+            {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario no puede contener |");
+            txtUsuario.requestFocus();
+            return;
+            }
+        if(txtUsuario.getText().length()>20)
+        {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario no puede ser mayor a 20");
+            txtUsuario.requestFocus();
+        }
+        else
+        {
+            
+           
+            try {
+                  List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+             for (int i = 0; i < lineas.size(); i++) 
+             {
+               Matcher m = rol.matcher(lineas.get(i));
+                
+                   if(m.find())
+                   {
+                     if(m.group(4).contains(txtUsuario.getText()))
+                     {
+                     //Usuario ya existe
+                     
+                     JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
+                     txtUsuario.requestFocus();
+                     return;
+                     }
+                     else
+                     {
+                         //El usuario no existe :D
+                        
+                     }
+                     
+                   }
+                 else
+                   {
+                     //No hay usuarios
+                      
+                   }
+             }
+              JOptionPane.showMessageDialog(null, "Su nombre de usuario es correcto");
+            } catch (IOException ex) {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+             
+        }
+    }//GEN-LAST:event_txtUsuarioFocusLost
 
     /**
      * @param args the command line arguments
