@@ -30,6 +30,7 @@ public class IFingreso extends javax.swing.JFrame {
     /**
      * Creates new form IFingreso
      */
+    public static boolean valorRol;
     public IFingreso() {
         initComponents();
         
@@ -41,12 +42,12 @@ public class IFingreso extends javax.swing.JFrame {
         {
          public boolean accept(File dir, String name)
         {
-         return name.startsWith("usuarios") && name.endsWith(".txt");
+         return name.startsWith("usuario") && name.endsWith(".txt");
         }
           
         });
-        JOptionPane.showMessageDialog(null, matches);
-        if(matches.toString()=="")
+        
+        if(matches.length==0)
         {
             //NO HAY ARCHIVOS, PRIMER USUARIO ADMIN
             JOptionPane.showMessageDialog(null, "sin archivos");
@@ -70,13 +71,16 @@ public class IFingreso extends javax.swing.JFrame {
                      if(m.group(4).contains("1"))
                      {
                      //Encontro un rol de admin
-                     JOptionPane.showMessageDialog(null, "Admin encontrado");
-                         controlesAct(true);
+                     //JOptionPane.showMessageDialog(null, "Admin encontrado");
+                     
+                     controlesAct(true);
+                         
                      break;
                      }
                      else
                      {
                          //no son admi
+                         
                          controlesAct(false);
                      }
                      
@@ -89,7 +93,8 @@ public class IFingreso extends javax.swing.JFrame {
                  
                  
              }
-                        
+                     
+                      
                        
                         
              } 
@@ -99,6 +104,10 @@ public class IFingreso extends javax.swing.JFrame {
              }
             
         }
+           if(valorRol==false)
+                        {
+                         JOptionPane.showMessageDialog(null, "Debe existir una cuenta de administrador!");
+                        }
     }
     
     public void controlesAct(boolean accion)
@@ -106,6 +115,7 @@ public class IFingreso extends javax.swing.JFrame {
         txtContraseña.setEnabled(accion);
         txtUsuario.setEnabled(accion);
         entrar.setEnabled(accion);
+        valorRol=accion;
     }
 
     /**
@@ -213,7 +223,7 @@ public class IFingreso extends javax.swing.JFrame {
     private void crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCuentaActionPerformed
         // TODO add your handling code here:
         
-           Registro rgstr= new Registro();
+           Registro rgstr= new Registro(valorRol);
            rgstr.setVisible(true);
            rgstr.pack();
            rgstr.setDefaultCloseOperation(EXIT_ON_CLOSE);
