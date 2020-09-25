@@ -39,8 +39,8 @@ public class IFingreso extends javax.swing.JFrame {
         setUndecorated(true);
         initComponents();
         getContentPane().setBackground(Color.white);
-        
-        ImageIcon imIc= new ImageIcon("C:\\MEIA\\btnSalir.gif");
+       
+        ImageIcon imIc= new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
         
         
         btnSalir.setIcon(imIc);
