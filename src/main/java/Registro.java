@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -49,8 +50,20 @@ public class Registro extends javax.swing.JFrame {
      */
     public Registro(boolean rol) {
         //JOptionPane.showMessageDialog(null, rol);
-         initComponents();
+        setUndecorated(true);
+        initComponents();
+        getContentPane().setBackground(Color.white);
          
+        ImageIcon imIc= new ImageIcon("src/main/java/Imagenes/btnCancelar.gif");
+        btnSalir1.setIcon(imIc);
+        
+        ImageIcon imIc2= new ImageIcon("src/main/java/Imagenes/btnCrear.gif");
+        btnCrear.setIcon(imIc2);
+        
+        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnFoto.png");
+        Foto.setIcon(imIc3);
+        
+        
         opRol.setEnabled(!rol);
         opRol.setSelected(!rol);
         
@@ -82,7 +95,6 @@ public class Registro extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
         txtApellido = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
@@ -90,75 +102,109 @@ public class Registro extends javax.swing.JFrame {
         txtTelefono = new javax.swing.JTextField();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         opRol = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
         Foto = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         opEstatus = new javax.swing.JCheckBox();
-        jButton2 = new javax.swing.JButton();
         txtContraseña = new javax.swing.JPasswordField();
+        btnCrear = new javax.swing.JLabel();
+        btnSalir1 = new javax.swing.JLabel();
 
         jPasswordField1.setText("jPasswordField1");
 
         jPasswordField2.setText("jPasswordField2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
 
-        jLabel2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 204, 255));
         jLabel2.setText("Nombre");
 
-        jLabel3.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 204, 255));
         jLabel3.setText("Usuario");
 
-        jLabel4.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 204, 255));
         jLabel4.setText("Contraseña");
 
-        jLabel5.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 204, 255));
         jLabel5.setText("Rol");
 
-        jLabel6.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 204, 255));
         jLabel6.setText("Apellido");
 
-        jLabel7.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 204, 255));
         jLabel7.setText("Fecha de nacimiento");
 
-        jLabel8.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 204, 255));
         jLabel8.setText("Correo");
 
-        jLabel9.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 204, 255));
         jLabel9.setText("Telefono");
 
-        jLabel10.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        jLabel10.setText("Foto");
-
+        txtUsuario.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtUsuario.setMinimumSize(new java.awt.Dimension(7, 26));
+        txtUsuario.setPreferredSize(new java.awt.Dimension(7, 32));
         txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtUsuarioFocusLost(evt);
             }
         });
 
+        txtApellido.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtApellido.setMinimumSize(new java.awt.Dimension(7, 26));
+        txtApellido.setPreferredSize(new java.awt.Dimension(7, 32));
         txtApellido.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtApellidoFocusLost(evt);
             }
         });
 
+        txtNombre.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtNombre.setMinimumSize(new java.awt.Dimension(7, 26));
+        txtNombre.setPreferredSize(new java.awt.Dimension(7, 32));
         txtNombre.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtNombreFocusLost(evt);
             }
         });
 
+        txtCorreo.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtCorreo.setMinimumSize(new java.awt.Dimension(7, 26));
+        txtCorreo.setPreferredSize(new java.awt.Dimension(7, 32));
         txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtCorreoFocusLost(evt);
             }
         });
 
+        txtTelefono.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtTelefono.setMinimumSize(new java.awt.Dimension(7, 26));
+        txtTelefono.setPreferredSize(new java.awt.Dimension(7, 32));
         txtTelefono.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtTelefonoFocusLost(evt);
             }
         });
+
+        jDateChooser1.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jDateChooser1.setPreferredSize(new java.awt.Dimension(64, 32));
 
         opRol.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         opRol.setAlignmentX(0.5F);
@@ -171,20 +217,27 @@ public class Registro extends javax.swing.JFrame {
         opRol.setPreferredSize(new java.awt.Dimension(18, 13));
         opRol.setRolloverEnabled(false);
 
-        jButton1.setText("Subir foto de perfil");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        Foto.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        Foto.setForeground(new java.awt.Color(0, 204, 255));
+        Foto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Foto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FotoMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FotoMousePressed(evt);
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 204, 255));
         jLabel11.setText("Estatus");
 
         opEstatus.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         opEstatus.setSelected(true);
         opEstatus.setAlignmentX(0.5F);
         opEstatus.setBorder(null);
+        opEstatus.setBorderPainted(true);
         opEstatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         opEstatus.setIconTextGap(5);
         opEstatus.setMaximumSize(new java.awt.Dimension(18, 13));
@@ -192,16 +245,35 @@ public class Registro extends javax.swing.JFrame {
         opEstatus.setPreferredSize(new java.awt.Dimension(18, 13));
         opEstatus.setRolloverEnabled(false);
 
-        jButton2.setText("Crear");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
+        txtContraseña.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtContraseña.setMinimumSize(new java.awt.Dimension(7, 26));
+        txtContraseña.setPreferredSize(new java.awt.Dimension(7, 35));
         txtContraseña.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtContraseñaFocusLost(evt);
+            }
+        });
+
+        btnCrear.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        btnCrear.setForeground(new java.awt.Color(0, 204, 255));
+        btnCrear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCrear.setDoubleBuffered(true);
+        btnCrear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCrearMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnCrearMousePressed(evt);
+            }
+        });
+
+        btnSalir1.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        btnSalir1.setForeground(new java.awt.Color(0, 204, 255));
+        btnSalir1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir1.setDoubleBuffered(true);
+        btnSalir1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalir1MouseClicked(evt);
             }
         });
 
@@ -214,158 +286,91 @@ public class Registro extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(Foto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(opRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(opEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(41, 41, 41)
-                                        .addComponent(jLabel10)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                                    .addComponent(txtContraseña)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalir1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(27, 27, 27)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(opRol, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(opEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(202, 202, 202)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(199, 199, 199)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(opEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(opRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel10)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel11)
+                            .addComponent(opEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(opRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnCrear, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                            .addComponent(btnSalir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        JFileChooser escogerImagen = new JFileChooser();
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
-        escogerImagen.setFileFilter(filtro);
-        int seleccionado=escogerImagen.showOpenDialog(this);
-        if(seleccionado==JFileChooser.APPROVE_OPTION)
-        {
-        File archivo=escogerImagen.getSelectedFile();
-        String obtener = archivo.getAbsolutePath();
-        //JOptionPane.showMessageDialog(null, obtener);
-        ImageIcon imIc= new ImageIcon(obtener);
-        Image ajustarImg = imIc.getImage();
-        Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
-        
-        Foto.setIcon(new ImageIcon(ajustarTamaño));
-        
-           
-        try 
-        {
-            if(Verificar(txtUsuario, 20,1)==false)
-            {
-                return;
-            }
-            if(VerificarUsuario()==false)
-            {
-                return;
-            }
-                
-                ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
-                pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
-        } 
-         
-        catch (IOException ex) 
-        {
-                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
-        }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private static String getFileExtension(File file) {
         String fileName = file.getName();
@@ -409,6 +414,12 @@ public class Registro extends javax.swing.JFrame {
             txt.requestFocus();
             return false;
             }
+           if(txt.getText().contains(" ")|txt.getText().contains("	"))
+           {
+               JOptionPane.showMessageDialog(null,"No puede tener espacios en blanco");
+               txtContraseña.requestFocus();
+               return false;
+           }
          if(txt.getText().length()>maximo)
          {
             JOptionPane.showMessageDialog(null, "Este campo no puede ser mayor a "+maximo);
@@ -489,8 +500,41 @@ public class Registro extends javax.swing.JFrame {
                     }
     }//GEN-LAST:event_txtTelefonoFocusLost
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
         // TODO add your handling code here:
+        
+           if(!Verificar(txtContraseña,30,5))
+           {
+               return;
+           }
+           
+           if(VerificarContraseña())
+           {
+               //JOptionPane.showMessageDialog(null,password );
+               try 
+               {  
+                   password=String.valueOf(txtContraseña.getPassword());
+                   cifrado=cifra(password);
+                   password="";
+                   for(int i = 0; i < cifrado.length; i++)
+                   {
+                       password += cifrado[i];
+                   }
+               } 
+               catch (Exception e) 
+               {
+                   
+               }
+             
+           }
+       
+
+           //JOptionPane.showMessageDialog(null,myPass );
+    }//GEN-LAST:event_txtContraseñaFocusLost
+
+    private void btnCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearMouseClicked
+        // TODO add your handling code here:
+                // TODO add your handling code here:
         Date fecha= jDateChooser1.getDate();
         String jfecha;
         try 
@@ -547,50 +591,93 @@ public class Registro extends javax.swing.JFrame {
            {
                writer.write(s);
                JOptionPane.showMessageDialog(null,"Usuario creado!" );
-               IFingreso Ifingreso=new IFingreso();
-               Ifingreso.setVisible(true);
-               Ifingreso.pack();
-               Ifingreso.setLocationRelativeTo(null);
-               dispose();
+               writer.close();
            } 
            catch (IOException ioe) 
            {
                System.err.format("IOException: %s%n", ioe);
            }
+            IFingreso Ifingreso=new IFingreso();
+               Ifingreso.setVisible(true);
+               Ifingreso.pack();
+               Ifingreso.setLocationRelativeTo(null);
+               dispose();
        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
-        // TODO add your handling code here:
-        
-           if(!Verificar(txtContraseña,30,5))
-           {
-               return;
-           }
-           
-           if(VerificarContraseña())
-           {
-               //JOptionPane.showMessageDialog(null,password );
-               try 
-               {  
-                   password=String.valueOf(txtContraseña.getPassword());
-                   cifrado=cifra(password);
-                   password="";
-                   for(int i = 0; i < cifrado.length; i++)
-                   {
-                       password += cifrado[i];
-                   }
-               } 
-               catch (Exception e) 
-               {
-                   JOptionPane.showMessageDialog(null,"Soy una estupidez" );
-               }
-             
-           }
        
+    }//GEN-LAST:event_btnCrearMouseClicked
 
-           //JOptionPane.showMessageDialog(null,myPass );
-    }//GEN-LAST:event_txtContraseñaFocusLost
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        // TODO add your handling code here:
+         xx=evt.getX();
+        xy=evt.getY();
+    }//GEN-LAST:event_formMousePressed
+int xx,xy;
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        // TODO add your handling code here:
+         int x=evt.getXOnScreen();
+        int y=evt.getYOnScreen();
+        
+        setLocation(x-xx,y-xy);
+    }//GEN-LAST:event_formMouseDragged
+
+    private void btnSalir1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalir1MouseClicked
+        // TODO add your handling code here:
+        IFingreso Ifingreso=new IFingreso();
+               Ifingreso.setVisible(true);
+               Ifingreso.pack();
+               Ifingreso.setLocationRelativeTo(null);
+               dispose();
+    }//GEN-LAST:event_btnSalir1MouseClicked
+
+    private void btnCrearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCrearMousePressed
+
+    private void FotoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FotoMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FotoMousePressed
+
+    private void FotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FotoMouseClicked
+        // TODO add your handling code here:
+           JFileChooser escogerImagen = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
+        escogerImagen.setFileFilter(filtro);
+        int seleccionado=escogerImagen.showOpenDialog(this);
+        if(seleccionado==JFileChooser.APPROVE_OPTION)
+        {
+        File archivo=escogerImagen.getSelectedFile();
+        String obtener = archivo.getAbsolutePath();
+        //JOptionPane.showMessageDialog(null, obtener);
+        ImageIcon imIc= new ImageIcon(obtener);
+        Image ajustarImg = imIc.getImage();
+        Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
+        
+        Foto.setIcon(new ImageIcon(ajustarTamaño));
+        
+           
+        try 
+        {
+            if(Verificar(txtUsuario, 20,1)==false)
+            {
+                return;
+            }
+            if(VerificarUsuario()==false)
+            {
+                return;
+            }
+                
+                ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
+                pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
+        } 
+         
+        catch (IOException ex) 
+        {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        }
+        
+    }//GEN-LAST:event_FotoMouseClicked
 
     public boolean VerificarContraseña()
     {
@@ -718,10 +805,9 @@ public class Registro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Foto;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel btnCrear;
+    private javax.swing.JLabel btnSalir1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
