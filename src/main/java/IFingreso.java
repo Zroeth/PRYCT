@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -41,8 +42,7 @@ public class IFingreso extends javax.swing.JFrame {
     public IFingreso() {
         setUndecorated(true);
         initComponents();
-        getContentPane().setBackground(Color.white);
-       
+        getContentPane().setBackground(Color.white);      
         ImageIcon imIc= new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
         btnSalir.setIcon(imIc);
         
@@ -282,8 +282,9 @@ int xx,xy;
         // TODO add your handling code here:
         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         cifrar();
-        String patronContraseña="(Contraseña)(\\:)(	| |)*(.+)(\\|)(R)";
-        
+        String patronContraseña="(Contraseña)(\\:)(	| |)*(.+)(\\|)(R)"; 
+        String patronRol="(Rol)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern adminRol = Pattern.compile(patronRol);
         Pattern rolContraseña = Pattern.compile(patronContraseña);
         Pattern rol = Pattern.compile(patronUsuario);
         try {
@@ -297,16 +298,30 @@ int xx,xy;
                         if(m.group(4).equals(txtUsuario.getText()))
                         {
                             //Usuario  existe
-                            JOptionPane.showMessageDialog(null, "Usuario existe");
+                            //JOptionPane.showMessageDialog(null, "Usuario existe");
                             Matcher m2 = rolContraseña.matcher(lineas.get(i));
                             if(m2.find())
-                            {
-                          
-                                JOptionPane.showMessageDialog(null, password);
+                            {                       
                                 if(m2.group(4).equals(password))
                                 {
-                            //contraseña coinciden
-                                    JOptionPane.showMessageDialog(null, "Entraste we :D");
+                                    Matcher m3 = adminRol.matcher(lineas.get(i));
+                                    if(m3.find()){                                                             //contraseña coinciden
+                                        if(m3.group(4).equals("1")){
+                                           JOptionPane.showMessageDialog(null, "Ya funciona la parte para acceder a ADMIN WEE");
+                                           lFAdmin administrar = new lFAdmin();
+                                           administrar.setVisible(true);
+                                           administrar.pack();
+                                           administrar.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                                           this.dispose();
+                                        }else{
+                                           JOptionPane.showMessageDialog(null, "Tambien funciona la parte para acceder a ESTANDAR WEE");
+                                           IFEstandar estandar = new IFEstandar();
+                                           estandar.setVisible(true);
+                                           estandar.pack();
+                                           estandar.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                                           this.dispose();
+                                        }   
+                                    }
                                 }
                                 else
                                 {
