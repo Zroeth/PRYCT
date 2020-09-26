@@ -8,12 +8,15 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -176,6 +179,11 @@ public class IFingreso extends javax.swing.JFrame {
 
         txtContraseña.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
         txtContraseña.setText("jPasswordField1");
+        txtContraseña.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtContraseñaFocusLost(evt);
+            }
+        });
 
         crearCuenta.setFont(new java.awt.Font("Museo 300", 0, 14)); // NOI18N
         crearCuenta.setText("Crear Cuenta");
@@ -269,8 +277,73 @@ public class IFingreso extends javax.swing.JFrame {
                 
     }//GEN-LAST:event_crearCuentaActionPerformed
 int xx,xy;
+
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
         // TODO add your handling code here:
+        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        cifrar();
+        String patronContraseña="(Contraseña)(\\:)(	| |)*(.+)(\\|)(R)";
+        
+        Pattern rolContraseña = Pattern.compile(patronContraseña);
+        Pattern rol = Pattern.compile(patronUsuario);
+        try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++)
+                {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    if(m.find())
+                    {
+                        if(m.group(4).equals(txtUsuario.getText()))
+                        {
+                            //Usuario  existe
+                            JOptionPane.showMessageDialog(null, "Usuario existe");
+                            Matcher m2 = rolContraseña.matcher(lineas.get(i));
+                            if(m2.find())
+                            {
+                          
+                                JOptionPane.showMessageDialog(null, password);
+                                if(m2.group(4).equals(password))
+                                {
+                            //contraseña coinciden
+                                    JOptionPane.showMessageDialog(null, "Entraste we :D");
+                                }
+                                else
+                                {
+                                    //contraseña no coinciden
+                              
+                                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+                                }
+                            }
+                            else
+                            {
+                                JOptionPane.showMessageDialog(null, "No se encontro la contraseña");
+                            }
+                        }
+                        else
+                        {
+                         //El usuario no existe :D  
+                            JOptionPane.showMessageDialog(null, "Este usuario no existe");
+                        }
+                    }
+                    else
+                    {
+                     //No hay usuarios     
+                       
+                    }
+                }
+        }
+            
+        catch (IOException ex)    
+        {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+        
+        
+        
+        
+        
     }//GEN-LAST:event_entrarActionPerformed
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
@@ -292,7 +365,68 @@ int xx,xy;
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnSalirMouseClicked
+
+    private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtContraseñaFocusLost
      
+    
+    byte[] cifrado = null;
+    String pathFotografia;
+    String password;
+    public byte[] cifra(String sinCifrar) throws Exception {
+            final byte[] bytes = sinCifrar.getBytes("UTF-8");
+            final Cipher aes = obtieneCipher(true);
+            final byte[] cifrado = aes.doFinal(bytes);
+            return cifrado;
+    }
+
+    public String descifra(byte[] cifrado) throws Exception {
+            final Cipher aes = obtieneCipher(false);
+            final byte[] bytes = aes.doFinal(cifrado);
+            final String sinCifrar = new String(bytes, "UTF-8");
+            return sinCifrar;
+    }
+    
+    private Cipher obtieneCipher(boolean paraCifrar) throws Exception {
+	final String frase = "FraseLargaConDiferentesLetrasNumerosYCaracteresEspeciales_áÁéÉíÍóÓúÚüÜñÑ1234567890!#%$&()=%NO_USAR_ESTA_FRASE!";
+	final MessageDigest digest = MessageDigest.getInstance("SHA");
+	digest.update(frase.getBytes("UTF-8"));
+	final SecretKeySpec key = new SecretKeySpec(digest.digest(), 0, 16, "AES");
+
+	final Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
+	if (paraCifrar) {
+		aes.init(Cipher.ENCRYPT_MODE, key);
+	} else {
+		aes.init(Cipher.DECRYPT_MODE, key);
+	}
+
+	return aes;
+}
+    
+    private void cifrar() {                                        
+    // TODO add your handling code here:    
+       password=String.valueOf(txtContraseña.getPassword());
+        try {
+            cifrado=cifra(password);
+             password="";
+                   for(int i = 0; i < cifrado.length; i++)
+                   {
+                       password += cifrado[i];
+                   }
+        } 
+        catch (Exception ex) {
+            Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                  
+        
+      //  rContra.setText(result);
+    }        
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
