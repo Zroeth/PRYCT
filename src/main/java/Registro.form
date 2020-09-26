@@ -49,7 +49,7 @@
                           <Component id="jLabel2" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="0" pref="184" max="32767" attributes="0"/>
+                          <Component id="jLabel7" alignment="0" pref="201" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -140,7 +140,7 @@
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                           <Component id="opRol" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="btnCrear" pref="149" max="32767" attributes="0"/>
                           <Component id="btnSalir1" max="32767" attributes="0"/>
