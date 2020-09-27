@@ -14,6 +14,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -45,10 +49,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Registro extends javax.swing.JFrame {
 
     public boolean rol;
+    public String cuentaC;
     /**
      * Creates new form Registro
      */
-    public Registro(boolean rol) {
+    public Registro(boolean rol, String cuenta) {
         //JOptionPane.showMessageDialog(null, rol);
         setUndecorated(true);
         initComponents();
@@ -67,7 +72,7 @@ public class Registro extends javax.swing.JFrame {
         opRol.setEnabled(!rol);
         opRol.setSelected(!rol);
         
-       
+       cuentaC=cuenta;
         
     }
     
@@ -597,6 +602,7 @@ public class Registro extends javax.swing.JFrame {
            {
                System.err.format("IOException: %s%n", ioe);
            }
+           desc_Usuario();
             IFingreso Ifingreso=new IFingreso();
                Ifingreso.setVisible(true);
                Ifingreso.pack();
@@ -606,6 +612,82 @@ public class Registro extends javax.swing.JFrame {
        
     }//GEN-LAST:event_btnCrearMouseClicked
 
+    
+    private void desc_Usuario()
+    {
+        String patron="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatus = Pattern.compile(patron);
+        List<String> lineas;
+        try 
+        {
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+             JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }
+        
+        int cantidadCuentas=0;
+        int cantidadActivos=0;
+        int cantidadInactivos=0;
+        
+         for (int i = 0; i < lineas.size(); i++)    
+         {
+
+		   Matcher m = estatus.matcher(lineas.get(i));
+                   if(m.find())
+                   {
+                       cantidadCuentas++;
+                       if(m.group(4).contains("1"))
+                       {
+                     //Esta activo
+                           cantidadActivos++;
+                       }
+                       else
+                       {
+                      //No esta activo
+                         cantidadInactivos++;
+                       }
+                   }
+                 else
+                   {
+                   }
+         }
+        
+        Path p = Paths.get("C:\\\\MEIA\\\\desc_usuario.txt");
+        
+        if(!rol)
+        {
+            //Cuenta que registra los datos como usuario
+            cuentaC=txtUsuario.getText();
+            
+        }
+        
+        //en modificacion solo se cambiaria las partes que dicen modificacion y los campos que se modifiquen
+        
+      
+       String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+       String s = System.lineSeparator() + "Nombre Simbolico:"+txtUsuario.getText()+"|"+ "Fecha Creacion:"+jfecha+"|"+"|"
+                 + "Usuario Creacion:"+cuentaC+"|"+"|"+ "Fecha Modificacion:"+jfecha+"|"+"|"+ "Usuario Modificacion:"+cuentaC+"|"
+                 +"|"+ "# Registros:"+cantidadCuentas+"|"+ "Registros Activos:"+cantidadActivos+"|"+ "Registros Inactivos:"+cantidadInactivos+"|"
+                 + "Max reorganizacion:"+1;
+           
+           
+           try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) 
+           {
+               writer.write(s);
+               writer.close();
+           } 
+           catch (IOException ioe) 
+           {
+               System.err.format("IOException: %s%n", ioe);
+           }
+       }
+    
+    
+    
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         // TODO add your handling code here:
          xx=evt.getX();
@@ -795,7 +877,7 @@ int xx,xy;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Registro(IFingreso.valorRol).setVisible(true);
+                new Registro(IFingreso.valorRol,IFingreso.cuenta).setVisible(true);
                 
             }
         });

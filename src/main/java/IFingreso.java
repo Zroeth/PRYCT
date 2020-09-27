@@ -39,6 +39,7 @@ public class IFingreso extends javax.swing.JFrame {
      * Creates new form IFingreso
      */
     public static boolean valorRol;
+    public static String cuenta;
     public IFingreso() {
         setUndecorated(true);
         initComponents();
@@ -269,7 +270,7 @@ public class IFingreso extends javax.swing.JFrame {
     private void crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCuentaActionPerformed
         // TODO add your handling code here:
         
-           Registro rgstr= new Registro(valorRol);
+           Registro rgstr= new Registro(valorRol,cuenta);
            rgstr.setVisible(true);
            rgstr.pack();
            rgstr.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -313,13 +314,17 @@ int xx,xy;
                                            administrar.pack();
                                            administrar.setDefaultCloseOperation(EXIT_ON_CLOSE);
                                            this.dispose();
-                                        }else{
+                                           return;
+                                        }
+                                        else
+                                        {
                                            JOptionPane.showMessageDialog(null, "Tambien funciona la parte para acceder a ESTANDAR WEE");
                                            IFEstandar estandar = new IFEstandar();
                                            estandar.setVisible(true);
                                            estandar.pack();
                                            estandar.setDefaultCloseOperation(EXIT_ON_CLOSE);
                                            this.dispose();
+                                           return;
                                         }   
                                     }
                                 }
@@ -338,7 +343,7 @@ int xx,xy;
                         else
                         {
                          //El usuario no existe :D  
-                            JOptionPane.showMessageDialog(null, "Este usuario no existe");
+                            
                         }
                     }
                     else
@@ -347,6 +352,7 @@ int xx,xy;
                        
                     }
                 }
+                 JOptionPane.showMessageDialog(null, "Este usuario no existe");
         }
             
         catch (IOException ex)    
