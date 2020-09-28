@@ -469,6 +469,7 @@ public class Registro extends javax.swing.JFrame {
                     else
                     {
                      //No hay usuarios     
+                      //   JOptionPane.showMessageDialog(null, "Aun estando vacio no deberia dar rpblema :c");
                        
                     }
                 }
@@ -477,6 +478,7 @@ public class Registro extends javax.swing.JFrame {
         catch (IOException ex)    
         {
                 Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+                 JOptionPane.showMessageDialog(null, ":D");
         }
       return true;
     }
