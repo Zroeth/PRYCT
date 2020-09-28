@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -33,11 +34,32 @@ import javax.swing.JOptionPane;
     
     public CopiaArchivo(){
    //    setUndecorated(true);
+     setUndecorated(true);
     initComponents();
      getContentPane().setBackground(Color.white);
+     
+      ImageIcon imIc4= new ImageIcon("src/main/java/Imagenes/btnArchivo.gif");
+      btnArchivo.setIcon(imIc4);
+        
+      ImageIcon imIc5= new ImageIcon("src/main/java/Imagenes/btnGuardarB.gif");
+      btnGuardar.setIcon(imIc5);
     
+      ImageIcon imIc6= new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
+      btnSalir.setIcon(imIc6);
     
+      
     }
+    private static CopiaArchivo obj=null;
+    
+    public static CopiaArchivo getObj()
+    {
+        if(obj==null){
+            obj=new CopiaArchivo();
+        }
+        return obj;
+    }
+    
+    
      
     public String AbrirArchivo(File Archivo){
          String ruta = "C:\\\\MEIA\\\\usuario.txt";
@@ -76,27 +98,21 @@ import javax.swing.JOptionPane;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Archivo = new javax.swing.JButton();
-        Backup = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtarea = new javax.swing.JTextArea();
-        Regresar = new javax.swing.JButton();
+        btnArchivo = new javax.swing.JLabel();
+        btnGuardar = new javax.swing.JLabel();
+        btnSalir = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        Archivo.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
-        Archivo.setText("Archivo");
-        Archivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ArchivoActionPerformed(evt);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
             }
         });
-
-        Backup.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
-        Backup.setText("Guardar Copia");
-        Backup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackupActionPerformed(evt);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
             }
         });
 
@@ -105,45 +121,71 @@ import javax.swing.JOptionPane;
         txtarea.setRows(5);
         jScrollPane1.setViewportView(txtarea);
 
-        Regresar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Regresar.setText("Regresar");
+        btnArchivo.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        btnArchivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnArchivo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnArchivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnArchivoMouseClicked(evt);
+            }
+        });
+
+        btnGuardar.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        btnGuardar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseClicked(evt);
+            }
+        });
+
+        btnSalir.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        btnSalir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalirMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Archivo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
-                        .addComponent(Backup, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 402, Short.MAX_VALUE)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Backup, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                    .addComponent(Archivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                    .addComponent(btnArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                .addGap(17, 17, 17))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchivoActionPerformed
+    private void btnArchivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnArchivoMouseClicked
         // TODO add your handling code here:
-        if(seleccionar.showDialog(null,"Abrir")==JFileChooser.APPROVE_OPTION){
+         if(seleccionar.showDialog(null,"Abrir")==JFileChooser.APPROVE_OPTION){
         archivo=seleccionar.getSelectedFile();
         if(archivo.canRead()){
         
@@ -155,11 +197,11 @@ import javax.swing.JOptionPane;
             JOptionPane.showMessageDialog(null, "Archivo no compatible");
         }
         }
-        
-    }//GEN-LAST:event_ArchivoActionPerformed
+    }//GEN-LAST:event_btnArchivoMouseClicked
 
-    private void BackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackupActionPerformed
+    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         // TODO add your handling code here:
+                // TODO add your handling code here:
       if(seleccionar.showDialog(null,"Guardar")== JFileChooser.APPROVE_OPTION){
       archivo=seleccionar.getSelectedFile();
       if(archivo.getName().endsWith("txt")){
@@ -193,8 +235,25 @@ import javax.swing.JOptionPane;
       }
       }
    
-    
-    }//GEN-LAST:event_BackupActionPerformed
+    }//GEN-LAST:event_btnGuardarMouseClicked
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        // TODO add your handling code here:
+               xx=evt.getX();
+        xy=evt.getY();
+    }//GEN-LAST:event_formMousePressed
+int xx,xy;
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+      int x=evt.getXOnScreen();
+        int y=evt.getYOnScreen();
+        
+        setLocation(x-xx,y-xy);        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseDragged
+
+    private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnSalirMouseClicked
     
     /**
      * @param args the command line arguments
@@ -233,9 +292,9 @@ import javax.swing.JOptionPane;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Archivo;
-    private javax.swing.JButton Backup;
-    private javax.swing.JButton Regresar;
+    private javax.swing.JLabel btnArchivo;
+    private javax.swing.JLabel btnGuardar;
+    private javax.swing.JLabel btnSalir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtarea;
     // End of variables declaration//GEN-END:variables
