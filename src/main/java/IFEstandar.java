@@ -123,6 +123,16 @@ public class IFEstandar extends javax.swing.JFrame {
         btnSalir = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
 
         lblBienvenido.setFont(new java.awt.Font("Museo 300", 0, 36)); // NOI18N
         lblBienvenido.setText("Bienvenido");
@@ -205,6 +215,20 @@ public class IFEstandar extends javax.swing.JFrame {
                Ifingreso.setLocationRelativeTo(null);
                dispose();
     }//GEN-LAST:event_btnSalirMouseClicked
+int xx,xy;
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        // TODO add your handling code here:
+             int x=evt.getXOnScreen();
+        int y=evt.getYOnScreen();
+        
+        setLocation(x-xx,y-xy);
+    }//GEN-LAST:event_formMouseDragged
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        // TODO add your handling code here:
+            xx=evt.getX();
+        xy=evt.getY();
+    }//GEN-LAST:event_formMousePressed
 
     /**
      * @param args the command line arguments
