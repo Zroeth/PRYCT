@@ -147,7 +147,7 @@ public class IFEstandar extends javax.swing.JFrame {
 
         Foto.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
         Foto.setForeground(new java.awt.Color(0, 204, 255));
-        Foto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Foto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSalir.setDoubleBuffered(true);
