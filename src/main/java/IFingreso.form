@@ -62,7 +62,7 @@
               </Group>
               <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
           </Group>
-          <Component id="btnSalir" alignment="1" min="-2" pref="171" max="-2" attributes="0"/>
+          <Component id="btnSalir" alignment="1" min="-2" pref="162" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -158,6 +158,9 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Ingresar"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="entrarActionPerformed"/>

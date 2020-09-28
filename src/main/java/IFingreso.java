@@ -199,6 +199,7 @@ public class IFingreso extends javax.swing.JFrame {
         entrar.setFont(new java.awt.Font("Museo 300", 0, 36)); // NOI18N
         entrar.setForeground(new java.awt.Color(255, 255, 255));
         entrar.setText("Ingresar");
+        entrar.setBorder(null);
         entrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 entrarActionPerformed(evt);
@@ -242,7 +243,7 @@ public class IFingreso extends javax.swing.JFrame {
                                 .addComponent(crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(206, 206, 206)))))
                 .addGap(86, 86, 86))
-            .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

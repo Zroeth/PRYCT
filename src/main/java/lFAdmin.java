@@ -58,6 +58,8 @@ public class lFAdmin extends javax.swing.JFrame {
          ImageIcon imIc5= new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
         btnSalir.setIcon(imIc5);
         
+             ImageIcon imIc6= new ImageIcon("src/main/java/Imagenes/btnBackUp.gif");
+        btnBackup.setIcon(imIc6);
         cuenta=usuario;
         valorRol=!rol;
         lblBienvenido.setText("Bienvenido administrador "+cuenta);
@@ -125,11 +127,11 @@ public class lFAdmin extends javax.swing.JFrame {
         crearCuenta = new javax.swing.JButton();
         lblBienvenido = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
         btnBuscar = new javax.swing.JLabel();
         btnMod = new javax.swing.JLabel();
         btnSalir = new javax.swing.JLabel();
         Foto = new javax.swing.JLabel();
+        btnBackup = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(890, 707));
@@ -144,27 +146,25 @@ public class lFAdmin extends javax.swing.JFrame {
             }
         });
 
-        crearCuenta.setFont(new java.awt.Font("Museo 300", 0, 14)); // NOI18N
+        crearCuenta.setBackground(new java.awt.Color(0, 153, 153));
+        crearCuenta.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        crearCuenta.setForeground(new java.awt.Color(255, 255, 255));
         crearCuenta.setText("Crear nueva cuenta");
+        crearCuenta.setBorder(null);
         crearCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearCuentaActionPerformed(evt);
             }
         });
 
-        lblBienvenido.setFont(new java.awt.Font("Museo 300", 0, 36)); // NOI18N
+        lblBienvenido.setFont(new java.awt.Font("Museo 300", 0, 24)); // NOI18N
         lblBienvenido.setText("Bienvenido");
         lblBienvenido.setToolTipText("");
 
         txtUsuario.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtUsuario.setText("Buscar Usuario");
         txtUsuario.setName(""); // NOI18N
-
-        jButton6.setText("Backup");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
 
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -193,29 +193,34 @@ public class lFAdmin extends javax.swing.JFrame {
         Foto.setForeground(new java.awt.Color(0, 204, 255));
         Foto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        btnBackup.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBackup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBackupMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                            .addComponent(jButton6)
-                            .addComponent(btnMod, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblBienvenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(crearCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(crearCuenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(182, 182, 182)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addComponent(btnBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -228,20 +233,19 @@ public class lFAdmin extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBienvenido)
                         .addGap(18, 18, 18)
-                        .addComponent(crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton6)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))
+                        .addComponent(crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(183, 183, 183)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
 
         pack();
@@ -257,58 +261,6 @@ public class lFAdmin extends javax.swing.JFrame {
 
     }//GEN-LAST:event_crearCuentaActionPerformed
     
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        try {
-            String ruta = "C:\\MEIA\\usuario.txt";
-            Path fuente = Paths.get(ruta);
-            JFileChooser selectorCarpeta = new JFileChooser();
-            selectorCarpeta.setCurrentDirectory(new File("."));
-            selectorCarpeta.setDialogTitle("Seleccione la Carpeta para guardar");
-            selectorCarpeta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            
-                
-            
-            //ruta de la carpeta que el usuario selecciona
-            File carpetaseleccionada = selectorCarpeta.getCurrentDirectory();
-
-            Path destino = Paths.get(carpetaseleccionada.getPath() + "usuario.txt");
-
-            //crea una copia del documento
-            Files.copy(fuente, destino, StandardCopyOption.REPLACE_EXISTING);
-            File ObtenerRutaAbs = carpetaseleccionada.getAbsoluteFile();
-            String Obtener = ObtenerRutaAbs.getPath();
-
-            String patron = "(Estatus)(\\:)(	| |)*(\\d)";
-            Pattern estatus = Pattern.compile(patron);
-            List<String> lineas;
-            try {
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_backup.txt"));
-            } catch (IOException ex) {
-                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Ocurrio un error");
-                return;
-            }
-            Path p = Paths.get("C:\\\\MEIA\\\\bitacora_backup.txt");
-
-            //datos
-            String fechaBitacora = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-
-            String s = System.lineSeparator() + "Ruta_Absoluta" + Obtener + "|" + "Usuario" + "|" + "Fecha de realización de Backup:" + fechaBitacora;
-
-            try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
-                writer.write(s);
-                writer.close();
-            } catch (IOException ioe) {
-                System.err.format("IOException: %s%n", ioe);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error");
-        }
-
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         // TODO add your handling code here:
           int x=evt.getXOnScreen();
@@ -395,6 +347,17 @@ int xx,xy;
         dispose();
     }//GEN-LAST:event_btnSalirMouseClicked
 
+    private void btnBackupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackupMouseClicked
+        // TODO add your handling code here:
+         CopiaArchivo copia= new CopiaArchivo();
+           copia.setVisible(true);
+           copia.pack();
+           copia.setDefaultCloseOperation(EXIT_ON_CLOSE);
+           this.dispose();
+                
+        
+    }//GEN-LAST:event_btnBackupMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -432,11 +395,11 @@ int xx,xy;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Foto;
+    private javax.swing.JLabel btnBackup;
     private javax.swing.JLabel btnBuscar;
     private javax.swing.JLabel btnMod;
     private javax.swing.JLabel btnSalir;
     private javax.swing.JButton crearCuenta;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel lblBienvenido;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
