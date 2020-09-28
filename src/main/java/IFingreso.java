@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author ericd
+ * 
  */
 public class IFingreso extends javax.swing.JFrame {
 
@@ -61,12 +61,14 @@ public class IFingreso extends javax.swing.JFrame {
           
         });
         
+        
         if(matches.length==0)
         {
             //NO HAY ARCHIVOS, PRIMER USUARIO ADMIN
             JOptionPane.showMessageDialog(null, "sin archivos");
              controlesAct(false);
         }
+        
         else
         {
             try 
