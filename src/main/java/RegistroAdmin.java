@@ -42,7 +42,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Zer0
@@ -52,6 +51,7 @@ public class RegistroAdmin extends javax.swing.JFrame {
     public boolean rol;
     public String cuentaC;
     public String usuarioMod;
+
     /**
      * Creates new form Registro
      */
@@ -60,65 +60,54 @@ public class RegistroAdmin extends javax.swing.JFrame {
         setUndecorated(true);
         initComponents();
         getContentPane().setBackground(Color.white);
-         
-        ImageIcon imIc= new ImageIcon("src/main/java/Imagenes/btnCancelar.gif");
+
+        ImageIcon imIc = new ImageIcon("src/main/java/Imagenes/btnCancelar.gif");
         btnSalir1.setIcon(imIc);
-        
-        ImageIcon imIc2= new ImageIcon("src/main/java/Imagenes/btnCrear.gif");
+
+        ImageIcon imIc2 = new ImageIcon("src/main/java/Imagenes/btnCrear.gif");
         btnCrear.setIcon(imIc2);
-        
-        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnFoto.png");
+
+        ImageIcon imIc3 = new ImageIcon("src/main/java/Imagenes/btnFoto.png");
         Foto.setIcon(imIc3);
-        
-        
-        cuentaC=cuenta;
-        
+
+        cuentaC = cuenta;
+
     }
-    
-    
+
     String usuarioModTemp;
-    
-        private RegistroAdmin(boolean rol, String cuenta,String Usuariomod) {
+
+    private RegistroAdmin(boolean rol, String cuenta, String Usuariomod) {
         //JOptionPane.showMessageDialog(null, rol);
         setUndecorated(true);
         initComponents();
         getContentPane().setBackground(Color.white);
-         
-        ImageIcon imIc= new ImageIcon("src/main/java/Imagenes/btnCancelar.gif");
-        btnSalir1.setIcon(imIc);
-        
-        ImageIcon imIc2= new ImageIcon("src/main/java/Imagenes/btnGuardar.gif");
-        btnCrear.setIcon(imIc2);
-        
-        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnFoto.png");
-        Foto.setIcon(imIc3);
-        
 
-        
-        cuentaC=cuenta;
-        
-       camposHabilitados(rol);
-        
-        
-        usuarioMod=Usuariomod;
-      
-        
-        
-        
-        
-        
-        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-        String patronNombre="(Nombre)(\\:)(	| |)*(.+)(\\|)(A)";
-        String patronApellido="(Apellido)(\\:)(	| |)*(.+)(\\|)(Con)";
-        String patronContraseña="(Contraseña)(\\:)(	| |)*(.+)(\\|)(R)";
-        String patronRol="(Rol)(\\:)(	| |)*(.+)(\\|)(F)";
-        String patronFechaDN="(Fecha de nacimiento)(\\:)(	| |)*(.+)(\\|)(C)";
-        String patronCorreo="(Correo alterno)(\\:)(	| |)*(.+)(\\|)(T)";
-        String patronTelefono="(Telefono)(\\:)(	| |)*(.+)(\\|)(P)";
-        String patronPathFoto="(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
-        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
-        
-        
+        ImageIcon imIc = new ImageIcon("src/main/java/Imagenes/btnCancelar.gif");
+        btnSalir1.setIcon(imIc);
+
+        ImageIcon imIc2 = new ImageIcon("src/main/java/Imagenes/btnGuardar.gif");
+        btnCrear.setIcon(imIc2);
+
+        ImageIcon imIc3 = new ImageIcon("src/main/java/Imagenes/btnFoto.png");
+        Foto.setIcon(imIc3);
+
+        cuentaC = cuenta;
+
+        camposHabilitados(rol);
+
+        usuarioMod = Usuariomod;
+
+        String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        String patronNombre = "(Nombre)(\\:)(	| |)*(.+)(\\|)(A)";
+        String patronApellido = "(Apellido)(\\:)(	| |)*(.+)(\\|)(Con)";
+        String patronContraseña = "(Contraseña)(\\:)(	| |)*(.+)(\\|)(R)";
+        String patronRol = "(Rol)(\\:)(	| |)*(.+)(\\|)(F)";
+        String patronFechaDN = "(Fecha de nacimiento)(\\:)(	| |)*(.+)(\\|)(C)";
+        String patronCorreo = "(Correo alterno)(\\:)(	| |)*(.+)(\\|)(T)";
+        String patronTelefono = "(Telefono)(\\:)(	| |)*(.+)(\\|)(P)";
+        String patronPathFoto = "(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
+        String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
+
         Pattern rolU = Pattern.compile(patronUsuario);
         Pattern rolN = Pattern.compile(patronNombre);
         Pattern rolA = Pattern.compile(patronApellido);
@@ -129,131 +118,91 @@ public class RegistroAdmin extends javax.swing.JFrame {
         Pattern rolTel = Pattern.compile(patronTelefono);
         Pattern rolPath = Pattern.compile(patronPathFoto);
         Pattern rolE = Pattern.compile(patronEstatus);
-        
-        
-        
-        
-        
+
         try {
-                List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-                for (int i = 0; i < lineas.size(); i++)
-                {
-                    Matcher m = rolU.matcher(lineas.get(i));
-                    Matcher m2 = rolN.matcher(lineas.get(i));
-                    Matcher m3 = rolA.matcher(lineas.get(i));
-                    Matcher m4 = rolC.matcher(lineas.get(i));
-                    Matcher m5 = rolR.matcher(lineas.get(i));
-                    Matcher m6 = rolF.matcher(lineas.get(i));
-                    Matcher m7 = rolCrr.matcher(lineas.get(i));
-                    Matcher m8 = rolTel.matcher(lineas.get(i));
-                    Matcher m9 = rolPath.matcher(lineas.get(i));
-                    Matcher m10 = rolE.matcher(lineas.get(i));
-                    
-                    if(m.find()&&m2.find()&&m3.find()&&m4.find()&&m5.find()&&m6.find()&&m7.find()&&m8.find()&&m9.find()&&m10.find())
-                    {   
-                        if(m.group(4).equals(Usuariomod))
-                        {
-                            //Usuario  existe
-                             
-                            txtNombre.setText(m2.group(4));
-                            usuarioModTemp=lineas.get(i);
-                            txtApellido.setText(m3.group(4));
-                            txtContraseña.setText(m4.group(4));
-                            if(m5.group(4).contains("1"))
-                            {
-                                opRol.setSelected(true);
-                                
-                            }
-                            else
-                            {
-                                opRol.setSelected(false);
-                            }
-                            try
-                            
-                            {Date date2;
-                                //JOptionPane.showMessageDialog(null, fecha);
-                                date2 = new SimpleDateFormat("dd/MM/yyyy").parse(m6.group(4));
-                                jDateChooser1.setDate(date2);
-                            } 
-                            catch (ParseException ex) 
-                            {
-                                Logger.getLogger(RegistroAdmin.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            txtCorreo.setText(m7.group(4));
-                            txtTelefono.setText(m8.group(4));
-                            pathFotografia=m9.group(4);
-                            Foto.setIcon(new ImageIcon(pathFotografia));
-                            if(m10.group(4).contains("1"))
-                            {
-                                opEstatus.setSelected(true);
-                                
-                            }
-                            else
-                            {
-                                opEstatus.setSelected(false);
-                            }
-         
-                            
-                            
-                            
-                            
-                            return;
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = rolU.matcher(lineas.get(i));
+                Matcher m2 = rolN.matcher(lineas.get(i));
+                Matcher m3 = rolA.matcher(lineas.get(i));
+                Matcher m4 = rolC.matcher(lineas.get(i));
+                Matcher m5 = rolR.matcher(lineas.get(i));
+                Matcher m6 = rolF.matcher(lineas.get(i));
+                Matcher m7 = rolCrr.matcher(lineas.get(i));
+                Matcher m8 = rolTel.matcher(lineas.get(i));
+                Matcher m9 = rolPath.matcher(lineas.get(i));
+                Matcher m10 = rolE.matcher(lineas.get(i));
+
+                if (m.find() && m2.find() && m3.find() && m4.find() && m5.find() && m6.find() && m7.find() && m8.find() && m9.find() && m10.find()) {
+                    if (m.group(4).equals(Usuariomod)) {
+                        //Usuario  existe
+
+                        txtNombre.setText(m2.group(4));
+                        usuarioModTemp = lineas.get(i);
+                        txtApellido.setText(m3.group(4));
+                        txtContraseña.setText(m4.group(4));
+                        if (m5.group(4).contains("1")) {
+                            opRol.setSelected(true);
+
+                        } else {
+                            opRol.setSelected(false);
                         }
+                        try {
+                            Date date2;
+                            //JOptionPane.showMessageDialog(null, fecha);
+                            date2 = new SimpleDateFormat("dd/MM/yyyy").parse(m6.group(4));
+                            jDateChooser1.setDate(date2);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(RegistroAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        txtCorreo.setText(m7.group(4));
+                        txtTelefono.setText(m8.group(4));
+                        pathFotografia = m9.group(4);
+                        Foto.setIcon(new ImageIcon(pathFotografia));
+                        if (m10.group(4).contains("1")) {
+                            opEstatus.setSelected(true);
+
+                        } else {
+                            opEstatus.setSelected(false);
+                        }
+
+                        return;
                     }
-                    
                 }
-        }
-        catch (IOException ex)    
-        {
-                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    }
-    
-    
-    
-    void camposHabilitados(boolean rol)
-    {
-      //opRol.setEnabled(rol);
-        
-      txtUsuario.setText(usuarioMod);
-      //txtUsuario.setEnabled(!rol);
-      
-    }
-    
-    
-    
-    private static RegistroAdmin obj=null;
-    
-    public static RegistroAdmin getObj(String cuentaMod){
-        
-        if(obj==null){
-            if(cuentaMod==""|| cuentaMod==null)
-            {
-                 obj=new RegistroAdmin(lFAdmin.valorRol,lFAdmin.cuenta);
+
             }
-            else
-            {
-                obj=new RegistroAdmin(lFAdmin.valorRol,lFAdmin.cuenta,lFAdmin.cuentaMod); 
-            }
-           
-        }return obj;
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-    
-    public void opciones()
-    {
-        
+
+    void camposHabilitados(boolean rol) {
+        //opRol.setEnabled(rol);
+
+        txtUsuario.setText(usuarioMod);
+        //txtUsuario.setEnabled(!rol);
+
+    }
+
+    private static RegistroAdmin obj = null;
+
+    public static RegistroAdmin getObj(String cuentaMod) {
+
+        if (obj == null) {
+            if (cuentaMod == "" || cuentaMod == null) {
+                obj = new RegistroAdmin(lFAdmin.valorRol, lFAdmin.cuenta);
+            } else {
+                obj = new RegistroAdmin(lFAdmin.valorRol, lFAdmin.cuenta, lFAdmin.cuentaMod);
+            }
+
+        }
+        return obj;
+    }
+
+    public void opciones() {
+
     }
 
     /**
@@ -553,340 +502,323 @@ public class RegistroAdmin extends javax.swing.JFrame {
 
     private static String getFileExtension(File file) {
         String fileName = file.getName();
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-        return fileName.substring(fileName.lastIndexOf(".")+1);
-        else return "";
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
+        } else {
+            return "";
+        }
     }
     private void txtUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusLost
         // TODO add your handling code here:
         //
-        
-        if(Verificar(txtUsuario, 20,1)==false)
-        {
+
+        if (Verificar(txtUsuario, 20, 1) == false) {
             return;
         }
-         if(VerificarUsuario()==false)
-         {
-             return;
-         }
-      
+        if (VerificarUsuario() == false) {
+            return;
+        }
+
     }//GEN-LAST:event_txtUsuarioFocusLost
 
     private void txtNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNombreFocusLost
         // TODO add your handling code here:
-         
-         Verificar(txtNombre,30,4);
-       
-         
+
+        Verificar(txtNombre, 30, 4);
+
+
     }//GEN-LAST:event_txtNombreFocusLost
 
     private void txtApellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApellidoFocusLost
         // TODO add your handling code here:
-       Verificar(txtApellido,30,4);
+        Verificar(txtApellido, 30, 4);
     }//GEN-LAST:event_txtApellidoFocusLost
 
-    public boolean Verificar(JTextField txt,int maximo,int minimo)
-    {
-         if(txt.getText().contains("|"))
-           {
+    public boolean Verificar(JTextField txt, int maximo, int minimo) {
+        if (txt.getText().contains("|")) {
             JOptionPane.showMessageDialog(null, "Este campo no puede contener |");
             txt.requestFocus();
             return false;
-            }
-           if(txt.getText().contains(" ")|txt.getText().contains("	"))
-           {
-               JOptionPane.showMessageDialog(null,"No puede tener espacios en blanco");
-               txtContraseña.requestFocus();
-               return false;
-           }
-         if(txt.getText().length()>maximo)
-         {
-            JOptionPane.showMessageDialog(null, "Este campo no puede ser mayor a "+maximo);
-            txt.requestFocus();
-             return false;
-         }
-         else if(txt.getText().length()< minimo)
-         {
-             JOptionPane.showMessageDialog(null, "Este campo no puede ser menor a "+minimo);
+        }
+        if (txt.getText().contains(" ") | txt.getText().contains("	")) {
+            JOptionPane.showMessageDialog(null, "No puede tener espacios en blanco");
+            txtContraseña.requestFocus();
+            return false;
+        }
+        if (txt.getText().length() > maximo) {
+            JOptionPane.showMessageDialog(null, "Este campo no puede ser mayor a " + maximo);
             txt.requestFocus();
             return false;
-         }
-         
-         return true;
+        } else if (txt.getText().length() < minimo) {
+            JOptionPane.showMessageDialog(null, "Este campo no puede ser menor a " + minimo);
+            txt.requestFocus();
+            return false;
+        }
+
+        return true;
     }
-    
-     public boolean VerificarUsuario()
-    {
-        String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+
+    public boolean VerificarUsuario() {
+        String patron = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern rol = Pattern.compile(patron);
         try {
-                List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-                for (int i = 0; i < lineas.size(); i++)
-                {
-                    Matcher m = rol.matcher(lineas.get(i));
-                    if(m.find())
-                    {   
-                        if(m.group(4).contains(txtUsuario.getText()))
-                        {
-                     //Usuario ya existe
-                     JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
-                     txtUsuario.requestFocus();
-                     return false;
-                        }
-                        else
-                        {
-                         //El usuario no existe :D
-                            
-                        }
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = rol.matcher(lineas.get(i));
+                if (m.find()) {
+                    if (m.group(4).contains(txtUsuario.getText())) {
+                        //Usuario ya existe
+                        JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe");
+                        txtUsuario.requestFocus();
+                        return false;
+                    } else {
+                        //El usuario no existe :D
+
                     }
-                    else
-                    {
-                     //No hay usuarios     
-                       
-                    }
+                } else {
+                    //No hay usuarios     
+
                 }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-        catch (IOException ex)    
-        {
-                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      return true;
+        return true;
     }
     private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
         // TODO add your handling code here:
-        Verificar(txtCorreo, 40,4);
+        Verificar(txtCorreo, 40, 4);
     }//GEN-LAST:event_txtCorreoFocusLost
 
     private void txtTelefonoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelefonoFocusLost
         // TODO add your handling code here:
-         Verificar(txtTelefono, 20,8);
-         String patron="^(\\d)+$";
-         Pattern rol = Pattern.compile(patron);
-         
-         Matcher m = rol.matcher(txtTelefono.getText());
-                    if(!m.find())
-                    {
-                     JOptionPane.showMessageDialog(null, "Numero invalido");
-                     txtTelefono.requestFocus();
-                     return;
-                    }
-                    else
-                    {
-                     //Numero correct 
-                        
-                    }
+        Verificar(txtTelefono, 20, 8);
+        String patron = "^(\\d)+$";
+        Pattern rol = Pattern.compile(patron);
+
+        Matcher m = rol.matcher(txtTelefono.getText());
+        if (!m.find()) {
+            JOptionPane.showMessageDialog(null, "Numero invalido");
+            txtTelefono.requestFocus();
+            return;
+        } else {
+            //Numero correct 
+
+        }
     }//GEN-LAST:event_txtTelefonoFocusLost
 
     private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
         // TODO add your handling code here:
-        
-           if(!Verificar(txtContraseña,30,5))
-           {
-               return;
-           }
-           
-           if(VerificarContraseña())
-           {
-               //JOptionPane.showMessageDialog(null,password );
-               try 
-               {  
-                   password=String.valueOf(txtContraseña.getPassword());
-                   cifrado=cifra(password);
-                   password="";
-                   for(int i = 0; i < cifrado.length; i++)
-                   {
-                       password += cifrado[i];
-                   }
-               } 
-               catch (Exception e) 
-               {
-                   
-               }
-             
-           }
-       
 
-           //JOptionPane.showMessageDialog(null,myPass );
+        if (!Verificar(txtContraseña, 30, 5)) {
+            return;
+        }
+
+        if (VerificarContraseña()) {
+            //JOptionPane.showMessageDialog(null,password );
+            try {
+                password = String.valueOf(txtContraseña.getPassword());
+                cifrado = cifra(password);
+                password = "";
+                for (int i = 0; i < cifrado.length; i++) {
+                    password += cifrado[i];
+                }
+            } catch (Exception e) {
+
+            }
+
+        }
+
+        //JOptionPane.showMessageDialog(null,myPass );
     }//GEN-LAST:event_txtContraseñaFocusLost
 
     private void btnCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearMouseClicked
         // TODO add your handling code here:
-                // TODO add your handling code here:
-        Date fecha= jDateChooser1.getDate();
+        // TODO add your handling code here:
+        Date fecha = jDateChooser1.getDate();
         String jfecha;
-        try 
-        {
-              jfecha=DateFormat.getDateInstance().format(fecha);
-        } 
-        catch (Exception e)
-        {
-            JOptionPane.showMessageDialog(null,"Fecha incorrecta!" );
+        try {
+            jfecha = DateFormat.getDateInstance().format(fecha);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Fecha incorrecta!");
             jDateChooser1.requestFocus();
             return;
         }
-        if(pathFotografia==null)
-        {
-            JOptionPane.showMessageDialog(null,"Debe agregar una foto de perfil!" );
+        if (pathFotografia == null) {
+            JOptionPane.showMessageDialog(null, "Debe agregar una foto de perfil!");
             return;
         }
-        
-       if(txtUsuario.getText().isEmpty()||txtNombre.getText().isEmpty()||txtApellido.getText().isEmpty()||txtCorreo.getText().isEmpty()||txtTelefono.getText().isEmpty()||password.isEmpty())
-       {
-            JOptionPane.showMessageDialog(null,"Llene todos los campos" );
+
+        if (txtUsuario.getText().isEmpty() || txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() || txtCorreo.getText().isEmpty() || txtTelefono.getText().isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos");
             return;
-       }
-       else
-       {
-           //"C:\\MEIA\\usuario.txt"
-           Path p = Paths.get("C:\\\\MEIA\\\\usuario.txt");
-           int opRolValor;
-           int opEstatusValor;
-           if(opRol.isSelected())
-           {
-               opRolValor=1;
-           }
-           else
-           {
-               opRolValor=0;
-           }
-           
-            if(opEstatus.isSelected())
-           {
-               opEstatusValor=1;
-           }
-           else
-           {
-               opEstatusValor=0;
-           }
-           String s = System.lineSeparator() + "Usuario:"+txtUsuario.getText()+"|"+"Nombre:"+txtNombre.getText()+
-                   "|"+"Apellido:"+txtApellido.getText()+"|"+"Contraseña:"+password+"|"+"Rol:"+opRolValor+"|"+"Fecha de nacimiento:"+jfecha+
-                   "|"+"Correo alterno:"+txtCorreo.getText()+"|"+"Telefono:"+txtTelefono.getText()+"|"+"Path_Fotografia:"+pathFotografia+"|"+"Estatus:"+opEstatusValor;
-           
-           
-           
-           try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) 
-           {
-               writer.write(s);
-               JOptionPane.showMessageDialog(null,"Usuario creado!" );
-               writer.close();
-           } 
-           catch (IOException ioe) 
-           {
-               System.err.format("IOException: %s%n", ioe);
-           }
-           desc_Usuario();
-           limpiar();
-               dispose();
-       }
-       
+        } else {
+            //"C:\\MEIA\\usuario.txt"
+            Path p = Paths.get("C:\\\\MEIA\\\\usuario.txt");
+            int opRolValor;
+            int opEstatusValor;
+            if (opRol.isSelected()) {
+                opRolValor = 1;
+            } else {
+                opRolValor = 0;
+            }
+
+            if (opEstatus.isSelected()) {
+                opEstatusValor = 1;
+            } else {
+                opEstatusValor = 0;
+            }
+            String s = System.lineSeparator() + "Usuario:" + txtUsuario.getText() + "|" + "Nombre:" + txtNombre.getText()
+                    + "|" + "Apellido:" + txtApellido.getText() + "|" + "Contraseña:" + password + "|" + "Rol:" + opRolValor + "|" + "Fecha de nacimiento:" + jfecha
+                    + "|" + "Correo alterno:" + txtCorreo.getText() + "|" + "Telefono:" + txtTelefono.getText() + "|" + "Path_Fotografia:" + pathFotografia + "|" + "Estatus:" + opEstatusValor;
+
+            try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+                writer.write(s);
+                JOptionPane.showMessageDialog(null, "Usuario creado!");
+                writer.close();
+            } catch (IOException ioe) {
+                System.err.format("IOException: %s%n", ioe);
+            }
+            desc_Usuario();
+            desc_Backup_Usuario();
+            limpiar();
+            dispose();
+        }
+
     }//GEN-LAST:event_btnCrearMouseClicked
 
-    
-    private void desc_Usuario()
-    {
-        String patron="(Estatus)(\\:)(	| |)*(\\d)";
+    private void desc_Usuario() {
+        String patron = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
         List<String> lineas;
-        try 
-        {
+        try {
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-        } 
-        catch (IOException ex) 
-        {
+        } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-             JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
             return;
         }
-        
-        int cantidadCuentas=0;
-        int cantidadActivos=0;
-        int cantidadInactivos=0;
-        
-         for (int i = 0; i < lineas.size(); i++)    
-         {
 
-		   Matcher m = estatus.matcher(lineas.get(i));
-                   if(m.find())
-                   {
-                       cantidadCuentas++;
-                       if(m.group(4).contains("1"))
-                       {
-                     //Esta activo
-                           cantidadActivos++;
-                       }
-                       else
-                       {
-                      //No esta activo
-                         cantidadInactivos++;
-                       }
-                   }
-                 else
-                   {
-                   }
-         }
-        
+        int cantidadCuentas = 0;
+        int cantidadActivos = 0;
+        int cantidadInactivos = 0;
+
+        for (int i = 0; i < lineas.size(); i++) {
+
+            Matcher m = estatus.matcher(lineas.get(i));
+            if (m.find()) {
+                cantidadCuentas++;
+                if (m.group(4).contains("1")) {
+                    //Esta activo
+                    cantidadActivos++;
+                } else {
+                    //No esta activo
+                    cantidadInactivos++;
+                }
+            } else {
+            }
+        }
+
         Path p = Paths.get("C:\\\\MEIA\\\\desc_usuario.txt");
-        
-       
+
         //en modificacion solo se cambiaria las partes que dicen modificacion y los campos que se modifiquen
-        
-      
-       String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-       String s = System.lineSeparator() + "Nombre Simbolico:"+txtUsuario.getText()+"|"+ "Fecha Creacion:"+jfecha+"|"+"|"
-                 + "Usuario Creacion:"+cuentaC+"|"+"|"+ "Fecha Modificacion:"+jfecha+"|"+"|"+ "Usuario Modificacion:"+cuentaC+"|"
-                 +"|"+ "# Registros:"+cantidadCuentas+"|"+ "Registros Activos:"+cantidadActivos+"|"+ "Registros Inactivos:"+cantidadInactivos+"|"
-                 + "Max reorganizacion:"+1;
-           
-           
-           try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) 
-           {
-               writer.write(s);
-               writer.close();
-           } 
-           catch (IOException ioe) 
-           {
-               System.err.format("IOException: %s%n", ioe);
-           }
-       }
-    
-    
-    
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        String s = System.lineSeparator() + "Nombre Simbolico:" + txtUsuario.getText() + "|" + "Fecha Creacion:" + jfecha + "|" + "|"
+                + "Usuario Creacion:" + cuentaC + "|" + "|" + "Fecha Modificacion:" + jfecha + "|" + "|" + "Usuario Modificacion:" + cuentaC + "|"
+                + "|" + "# Registros:" + cantidadCuentas + "|" + "Registros Activos:" + cantidadActivos + "|" + "Registros Inactivos:" + cantidadInactivos + "|"
+                + "Max reorganizacion:" + 1;
+
+        try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+            writer.write(s);
+            writer.close();
+        } catch (IOException ioe) {
+            System.err.format("IOException: %s%n", ioe);
+        }
+    }
+
+    private void desc_Backup_Usuario() {
+        String patron = "(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatus = Pattern.compile(patron);
+        List<String> lineas;
+        try {
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+            return;
+        }
+
+        int cantidadCuentas = 0;
+        int cantidadActivos = 0;
+        int cantidadInactivos = 0;
+
+        for (int i = 0; i < lineas.size(); i++) {
+
+            Matcher m = estatus.matcher(lineas.get(i));
+            if (m.find()) {
+                cantidadCuentas++;
+                if (m.group(4).contains("1")) {
+                    //Esta activo
+                    cantidadActivos++;
+                } else {
+                    //No esta activo
+                    cantidadInactivos++;
+                }
+            } else {
+            }
+        }
+
+        Path p = Paths.get("C:\\\\MEIA\\\\desc_bitacora_backup.txt");
+            Date fecha= new Date();
+        //en modificacion solo se cambiaria las partes que dicen modificacion y los campos que se modifiquen
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        String s = System.lineSeparator() + "Nombre Simbolico:" + usuarioMod + "|" + "Fecha Creacion:" + jfecha + "|" + "|"
+                + "Usuario Creacion:" + usuarioMod + "|" + "|" + "Fecha Modificacion:" + fecha + "|" + "|" + "Usuario Modificacion:" + cuentaC + "|"
+                + "|" + "# Registros:" + cantidadCuentas;
+
+        try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+            writer.write(s);
+            writer.close();
+        } catch (IOException ioe) {
+            System.err.format("IOException: %s%n", ioe);
+        }
+    }
+
+
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         // TODO add your handling code here:
-         xx=evt.getX();
-        xy=evt.getY();
+        xx = evt.getX();
+        xy = evt.getY();
     }//GEN-LAST:event_formMousePressed
-int xx,xy;
+    int xx, xy;
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         // TODO add your handling code here:
-         int x=evt.getXOnScreen();
-        int y=evt.getYOnScreen();
-        
-        setLocation(x-xx,y-xy);
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+
+        setLocation(x - xx, y - xy);
     }//GEN-LAST:event_formMouseDragged
 
     private void btnSalir1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalir1MouseClicked
         // TODO add your handling code here:
         limpiar();
-            dispose();
+        dispose();
     }//GEN-LAST:event_btnSalir1MouseClicked
 
-    void limpiar()
-    {
-         txtUsuario.setText("");
-         txtNombre.setText("");
-          txtApellido.setText("");
-           txtContraseña.setText("");
-            jDateChooser1.setCalendar(null);
-             txtCorreo.setText("");
-              txtTelefono.setText("");
-              Foto.setIcon(null);
-              pathFotografia=null;
+    void limpiar() {
+        txtUsuario.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtContraseña.setText("");
+        jDateChooser1.setCalendar(null);
+        txtCorreo.setText("");
+        txtTelefono.setText("");
+        Foto.setIcon(null);
+        pathFotografia = null;
     }
-    
-    
+
+
     private void btnCrearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearMousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCrearMousePressed
@@ -897,132 +829,115 @@ int xx,xy;
 
     private void FotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FotoMouseClicked
         // TODO add your handling code here:
-           JFileChooser escogerImagen = new JFileChooser();
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
+        JFileChooser escogerImagen = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos", "jpg", "png", "jpeg");
         escogerImagen.setFileFilter(filtro);
-        int seleccionado=escogerImagen.showOpenDialog(this);
-        if(seleccionado==JFileChooser.APPROVE_OPTION)
-        {
-        File archivo=escogerImagen.getSelectedFile();
-        String obtener = archivo.getAbsolutePath();
-        //JOptionPane.showMessageDialog(null, obtener);
-        ImageIcon imIc= new ImageIcon(obtener);
-        Image ajustarImg = imIc.getImage();
-        Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
-        
-        Foto.setIcon(new ImageIcon(ajustarTamaño));
-        
-           
-        try 
-        {
-            if(Verificar(txtUsuario, 20,1)==false)
-            {
-                return;
-            }
-            if(VerificarUsuario()==false)
-            {
-                return;
-            }
-                
-                ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
-                pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
-        } 
-         
-        catch (IOException ex) 
-        {
+        int seleccionado = escogerImagen.showOpenDialog(this);
+        if (seleccionado == JFileChooser.APPROVE_OPTION) {
+            File archivo = escogerImagen.getSelectedFile();
+            String obtener = archivo.getAbsolutePath();
+            //JOptionPane.showMessageDialog(null, obtener);
+            ImageIcon imIc = new ImageIcon(obtener);
+            Image ajustarImg = imIc.getImage();
+            Image ajustarTamaño = ajustarImg.getScaledInstance(Foto.getWidth(), Foto.getHeight(), Image.SCALE_SMOOTH);
+
+            Foto.setIcon(new ImageIcon(ajustarTamaño));
+
+            try {
+                if (Verificar(txtUsuario, 20, 1) == false) {
+                    return;
+                }
+                if (VerificarUsuario() == false) {
+                    return;
+                }
+
+                ImageIO.write(ImageIO.read(archivo), (getFileExtension(archivo)), new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText() + "." + getFileExtension(archivo)));
+                pathFotografia = "C:\\MEIA\\Fotografias\\" + txtUsuario.getText() + "." + getFileExtension(archivo);
+            } catch (IOException ex) {
                 Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-            
+
+            }
         }
-        }
-        
+
     }//GEN-LAST:event_FotoMouseClicked
 
-    public boolean VerificarContraseña()
-    {
-           String myPass=String.valueOf(txtContraseña.getPassword());
+    public boolean VerificarContraseña() {
+        String myPass = String.valueOf(txtContraseña.getPassword());
 
-           if(myPass.contains(" ")|myPass.contains("	"))
-           {
-               JOptionPane.showMessageDialog(null,"No puede tener espacios en blanco");
-               txtContraseña.requestFocus();
-               return false;
-           }
-           if(!myPass.matches(".*\\d.*"))
-           {
-               JOptionPane.showMessageDialog(null,"Debe tener almenos un numero");
-               txtContraseña.requestFocus();
-               return false;
-           }
-           if(!myPass.matches(".*[A-Z].*"))
-           {
-               JOptionPane.showMessageDialog(null,"Debe tener almenos una letra mayuscula");
-               txtContraseña.requestFocus();
-               return false;
-           }
-           if(!myPass.matches(".*[a-z].*"))
-           {
-               JOptionPane.showMessageDialog(null,"Debe tener almenos una letra minuscula");
-               txtContraseña.requestFocus();
-               return false;
-           }
-           return true;
+        if (myPass.contains(" ") | myPass.contains("	")) {
+            JOptionPane.showMessageDialog(null, "No puede tener espacios en blanco");
+            txtContraseña.requestFocus();
+            return false;
+        }
+        if (!myPass.matches(".*\\d.*")) {
+            JOptionPane.showMessageDialog(null, "Debe tener almenos un numero");
+            txtContraseña.requestFocus();
+            return false;
+        }
+        if (!myPass.matches(".*[A-Z].*")) {
+            JOptionPane.showMessageDialog(null, "Debe tener almenos una letra mayuscula");
+            txtContraseña.requestFocus();
+            return false;
+        }
+        if (!myPass.matches(".*[a-z].*")) {
+            JOptionPane.showMessageDialog(null, "Debe tener almenos una letra minuscula");
+            txtContraseña.requestFocus();
+            return false;
+        }
+        return true;
     }
-    
+
     byte[] cifrado = null;
     String pathFotografia;
     String password;
+
     public byte[] cifra(String sinCifrar) throws Exception {
-            final byte[] bytes = sinCifrar.getBytes("UTF-8");
-            final Cipher aes = obtieneCipher(true);
-            final byte[] cifrado = aes.doFinal(bytes);
-            return cifrado;
+        final byte[] bytes = sinCifrar.getBytes("UTF-8");
+        final Cipher aes = obtieneCipher(true);
+        final byte[] cifrado = aes.doFinal(bytes);
+        return cifrado;
     }
 
     public String descifra(byte[] cifrado) throws Exception {
-            final Cipher aes = obtieneCipher(false);
-            final byte[] bytes = aes.doFinal(cifrado);
-            final String sinCifrar = new String(bytes, "UTF-8");
-            return sinCifrar;
+        final Cipher aes = obtieneCipher(false);
+        final byte[] bytes = aes.doFinal(cifrado);
+        final String sinCifrar = new String(bytes, "UTF-8");
+        return sinCifrar;
     }
-    
+
     private Cipher obtieneCipher(boolean paraCifrar) throws Exception {
-	final String frase = "FraseLargaConDiferentesLetrasNumerosYCaracteresEspeciales_áÁéÉíÍóÓúÚüÜñÑ1234567890!#%$&()=%NO_USAR_ESTA_FRASE!";
-	final MessageDigest digest = MessageDigest.getInstance("SHA");
-	digest.update(frase.getBytes("UTF-8"));
-	final SecretKeySpec key = new SecretKeySpec(digest.digest(), 0, 16, "AES");
+        final String frase = "FraseLargaConDiferentesLetrasNumerosYCaracteresEspeciales_áÁéÉíÍóÓúÚüÜñÑ1234567890!#%$&()=%NO_USAR_ESTA_FRASE!";
+        final MessageDigest digest = MessageDigest.getInstance("SHA");
+        digest.update(frase.getBytes("UTF-8"));
+        final SecretKeySpec key = new SecretKeySpec(digest.digest(), 0, 16, "AES");
 
-	final Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
-	if (paraCifrar) {
-		aes.init(Cipher.ENCRYPT_MODE, key);
-	} else {
-		aes.init(Cipher.DECRYPT_MODE, key);
-	}
+        final Cipher aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        if (paraCifrar) {
+            aes.init(Cipher.ENCRYPT_MODE, key);
+        } else {
+            aes.init(Cipher.DECRYPT_MODE, key);
+        }
 
-	return aes;
-}
-    
-    private void bContraActionPerformed(java.awt.event.ActionEvent evt) {                                        
-    // TODO add your handling code here:    
+        return aes;
+    }
+
+    private void bContraActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:    
         String result = txtContraseña.getText();
-       // cifrado = cifra(result); 
+        // cifrado = cifra(result); 
         result = null;
-        for(int i = 0; i < cifrado.length; i++)
-        {
+        for (int i = 0; i < cifrado.length; i++) {
             result += cifrado[i];
         }
-        
-      //  rContra.setText(result);
-    }                                       
 
-    private void dContraActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        // TODO add your handling code here:
-     //  rdContra.setText(descifra(cifrado));
+        //  rContra.setText(result);
     }
-    
-    
-    
-    
-    
+
+    private void dContraActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        //  rdContra.setText(descifra(cifrado));
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1053,13 +968,12 @@ int xx,xy;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegistroAdmin(lFAdmin.valorRol,lFAdmin.cuenta,lFAdmin.cuentaMod).setVisible(true);
-                
+                new RegistroAdmin(lFAdmin.valorRol, lFAdmin.cuenta, lFAdmin.cuentaMod).setVisible(true);
+
             }
         });
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Foto;

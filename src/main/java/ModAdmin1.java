@@ -777,7 +777,53 @@ public class ModAdmin1 extends javax.swing.JFrame {
            }
        }
     
-    
+    private void desc_Backup_Usuario() {
+        String patron = "(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatus = Pattern.compile(patron);
+        List<String> lineas;
+        try {
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+            return;
+        }
+
+        int cantidadCuentas = 0;
+        int cantidadActivos = 0;
+        int cantidadInactivos = 0;
+
+        for (int i = 0; i < lineas.size(); i++) {
+
+            Matcher m = estatus.matcher(lineas.get(i));
+            if (m.find()) {
+                cantidadCuentas++;
+                if (m.group(4).contains("1")) {
+                    //Esta activo
+                    cantidadActivos++;
+                } else {
+                    //No esta activo
+                    cantidadInactivos++;
+                }
+            } else {
+            }
+        }
+
+        Path p = Paths.get("C:\\\\MEIA\\\\desc_bitacora_backup.txt");
+            Date fecha= new Date();
+        //en modificacion solo se cambiaria las partes que dicen modificacion y los campos que se modifiquen
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        String s = System.lineSeparator() + "Nombre Simbolico:" + usuarioMod + "|" + "Fecha Creacion:" + jfecha + "|" + "|"
+                + "Usuario Creacion:" + usuarioMod + "|" + "|" + "Fecha Modificacion:" + fecha + "|" + "|" + "Usuario Modificacion:" + cuentaC + "|"
+                + "|" + "# Registros:" + cantidadCuentas;
+
+        try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+            writer.write(s);
+            writer.close();
+        } catch (IOException ioe) {
+            System.err.format("IOException: %s%n", ioe);
+        }
+    }
     
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         // TODO add your handling code here:
@@ -975,6 +1021,7 @@ int xx,xy;
                 System.err.format("IOException: %s%n", ioe);
             }
             desc_Usuario();
+            desc_Backup_Usuario();
             limpiar();
             dispose();
         }

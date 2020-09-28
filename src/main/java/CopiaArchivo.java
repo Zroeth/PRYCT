@@ -80,6 +80,7 @@ import javax.swing.JOptionPane;
         Backup = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtarea = new javax.swing.JTextArea();
+        Regresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,6 +105,9 @@ import javax.swing.JOptionPane;
         txtarea.setRows(5);
         jScrollPane1.setViewportView(txtarea);
 
+        Regresar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Regresar.setText("Regresar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,6 +121,10 @@ import javax.swing.JOptionPane;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
                         .addComponent(Backup, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,8 +133,9 @@ import javax.swing.JOptionPane;
                     .addComponent(Backup, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
                     .addComponent(Archivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -226,6 +235,7 @@ import javax.swing.JOptionPane;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Archivo;
     private javax.swing.JButton Backup;
+    private javax.swing.JButton Regresar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtarea;
     // End of variables declaration//GEN-END:variables
