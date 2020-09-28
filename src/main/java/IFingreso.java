@@ -40,6 +40,7 @@ public class IFingreso extends javax.swing.JFrame {
      */
     public static boolean valorRol;
     public static String cuenta;
+ 
     public IFingreso() {
         setUndecorated(true);
         initComponents();
@@ -306,24 +307,32 @@ int xx,xy;
                                 if(m2.group(4).equals(password))
                                 {
                                     Matcher m3 = adminRol.matcher(lineas.get(i));
-                                    if(m3.find()){                                                             //contraseña coinciden
-                                        if(m3.group(4).equals("1")){
-                                           JOptionPane.showMessageDialog(null, "Ya funciona la parte para acceder a ADMIN WEE");
-                                           lFAdmin administrar = new lFAdmin();
+                                    if(m3.find())
+                                    {
+                                        //contraseña coinciden
+                                        if(m3.group(4).equals("1"))
+                                        {
+                                            cuenta=txtUsuario.getText();
+                                         valorRol=true;
+                                            //  JOptionPane.showMessageDialog(null,valorRol);
+                                           lFAdmin administrar = new lFAdmin(cuenta,valorRol);
                                            administrar.setVisible(true);
                                            administrar.pack();
                                            administrar.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                                           
                                            this.dispose();
                                            return;
                                         }
                                         else
                                         {
-                                           JOptionPane.showMessageDialog(null, "Tambien funciona la parte para acceder a ESTANDAR WEE");
-                                           IFEstandar estandar = new IFEstandar();
+                                           valorRol=false;
+                                           cuenta=txtUsuario.getText();
+                                           IFEstandar estandar = new IFEstandar(cuenta);
                                            estandar.setVisible(true);
                                            estandar.pack();
                                            estandar.setDefaultCloseOperation(EXIT_ON_CLOSE);
                                            this.dispose();
+                                           
                                            return;
                                         }   
                                     }
@@ -333,6 +342,7 @@ int xx,xy;
                                     //contraseña no coinciden
                               
                                     JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+                                    return;
                                 }
                             }
                             else

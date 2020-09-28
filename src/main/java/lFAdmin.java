@@ -1,3 +1,27 @@
+
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,8 +37,80 @@ public class lFAdmin extends javax.swing.JFrame {
     /**
      * Creates new form lFAdmin
      */
-    public lFAdmin() {
+    
+   static String cuenta;
+   static boolean valorRol;
+   static String cuentaMod;
+     String pathFotografia;
+    
+    public lFAdmin(String usuario,boolean rol) {
+        
+        setUndecorated(true);
         initComponents();
+        getContentPane().setBackground(Color.white);      
+        
+        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnBuscar.gif");
+        btnBuscar.setIcon(imIc3);
+        
+        ImageIcon imIc4= new ImageIcon("src/main/java/Imagenes/btnModificar.gif");
+        btnMod.setIcon(imIc4);
+        
+         ImageIcon imIc5= new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
+        btnSalir.setIcon(imIc5);
+        
+        cuenta=usuario;
+        valorRol=!rol;
+        lblBienvenido.setText("Bienvenido administrador "+cuenta);
+        
+         String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        String patronPathFoto="(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
+        
+        Pattern rolUse = Pattern.compile(patron);
+        Pattern rolPath = Pattern.compile(patronPathFoto);
+         try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++)
+                {
+                    Matcher m = rolUse.matcher(lineas.get(i));
+                    Matcher m9 = rolPath.matcher(lineas.get(i));
+                    
+                    if(m.find()&&m9.find())
+                    {   
+                        if(m.group(4).contains(cuenta))
+                        {
+                     //Usuario ya existe
+                            pathFotografia=m9.group(4);
+                               ImageIcon imIc= new ImageIcon(pathFotografia);
+        Image ajustarImg = imIc.getImage();
+        Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
+        
+        Foto.setIcon(new ImageIcon(ajustarTamaño));
+        
+                            return;
+                            
+                            
+                        }
+                        else
+                        {
+                         //El usuario no existe :D
+                            
+                        }
+                    }
+                    else
+                    {
+                     //No hay usuarios     
+                      //   JOptionPane.showMessageDialog(null, "Aun estando vacio no deberia dar rpblema :c");
+                       
+                    }
+                }
+        }
+            
+        catch (IOException ex)    
+        {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+                 JOptionPane.showMessageDialog(null, ":D");
+        }
     }
 
     /**
@@ -26,122 +122,278 @@ public class lFAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        crearCuenta = new javax.swing.JButton();
+        lblBienvenido = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JTextField();
+        jButton6 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JLabel();
+        btnMod = new javax.swing.JLabel();
+        btnSalir = new javax.swing.JLabel();
+        Foto = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(890, 707));
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 36)); // NOI18N
-        jLabel1.setText("Bienvenido");
+        crearCuenta.setFont(new java.awt.Font("Museo 300", 0, 14)); // NOI18N
+        crearCuenta.setText("Crear nueva cuenta");
+        crearCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearCuentaActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Buscar");
+        lblBienvenido.setFont(new java.awt.Font("Museo 300", 0, 36)); // NOI18N
+        lblBienvenido.setText("Bienvenido");
+        lblBienvenido.setToolTipText("");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtUsuario.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtUsuario.setName(""); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 0, 24)); // NOI18N
-        jLabel2.setText("Resultado");
+        jButton6.setText("Backup");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Cambiar algo");
+        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
 
-        jButton3.setText("Cambiar algo");
+        btnMod.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMod.setEnabled(false);
+        btnMod.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnModMouseClicked(evt);
+            }
+        });
 
-        jButton4.setText("Cambiar algo");
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setDoubleBuffered(true);
+        btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalirMouseClicked(evt);
+            }
+        });
 
-        jButton5.setText("Guardar");
-
-        jLabel3.setFont(new java.awt.Font("Tempus Sans ITC", 0, 36)); // NOI18N
-        jLabel3.setText("nUsuario");
-
-        jLabel4.setFont(new java.awt.Font("Tempus Sans ITC", 0, 24)); // NOI18N
-        jLabel4.setText("Modificaciones");
+        Foto.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        Foto.setForeground(new java.awt.Color(0, 204, 255));
+        Foto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                            .addComponent(jButton6)
+                            .addComponent(btnMod, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))
-                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
+                            .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jTextField1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(46, 46, 46))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(crearCuenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
-                .addGap(18, 18, 18)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblBienvenido)
+                        .addGap(18, 18, 18)
+                        .addComponent(crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton6)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+  
+ RegistroAdmin crear;
+  
+    private void crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCuentaActionPerformed
+        // TODO add your handling code here
+    
+        crear.getObj(null).setVisible(true);
+
+    }//GEN-LAST:event_crearCuentaActionPerformed
+    
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String ruta = "C:\\MEIA\\usuario.txt";
+            Path fuente = Paths.get(ruta);
+            JFileChooser selectorCarpeta = new JFileChooser();
+            selectorCarpeta.setCurrentDirectory(new File("."));
+            selectorCarpeta.setDialogTitle("Seleccione la Carpeta para guardar");
+            selectorCarpeta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            
+                
+            
+            //ruta de la carpeta que el usuario selecciona
+            File carpetaseleccionada = selectorCarpeta.getCurrentDirectory();
+
+            Path destino = Paths.get(carpetaseleccionada.getPath() + "usuario.txt");
+
+            //crea una copia del documento
+            Files.copy(fuente, destino, StandardCopyOption.REPLACE_EXISTING);
+            File ObtenerRutaAbs = carpetaseleccionada.getAbsoluteFile();
+            String Obtener = ObtenerRutaAbs.getPath();
+
+            String patron = "(Estatus)(\\:)(	| |)*(\\d)";
+            Pattern estatus = Pattern.compile(patron);
+            List<String> lineas;
+            try {
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_backup.txt"));
+            } catch (IOException ex) {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                return;
+            }
+            Path p = Paths.get("C:\\\\MEIA\\\\bitacora_backup.txt");
+
+            //datos
+            String fechaBitacora = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+
+            String s = System.lineSeparator() + "Ruta_Absoluta" + Obtener + "|" + "Usuario" + "|" + "Fecha de realización de Backup:" + fechaBitacora;
+
+            try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+                writer.write(s);
+                writer.close();
+            } catch (IOException ioe) {
+                System.err.format("IOException: %s%n", ioe);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        // TODO add your handling code here:
+          int x=evt.getXOnScreen();
+        int y=evt.getYOnScreen();
+        
+        setLocation(x-xx,y-xy);
+    }//GEN-LAST:event_formMouseDragged
+int xx,xy;
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        // TODO add your handling code here:
+            xx=evt.getX();
+        xy=evt.getY();
+    }//GEN-LAST:event_formMousePressed
+
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern rol = Pattern.compile(patronUsuario);
+        try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++)
+                {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    
+                    if(m.find())
+                    {
+                        
+                        if(m.group(4).equals(txtUsuario.getText()))
+                        {
+                            //Usuario  existe
+                            //JOptionPane.showMessageDialog(null, "Usuario existe");
+                            txtUsuario.setEnabled(false);
+                            btnMod.setEnabled(true);
+                           return;
+                        }
+                        else
+                        {
+                         //El usuario no existe :D  
+                          //  JOptionPane.showMessageDialog(null, "Este usuario no existe");
+                           txtUsuario.setEnabled(true);
+                            btnMod.setEnabled(false);
+                           
+                        }
+                    }
+                    else
+                    {
+                     //No hay usuarios     
+                       
+                    }
+                }
+                 JOptionPane.showMessageDialog(null, "Este usuario no existe");
+                  txtUsuario.setEnabled(true);
+                    btnMod.setEnabled(false);
+        }
+            
+        catch (IOException ex)    
+        {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+        
+    }//GEN-LAST:event_btnBuscarMouseClicked
+
+    private void btnModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModMouseClicked
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+        txtUsuario.setEnabled(true);
+       
+        cuentaMod=txtUsuario.getText();
+        txtUsuario.setText("");
+        ModAdmin1.getObj(cuentaMod,true).setVisible(true);
+
+        btnMod.setEnabled(false);
+    }//GEN-LAST:event_btnModMouseClicked
+
+    private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
+        // TODO add your handling code here:
+        IFingreso Ifingreso=new IFingreso();
+        Ifingreso.setVisible(true);
+        Ifingreso.pack();
+        Ifingreso.setLocationRelativeTo(null);
+        dispose();
+    }//GEN-LAST:event_btnSalirMouseClicked
 
     /**
      * @param args the command line arguments
@@ -173,26 +425,19 @@ public class lFAdmin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new lFAdmin().setVisible(true);
+                new lFAdmin(IFingreso.cuenta,IFingreso.valorRol).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel Foto;
+    private javax.swing.JLabel btnBuscar;
+    private javax.swing.JLabel btnMod;
+    private javax.swing.JLabel btnSalir;
+    private javax.swing.JButton crearCuenta;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel lblBienvenido;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
