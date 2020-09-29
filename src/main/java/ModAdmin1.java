@@ -878,14 +878,7 @@ int xx,xy;
            
         try 
         {
-            if(Verificar(txtUsuario, 20,1)==false)
-            {
-                return;
-            }
-            if(VerificarUsuario()==false)
-            {
-                return;
-            }
+          
                 
                 ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
                 pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
