@@ -38,6 +38,9 @@ import javax.swing.JPanel;
  */
 public class Reordenar {
     
+    
+    
+    
     public void Ordenar()
     {
         String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
@@ -52,9 +55,7 @@ public class Reordenar {
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
              List<String> activos = new ArrayList<String>();
              List<String> inactivos = new ArrayList<String>();
-             
-
-            
+          
               for (int i = 0; i < lineas.size(); i++)
                 {
   
@@ -93,8 +94,4 @@ public class Reordenar {
                         Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
              }
     }
-                       
-                        
-        
-    
 }

@@ -38,10 +38,37 @@ public class IFingreso extends javax.swing.JFrame {
     /**
      * Creates new form IFingreso
      */
+    
+    
+    
+    
     public static boolean valorRol;
     public static String cuenta;
  
     public IFingreso() {
+        
+        File theDir = new File("C:\\MEIA");
+        if (!theDir.exists()) theDir.mkdirs();
+        File theDir2 = new File("C:\\MEIA\\Fotografias");
+        if (!theDir2.exists()) theDir2.mkdirs();
+        
+        File crearUsuario = new File("C:\\MEIA\\usuario.txt");
+        File crearBitacora = new File("C:\\MEIA\\bitacora_backup.txt");
+        File crearDescUsuario = new File("C:\\MEIA\\desc_usuario.txt");
+        File crearDescBitacora = new File("C:\\MEIA\\desc_bitacora_backup.txt");
+        try 
+        {
+            crearBitacora.createNewFile();
+            crearUsuario.createNewFile();
+            crearDescUsuario.createNewFile();
+            crearDescBitacora.createNewFile();
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         setUndecorated(true);
         initComponents();
         getContentPane().setBackground(Color.white);      
@@ -135,6 +162,7 @@ public class IFingreso extends javax.swing.JFrame {
            if(valorRol==false)
                         {
                          JOptionPane.showMessageDialog(null, "Debe existir una cuenta de administrador!");
+                         controlesAct(false);
                         }
            
     }

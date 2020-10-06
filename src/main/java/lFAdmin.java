@@ -63,7 +63,7 @@ public class lFAdmin extends javax.swing.JFrame {
         cuenta=usuario;
         valorRol=!rol;
         lblBienvenido.setText("Bienvenido administrador "+cuenta);
-        
+        txtMaxReo.setText(String.valueOf(Max()));
          String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         String patronPathFoto="(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
         
@@ -72,6 +72,7 @@ public class lFAdmin extends javax.swing.JFrame {
          try {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                
                 for (int i = 0; i < lineas.size(); i++)
                 {
                     Matcher m = rolUse.matcher(lineas.get(i));
@@ -114,6 +115,35 @@ public class lFAdmin extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(null, ":D");
         }
     }
+    
+    
+    
+     public int Max()
+    {
+        String patronDesc="(Max reorganizacion)(\\:)(	| |)*(\\d*)";
+        Pattern maxReorganizacion = Pattern.compile(patronDesc);
+        try 
+        {
+             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
+                 Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size()-1));
+                 if(m.find())
+                {
+                    return Integer.parseInt(m.group(4));
+                }
+                 else
+                 {
+                     return 1;
+                 }
+           
+        } 
+        catch (IOException ex) 
+        {
+    
+        }
+    
+
+        return 1;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -133,6 +163,8 @@ public class lFAdmin extends javax.swing.JFrame {
         Foto = new javax.swing.JLabel();
         btnBackup = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtMaxReo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(890, 707));
@@ -221,33 +253,50 @@ public class lFAdmin extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        jLabel1.setText("Máxima Reorganización:");
+
+        txtMaxReo.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtMaxReo.setMinimumSize(new java.awt.Dimension(7, 26));
+        txtMaxReo.setPreferredSize(new java.awt.Dimension(7, 32));
+        txtMaxReo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtMaxReoFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblBienvenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(crearCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(180, 180, 180))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBienvenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(crearCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(179, 179, 179)
+                                .addComponent(jButton1))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(180, 180, 180)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel1)
+                                .addGap(28, 28, 28)
+                                .addComponent(txtMaxReo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -271,10 +320,14 @@ public class lFAdmin extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(193, 193, 193)
                                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(92, 92, 92)
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtMaxReo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
                         .addComponent(jButton1)
                         .addGap(68, 68, 68)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
+                        .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -398,6 +451,84 @@ int xx,xy;
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void txtMaxReoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMaxReoFocusLost
+        // TODO add your handling code here:
+        String patron="^(\\d)+$";
+        Pattern rol = Pattern.compile(patron);
+
+        Matcher m = rol.matcher(txtMaxReo.getText());
+        if(!m.find())
+        {
+            JOptionPane.showMessageDialog(null, "Numero invalido");
+            txtMaxReo.requestFocus();
+            return;
+        }
+        else
+        {
+        String patron2="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatus = Pattern.compile(patron2);
+       
+        int cantidadCuentas=0;
+        int cantidadActivos=0;
+        int cantidadInactivos=0;
+        int maxReor=0;
+        try 
+        {
+            List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++)
+            {
+                Matcher m2 = estatus.matcher(lineas.get(i));
+                if(m2.find())
+                {
+                    cantidadCuentas++;
+                    if(m2.group(4).contains("1"))
+                    {
+                     //Esta activo
+                        cantidadActivos++;
+                    }   
+                    else   
+                    {
+                      //No esta activo
+                        cantidadInactivos++;
+                    }
+                }   
+            }   
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
+            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }
+        
+            
+            
+            
+            //Numero correct
+            String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+            String s = System.lineSeparator() + "Nombre Simbolico:"+"Reorganizacion"+"|"+ "Fecha Creacion:"+jfecha+"|"+"|"
+                 + "Usuario Creacion:"+"null"+"|"+"|"+ "Fecha Modificacion:"+jfecha+"|"+"|"+ "Usuario Modificacion:"+"Reorganizacion"+"|"
+                 +"|"+ "# Registros:"+cantidadCuentas+"|"+ "Registros Activos:"+cantidadActivos+"|"+ "Registros Inactivos:"+cantidadInactivos+"|"
+                 + "Max reorganizacion:"+txtMaxReo.getText();
+            
+            Path p = Paths.get("C:\\\\MEIA\\\\desc_usuario.txt");
+           
+           try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) 
+           {
+               writer.write(s);
+               JOptionPane.showMessageDialog(null,"Reorganizacion cambiada a:"+ txtMaxReo.getText() );
+               writer.close();
+           } 
+           catch (IOException ioe) 
+           {
+               System.err.format("IOException: %s%n", ioe);
+           }
+        }
+        
+        
+        
+    }//GEN-LAST:event_txtMaxReoFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -441,7 +572,9 @@ int xx,xy;
     private javax.swing.JLabel btnSalir;
     private javax.swing.JButton crearCuenta;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblBienvenido;
+    private javax.swing.JTextField txtMaxReo;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

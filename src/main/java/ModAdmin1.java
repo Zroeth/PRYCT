@@ -709,29 +709,56 @@ public class ModAdmin1 extends javax.swing.JFrame {
 
            //JOptionPane.showMessageDialog(null,myPass );
     }//GEN-LAST:event_txtContraseñaFocusLost
+public int Max()
+    {
+        
+        String patronDesc="(Max reorganizacion)(\\:)(	| |)*(\\d*)";
+        Pattern maxReorganizacion = Pattern.compile(patronDesc);
+        try 
+        {
+             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
+             if(lineas.size()==0)
+             {
+                 return 1;
+             }
+                 Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size()-1));
+                 if(m.find())
+                {
+                    return Integer.parseInt(m.group(4));
+                }
+                 else
+                 {
+                     return 1;
+                 }
+           
+        } 
+        catch (IOException ex) 
+        {
+    
+        }
+    
 
+        return 1;
+    }
+    public static boolean esMultiplo(int n1,int n2){
+	if (n1%n2==0)
+		return true;
+	else
+		return false;
+    }
     
     private void desc_Usuario()
     {
         String patron="(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
-        List<String> lineas;
-        try 
-        {
-            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-             JOptionPane.showMessageDialog(null,"Ocurrio un error" );
-            return;
-        }
-        
-        int cantidadCuentas=0;
+          int cantidadCuentas=0;
         int cantidadActivos=0;
         int cantidadInactivos=0;
-        
-         for (int i = 0; i < lineas.size(); i++)    
+         int maxReor=0;
+        try 
+        {
+             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
+             for (int i = 0; i < lineas.size(); i++)    
          {
 
 		   Matcher m = estatus.matcher(lineas.get(i));
@@ -753,8 +780,24 @@ public class ModAdmin1 extends javax.swing.JFrame {
                    {
                    }
          }
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+             JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }
         
-        Path p = Paths.get("C:\\\\MEIA\\\\desc_usuario.txt");
+     
+        maxReor=Max();
+        
+        if(esMultiplo(cantidadCuentas, maxReor))
+        {
+        Reordenar orden=new Reordenar();
+        orden.Ordenar();
+        }
+        
+        Path p = Paths.get("C:\\MEIA\\desc_usuario.txt");
         
        
         //en modificacion solo se cambiaria las partes que dicen modificacion y los campos que se modifiquen
@@ -764,7 +807,7 @@ public class ModAdmin1 extends javax.swing.JFrame {
        String s = System.lineSeparator() + "Nombre Simbolico:"+txtUsuario.getText()+"|"+ "Fecha Creacion:"+jfecha+"|"+"|"
                  + "Usuario Creacion:"+cuentaC+"|"+"|"+ "Fecha Modificacion:"+jfecha+"|"+"|"+ "Usuario Modificacion:"+cuentaC+"|"
                  +"|"+ "# Registros:"+cantidadCuentas+"|"+ "Registros Activos:"+cantidadActivos+"|"+ "Registros Inactivos:"+cantidadInactivos+"|"
-                 + "Max reorganizacion:"+1;
+                 + "Max reorganizacion:"+maxReor;
            
            
            try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) 
