@@ -1,6 +1,9 @@
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,8 +12,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,9 +39,9 @@ public class IFEstandar extends javax.swing.JFrame {
     
    static String cuenta;
    static boolean valorRol;
-   static String cuentaMod;
-    
-    String pathFotografia;
+   static String cuentaMod; 
+   String pathFotografia;
+   DefaultListModel listaContactosMostrar = new DefaultListModel();
     
     public IFEstandar(String usuario) {
         
@@ -43,6 +52,9 @@ public class IFEstandar extends javax.swing.JFrame {
         cuenta=usuario;
         lblBienvenido.setText("Bienvenido usuario "+cuenta);
         
+        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnBuscar.gif");
+        btnBuscar.setIcon(imIc3);
+        
         
         ImageIcon imIc4= new ImageIcon("src/main/java/Imagenes/btnModificar.gif");
         btnMod.setIcon(imIc4);
@@ -50,12 +62,15 @@ public class IFEstandar extends javax.swing.JFrame {
         ImageIcon imIc5= new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
         btnSalir.setIcon(imIc5);
         
+        mostrarContactos();
+       
+        
         String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         String patronPathFoto="(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
         
         Pattern rol = Pattern.compile(patron);
         Pattern rolPath = Pattern.compile(patronPathFoto);
-        
+       /*
         try {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
@@ -105,7 +120,7 @@ public class IFEstandar extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(null, ":D");
         }
         
-        
+        */
     }
 
     /**
@@ -121,6 +136,11 @@ public class IFEstandar extends javax.swing.JFrame {
         btnMod = new javax.swing.JLabel();
         Foto = new javax.swing.JLabel();
         btnSalir = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        txtUsuario = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -158,6 +178,40 @@ public class IFEstandar extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        txtUsuario.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        txtUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtUsuario.setText("Buscar Usuario");
+        txtUsuario.setToolTipText("");
+        txtUsuario.setName(""); // NOI18N
+        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsuarioActionPerformed(evt);
+            }
+        });
+
+        btnBuscar.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
+        btnBuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
+
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jList1MousePressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jList1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,15 +220,29 @@ public class IFEstandar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 530, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)))
+                        .addGap(129, 129, 129))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(165, 165, 165)))
-                .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jButton1))
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(182, 182, 182)))
+                .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -187,10 +255,23 @@ public class IFEstandar extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBienvenido)
-                        .addGap(82, 82, 82)
-                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(88, 88, 88)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))))
+                        .addGap(26, 26, 26)
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(42, 42, 42))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))))
         );
 
         pack();
@@ -232,6 +313,155 @@ int xx,xy;
         xy=evt.getY();
     }//GEN-LAST:event_formMousePressed
 
+    public void mostrarContactos()
+    {
+         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+         Pattern rolUsuario = Pattern.compile(patronUsuario);
+         
+         String patronContacto="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+         Pattern rolContacto = Pattern.compile(patronContacto);  
+         
+         listaContactosMostrar.clear();
+         List<String> lineas,lineasBitacora;
+         try 
+         {
+           lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+           lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+           
+           if(lineas.isEmpty())
+           {
+               //No tiene contactos, no existen contactos
+           }
+           else
+           {
+               for (int i = 0; i < lineas.size(); i++)
+               {
+                Matcher m = rolUsuario.matcher(lineas.get(i));
+                Matcher m1 = rolContacto.matcher(lineas.get(i));
+
+                if(m.find()&&m1.find())
+                {
+
+                    //cambiar Abner por cuenta
+                    if(m.group(4).equals("Abner"))
+                    {
+                        listaContactosMostrar.addElement(m1.group(4));
+                    
+                    }
+                }
+            }
+               jList1.setModel(listaContactosMostrar);
+           }
+         }
+         catch (IOException ex)
+         {
+           Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
+         }
+           
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+       String m = JOptionPane.showInputDialog(null, "Ingrese nombre de la lista: ",
+                "Crear lista", JOptionPane.INFORMATION_MESSAGE);
+        
+        JOptionPane.showMessageDialog(null, m);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsuarioActionPerformed
+
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern rol = Pattern.compile(patronUsuario);
+        String patronContacto="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+        Pattern contacto = Pattern.compile(patronContacto);
+        
+        try {
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++)
+            {
+                Matcher m = rol.matcher(lineas.get(i));
+
+                if(m.find())
+                {
+
+                    if(m.group(4).equals(txtUsuario.getText()))
+                    {
+                        //Usuario  existe
+                        //JOptionPane.showMessageDialog(null, "Usuario existe");
+                        txtUsuario.setEnabled(false);
+                        Object[] options = { "Agregar", "Cancelar" };
+                        int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar contacto?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
+                        if(dialogResult == 0)
+                        {
+                            System.out.println("Si");
+                            
+                            
+                            
+                            
+                            
+                            
+                        } 
+                        else 
+                        {
+                            System.out.println("No");
+                        } 
+                        return;
+                    }
+                    else
+                    {
+                        //El usuario no existe :D
+                        //  JOptionPane.showMessageDialog(null, "Este usuario no existe");
+                        txtUsuario.setEnabled(true);
+                    }
+                }
+                else
+                {
+                    //No hay usuarios
+
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Este usuario no existe");
+            txtUsuario.setEnabled(true);
+            btnMod.setEnabled(false);
+        }
+
+        catch (IOException ex)
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnBuscarMouseClicked
+
+    private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
+        jList1.setSelectedIndex(jList1.locationToIndex(evt.getPoint()));
+        JPopupMenu menu = new JPopupMenu();        
+        JPopupMenu menu1 = new JPopupMenu();
+        
+        JMenuItem agregarAlistaItem = new JMenuItem("Agregar a lista");
+        agregarAlistaItem.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)   
+            {
+                menu.add(agregarAlistaItem);
+                menu.add("otra cosa");
+                menu.show(jList1, evt.getPoint().x, evt.getPoint().y);
+                menu1.add("lista x");
+                menu1.show(jList1, evt.getPoint().x+50, evt.getPoint().y);
+            }
+        });
+        menu.add(agregarAlistaItem);
+        menu.add("otra cosa");
+        menu.show(jList1, evt.getPoint().x, evt.getPoint().y);     
+    }//GEN-LAST:event_jList1MousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -269,8 +499,13 @@ int xx,xy;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Foto;
+    private javax.swing.JLabel btnBuscar;
     private javax.swing.JLabel btnMod;
     private javax.swing.JLabel btnSalir;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBienvenido;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

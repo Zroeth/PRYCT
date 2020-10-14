@@ -162,7 +162,6 @@ public class lFAdmin extends javax.swing.JFrame {
         btnSalir = new javax.swing.JLabel();
         Foto = new javax.swing.JLabel();
         btnBackup = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtMaxReo = new javax.swing.JTextField();
 
@@ -246,13 +245,6 @@ public class lFAdmin extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Ordenar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
         jLabel1.setText("Máxima Reorganización:");
 
@@ -286,15 +278,10 @@ public class lFAdmin extends javax.swing.JFrame {
                         .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(180, 180, 180))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(179, 179, 179)
-                                .addComponent(jButton1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)
-                                .addGap(28, 28, 28)
-                                .addComponent(txtMaxReo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(28, 28, 28)
+                        .addComponent(txtMaxReo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -324,9 +311,7 @@ public class lFAdmin extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtMaxReo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addComponent(jButton1)
-                        .addGap(68, 68, 68)
+                        .addGap(120, 120, 120)
                         .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -443,13 +428,6 @@ int xx,xy;
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsuarioActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        Reordenar orden=new Reordenar();
-        orden.Ordenar();
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtMaxReoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMaxReoFocusLost
         // TODO add your handling code here:
@@ -571,7 +549,6 @@ int xx,xy;
     private javax.swing.JLabel btnMod;
     private javax.swing.JLabel btnSalir;
     private javax.swing.JButton crearCuenta;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblBienvenido;
     private javax.swing.JTextField txtMaxReo;

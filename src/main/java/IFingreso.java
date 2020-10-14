@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import sun.nio.cs.ext.IBM1097;
 
 
 /*
@@ -56,12 +57,16 @@ public class IFingreso extends javax.swing.JFrame {
         File crearBitacora = new File("C:\\MEIA\\bitacora_backup.txt");
         File crearDescUsuario = new File("C:\\MEIA\\desc_usuario.txt");
         File crearDescBitacora = new File("C:\\MEIA\\desc_bitacora_backup.txt");
+        File crearCuentaBitacora = new File("C:\\MEIA\\bitacora_contactos.txt");
+        File crearCuenta = new File("C:\\MEIA\\contactos.txt");
         try 
         {
             crearBitacora.createNewFile();
             crearUsuario.createNewFile();
             crearDescUsuario.createNewFile();
             crearDescBitacora.createNewFile();
+            crearCuentaBitacora.createNewFile();
+            crearCuenta.createNewFile();
         } 
         catch (IOException ex) 
         {
@@ -338,16 +343,28 @@ int xx,xy;
         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         cifrar();
         String patronContraseña="(Contraseña)(\\:)(	| |)*(.+)(\\|)(R)"; 
+        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
         String patronRol="(Rol)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern adminRol = Pattern.compile(patronRol);
         Pattern rolContraseña = Pattern.compile(patronContraseña);
         Pattern rol = Pattern.compile(patronUsuario);
+        Pattern rolE = Pattern.compile(patronEstatus);
         try {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
                 for (int i = 0; i < lineas.size(); i++)
                 {
                     Matcher m = rol.matcher(lineas.get(i));
+                    Matcher m10 = rolE.matcher(lineas.get(i));
+                    
+                    if(m10.find())
+                    {
+                          if(m10.group(4).contains("0"))
+                            {
+                                JOptionPane.showMessageDialog(null, "Usuario deshabilitado");
+                                return;
+                            }
+                    }
                     if(m.find())
                     {
                         if(m.group(4).equals(txtUsuario.getText()))
@@ -377,7 +394,7 @@ int xx,xy;
                                            return;
                                         }
                                         else
-                                        {
+                                        {   
                                            valorRol=false;
                                            cuenta=txtUsuario.getText();
                                            IFEstandar estandar = new IFEstandar(cuenta);
