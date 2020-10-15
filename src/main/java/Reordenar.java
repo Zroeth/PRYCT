@@ -38,16 +38,10 @@ import javax.swing.JPanel;
  */
 public class Reordenar {
     
-    
-    
-    
     public void Ordenar()
     {
-        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
-          Pattern rolE = Pattern.compile(patronEstatus);
-        
-        
-        
+        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";  
+        Pattern rolE = Pattern.compile(patronEstatus);
         try 
             {
          //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
@@ -86,7 +80,7 @@ public class Reordenar {
                     Files.write(out,lineas);
              
              
-                 JOptionPane.showMessageDialog(null,"Ordenado" );
+                // JOptionPane.showMessageDialog(null,"Ordenado" );
                  
              }
              catch (IOException ex) 
@@ -94,4 +88,56 @@ public class Reordenar {
                         Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
              }
     }
+    public void OrdenarContactos()
+    {
+        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";  
+        Pattern rolE = Pattern.compile(patronEstatus);
+        try 
+            {
+         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+             List<String> activos = new ArrayList<String>();
+             List<String> inactivos = new ArrayList<String>();
+          
+              for (int i = 0; i < lineas.size(); i++)
+                {
+  
+                    Matcher m10 = rolE.matcher(lineas.get(i));
+                    
+                     if(m10.find())
+                    {   
+                        if(m10.group(4).contains("1"))
+                        {
+                         activos.add(lineas.get(i));
+                         java.util.Collections.sort(activos);
+                        
+                        }
+                        else
+                        {
+                            inactivos.add(lineas.get(i));
+                            java.util.Collections.sort(inactivos);
+                        }
+                    
+                    }
+                }
+              
+                     
+                     lineas = Stream.concat(activos.stream(), inactivos.stream())
+                             .collect(Collectors.toList());
+             
+                Path out = Paths.get("C:\\MEIA\\usuario.txt");
+                    Files.write(out,lineas);
+             
+             
+                // JOptionPane.showMessageDialog(null,"Ordenado" );
+                 
+             }
+             catch (IOException ex) 
+             {
+                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        
+    }
 }
+

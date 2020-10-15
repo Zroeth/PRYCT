@@ -625,17 +625,17 @@ public class Registro extends javax.swing.JFrame {
              List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
              if(lineas.size()==0)
              {
-                 return 1;
+                 return 3;
              }
-                 Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size()-1));
-                 if(m.find())
-                {
-                    return Integer.parseInt(m.group(4));
-                }
-                 else
-                 {
-                     return 1;
-                 }
+             Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size()-1));    
+             if(m.find())  
+             {
+                 return Integer.parseInt(m.group(4));   
+             }
+             else
+             {
+                 return 3;   
+             }
            
         } 
         catch (IOException ex) 
@@ -644,7 +644,7 @@ public class Registro extends javax.swing.JFrame {
         }
     
 
-        return 1;
+        return 3;
     }
     
     
@@ -717,9 +717,9 @@ public class Registro extends javax.swing.JFrame {
         
       
        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-       String s = System.lineSeparator() + "Nombre Simbolico:"+txtUsuario.getText()+"|"+ "Fecha Creacion:"+jfecha+"|"+"|"
-                 + "Usuario Creacion:"+cuentaC+"|"+"|"+ "Fecha Modificacion:"+jfecha+"|"+"|"+ "Usuario Modificacion:"+cuentaC+"|"
-                 +"|"+ "# Registros:"+cantidadCuentas+"|"+ "Registros Activos:"+cantidadActivos+"|"+ "Registros Inactivos:"+cantidadInactivos+"|"
+       String s = System.lineSeparator() + "Nombre Simbolico:"+txtUsuario.getText()+"|"+ "Fecha Creacion:"+jfecha+"|"
+                 + "Usuario Creacion:"+cuentaC+"|"+ "Fecha Modificacion:"+jfecha+"|"+ "Usuario Modificacion:"+cuentaC+"|"
+                 + "# Registros:"+cantidadCuentas+"|"+ "Registros Activos:"+cantidadActivos+"|"+ "Registros Inactivos:"+cantidadInactivos+"|"
                  + "Max reorganizacion:"+maxReor;
            
            
