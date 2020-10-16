@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +53,7 @@ public class IFEstandar extends javax.swing.JFrame {
    String pathFotografia;
    int maximaReorganizacion;
    DefaultListModel listaContactosMostrar = new DefaultListModel();
+   DefaultListModel listaContactosOcultar = new DefaultListModel();
     
     public IFEstandar(String usuario) {
         
@@ -73,23 +75,13 @@ public class IFEstandar extends javax.swing.JFrame {
         btnSalir.setIcon(imIc5);
         
         mostrarContactos();
-       
-        
         String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         String patronPathFoto="(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
-        
         Pattern rol = Pattern.compile(patron);
         Pattern rolPath = Pattern.compile(patronPathFoto);
-        
-        
         maximaReorganizacion=Max();
-        
-        
-        
-        
-        
-       /*
-        try {
+        try
+        {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
                 for (int i = 0; i < lineas.size(); i++)
@@ -101,44 +93,21 @@ public class IFEstandar extends javax.swing.JFrame {
                     {   
                         if(m.group(4).contains(cuenta))
                         {
-                     //Usuario ya existe
                             pathFotografia=m9.group(4);
-                               ImageIcon imIc= new ImageIcon(pathFotografia);
-        Image ajustarImg = imIc.getImage();
-        Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
-        
-        Foto.setIcon(new ImageIcon(ajustarTamaño));
-        
-                            
-                            
-                            
-                            
-                            return;
-                            
-                            
+                            ImageIcon imIc= new ImageIcon(pathFotografia);
+                            Image ajustarImg = imIc.getImage();
+                            Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
+                            Foto.setIcon(new ImageIcon(ajustarTamaño));
+                            return;   
                         }
-                        else
-                        {
-                         //El usuario no existe :D
-                            
-                        }
-                    }
-                    else
-                    {
-                     //No hay usuarios     
-                      //   JOptionPane.showMessageDialog(null, "Aun estando vacio no deberia dar rpblema :c");
-                       
                     }
                 }
-        }
-            
+        }   
         catch (IOException ex)    
         {
                 Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
                  JOptionPane.showMessageDialog(null, ":D");
         }
-        
-        */
     }
         
     public int Max()
@@ -254,6 +223,11 @@ public class IFEstandar extends javax.swing.JFrame {
             }
         });
 
+        jList1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jList1FocusLost(evt);
+            }
+        });
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jList1MousePressed(evt);
@@ -363,7 +337,11 @@ int xx,xy;
          String patronContacto="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
          Pattern rolContacto = Pattern.compile(patronContacto);  
          
+         String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+         Pattern rolE = Pattern.compile(patronEstatus);
+        
          listaContactosMostrar.clear();
+         listaContactosOcultar.clear();
          List<String> lineas,lineasBitacora;
          try 
          {
@@ -380,11 +358,19 @@ int xx,xy;
                {
                    Matcher m = rolUsuario.matcher(lineas.get(i));
                    Matcher m1 = rolContacto.matcher(lineas.get(i));
-                   if(m.find()&&m1.find())
+                   Matcher estadMatcher = rolE.matcher(lineas.get(i));
+                   if(m.find()&&m1.find()&&estadMatcher.find())
                    {
                        if(m.group(4).equals(cuenta))
                        {
-                           listaContactosMostrar.addElement(m1.group(4));
+                           if(estadMatcher.group(4).contains("1"))
+                           {
+                               listaContactosMostrar.addElement(m1.group(4));
+                           }
+                           else
+                           {
+                               listaContactosOcultar.addElement(m1.group(4));
+                           }
                        }
                    }
                }
@@ -392,16 +378,44 @@ int xx,xy;
                {  
                    Matcher m2 = rolUsuario.matcher(lineasBitacora.get(i));
                    Matcher m3 = rolContacto.matcher(lineasBitacora.get(i));
-                   if(m2.find()&&m3.find())
+                   Matcher estadMatcher = rolE.matcher(lineasBitacora.get(i));
+                   if(m2.find()&&m3.find()&&estadMatcher.find())
                    {
                        if(m2.group(4).equals(cuenta))
                        {        
-                           listaContactosMostrar.addElement(m3.group(4));
+                         if(estadMatcher.group(4).contains("1"))
+                           {
+                           
+                               listaContactosMostrar.addElement(m3.group(4));
+                           }
+                           else
+                           {
+                               listaContactosOcultar.addElement(m3.group(4));
+                           }
                        }
                    }
                }
                 ordenarListaContactos(listaContactosMostrar);
+                ordenarListaContactos(listaContactosOcultar);
+               
+                for (int i = 0; i < listaContactosOcultar.size(); i++) 
+                {
+                    listaContactosMostrar.addElement(listaContactosOcultar.getElementAt(i));
+                }
+                
+             
+                
                 jList1.setModel(listaContactosMostrar);
+                for (int i = 0; i < jList1.getModel().getSize(); i++) 
+                {
+                    for (int j = 0; j < listaContactosOcultar.size(); j++)
+                    {
+                       if(jList1.getModel().getElementAt(i).equals(listaContactosOcultar.getElementAt(j)))
+                       {
+                        //  jList1.setCellRenderer(cellRenderer);
+                       }
+                    }
+                }
                
            }
          }
@@ -482,7 +496,8 @@ int xx,xy;
                             }
                             if(buscarContacto(txtUsuario.getText()))
                             {
-                               agregarContacto(txtUsuario.getText());
+                               agregarContacto(txtUsuario.getText(),1);
+                               return;
                             }
                             else
                             {
@@ -492,8 +507,9 @@ int xx,xy;
                         else 
                         {
                          //pues no   System.out.println("No");
+                             return;
                         } 
-                        return;
+                       
                     }
                     else
                     {
@@ -507,9 +523,6 @@ int xx,xy;
 
                 }
             }
-            JOptionPane.showMessageDialog(null, "Este usuario no existe");
-            txtUsuario.setEnabled(true);
-            btnMod.setEnabled(false);
         }
 
         catch (IOException ex)
@@ -570,7 +583,85 @@ int xx,xy;
          }
          return true;
     }
-    public void agregarContacto(String contactoN)
+    public void borrar(String contactoB,int operacion)
+    {
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+        
+         try 
+         {
+             List<String> lineas,lineasBitacora;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineas.get(i));
+              Matcher m1 = contacPattern.matcher(lineas.get(i));
+                if(m.find()&&m1.find())
+                {
+                    if(m.group(4).equals(cuenta))
+                    {
+                        if(m1.group(4).equals(contactoB))
+                        {
+                         lineas.remove(i);
+                         Path out = Paths.get("C:\\MEIA\\contactos.txt");
+              Files.write(out,lineas); 
+              Iterator<String> i2It = lineas.iterator();
+              while (i2It.hasNext())
+              {
+                  String line = i2It.next();
+                  if (line.trim().isEmpty())
+                      i2It.remove();       
+              }              
+              Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);
+                         agregarContacto(contactoB, operacion);
+                        }
+                    }
+                }   
+             }
+             for (int i = 0; i < lineasBitacora.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
+              Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
+              if(m.find()&&m1.find())  
+              {
+                  if(m.group(4).equals(cuenta))
+                  {
+                      if(m1.group(4).equals(contactoB))   
+                      {
+                            lineasBitacora.remove(i);
+                            Path out1 = Paths.get("C:\\MEIA\\bitacora_contactos.txt");           
+              Files.write(out1,lineasBitacora);
+              Iterator<String> it = lineasBitacora.iterator();
+              while (it.hasNext())
+              {
+                  String line = it.next();
+                  if (line.trim().isEmpty())
+                      it.remove();
+              }
+              Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineasBitacora);
+                            
+                            agregarContacto(contactoB, operacion);
+                            
+                      }
+                  }
+              }   
+             }
+              
+             
+              
+         }
+           
+         
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         
+    }
+    public void agregarContacto(String contactoN,int operacion)
     {
         String patron="(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
@@ -579,7 +670,7 @@ int xx,xy;
         
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         String s = System.lineSeparator() + "Usuario:"+cuenta+"|"+ "Contacto:"+contactoN+"|"
-                 + "Fecha de transaccion:"+jfecha+"|"+ "Usuario transaccion:"+cuenta+"|"+ "Estatus:"+1;
+                 + "Fecha de transaccion:"+jfecha+"|"+ "Usuario transaccion:"+cuenta+"|"+ "Estatus:"+operacion;
         
         try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
         {
@@ -629,14 +720,36 @@ int xx,xy;
             {
                
          //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+             String nombresimbolicoString;
+             
+             if (operacion==1)             
+             {
+                 nombresimbolicoString="crear contacto";  
+             }
+             else
+             {
+                 nombresimbolicoString="borrar contacto";
+             }
              List<String> lineas;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
-             lineas.set(0, "Nombre simbolico:contactos"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
+             lineas.set(0, "Nombre simbolico:"+nombresimbolicoString+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
                      cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadActivos+"|"+
                              "Registros Inactivos:"+cantidadInactivos+"|"+"Max reorganizacion:"+maximaReorganizacion);
                 
              Path out = Paths.get("C:\\MEIA\\bitacora_contactos.txt");
              Files.write(out,lineas);
+             
+                      
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+             Iterator<String> i = lineas.iterator();
+             while (i.hasNext())
+             {
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();       
+             }
+             Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineas);             
+             
              }
              catch (IOException ex) 
              {
@@ -649,7 +762,7 @@ int xx,xy;
             //JOptionPane.showMessageDialog(null,"Cantidad de cuentas:"+cantidadCuentas );
             try
             {
-         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+         
                 String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
                 List<String> lineas;
@@ -662,10 +775,22 @@ int xx,xy;
                     {
                         cuentasList.add(lineas.get(i));
                         lineas.remove(i);
+                        i=0;
                     }
                 }
                 Path out = Paths.get("C:\\MEIA\\bitacora_contactos.txt");   
                 Files.write(out,lineas);
+                
+                             
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));             
+                Iterator<String> i = lineas.iterator();
+                while (i.hasNext())
+                {
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();
+                }
+             Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineas);   
                 
                 p = Paths.get("C:\\MEIA\\contactos.txt");
         
@@ -677,6 +802,16 @@ int xx,xy;
                         writer.write(System.lineSeparator()+str);
                     }
                 }
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));             
+                Iterator<String> i2It = lineas.iterator();
+                while (i2It.hasNext())
+                {
+                 String line = i2It.next();
+                 if (line.trim().isEmpty())
+                     i2It.remove();
+                }
+             Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);  
+                
              }
              catch (IOException ex) 
              {
@@ -690,23 +825,121 @@ int xx,xy;
         jList1.setSelectedIndex(jList1.locationToIndex(evt.getPoint()));
         JPopupMenu menu = new JPopupMenu();        
         JPopupMenu menu1 = new JPopupMenu();
-        
-        JMenuItem agregarAlistaItem = new JMenuItem("Agregar a lista");
-        agregarAlistaItem.addActionListener(new ActionListener()
+        jList1.setSelectedIndex(jList1.getSelectedIndex());
+        Color azulColor = new Color(51,153,255);
+        jList1.setSelectionBackground(azulColor);
+        JMenuItem borrarContactoItem = new JMenuItem("Borrar contacto");
+        JMenuItem agregarConntacItem = new JMenuItem("Agregar contacto");
+        try
+        {
+                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+                Pattern rolE = Pattern.compile(patronEstatus);
+                String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+                Pattern contacPattern = Pattern.compile(contactoString);
+              
+                List<String> lineasBitacoraList,lineasList;
+                lineasList=Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+                lineasBitacoraList = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+                
+                for (int i = 0; i < lineasBitacoraList.size(); i++)
+                {   
+                    Matcher m1 = contacPattern.matcher(lineasBitacoraList.get(i));
+                    Matcher m10 = rolE.matcher(lineasBitacoraList.get(i));
+                    if(m10.find()&&m1.find())
+                    {
+                        if(m1.group(4).equals(jList1.getSelectedValue()))
+                        {
+                            if(m10.group(4).contains("1"))
+                            {
+                                menu.add(borrarContactoItem);
+                            }
+                            else
+                            {
+                                menu.add(agregarConntacItem);
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < lineasList.size(); i++)
+                {   
+                    Matcher m1 = contacPattern.matcher(lineasList.get(i));
+                    Matcher m10 = rolE.matcher(lineasList.get(i));
+                    if(m10.find()&&m1.find())
+                    {
+                        if(m1.group(4).equals(jList1.getSelectedValue()))
+                        {
+                            if(m10.group(4).contains("1"))
+                            {
+                                menu.add(borrarContactoItem);
+                            }
+                            else
+                            {
+                                menu.add(agregarConntacItem);
+                            }
+                        }
+                    }
+                }
+            }
+         catch(IOException exception)
+                 
+         {
+         
+                 
+         }
+        agregarConntacItem.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)   
             {
-                menu.add(agregarAlistaItem);
-                menu.add("otra cosa");
-                menu.show(jList1, evt.getPoint().x, evt.getPoint().y);
-                menu1.add("lista x");
-                menu1.show(jList1, evt.getPoint().x+50, evt.getPoint().y);
+                Object[] options = { "Agregar", "Cancelar" };
+                int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a "+jList1.getSelectedValue()+"?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);  
+                if(dialogResult == 0)
+                {
+                    JOptionPane.showMessageDialog(null, "Contacto reestablecido");
+                    borrar(jList1.getSelectedValue(),1);
+                   mostrarContactos();
+                }
+                else
+                {
+                    //pues no   System.out.println("No");   
+                    return;
+                }
             }
         });
-        menu.add(agregarAlistaItem);
+        
+        
+        
+        
+       
+        
+        
+        borrarContactoItem.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)   
+            {
+                Object[] options = { "Borrar", "Cancelar" };
+                int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar a "+jList1.getSelectedValue()+" de contactos?", "Borrar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);  
+                if(dialogResult == 0)
+                {
+                    JOptionPane.showMessageDialog(null, "Contacto borrado");
+                    borrar(jList1.getSelectedValue(),0);
+                   mostrarContactos();
+                }
+                else
+                {
+                    //pues no   System.out.println("No");   
+                    return;
+                }
+            }
+        });
+       
         menu.add("otra cosa");
         menu.show(jList1, evt.getPoint().x, evt.getPoint().y);     
     }//GEN-LAST:event_jList1MousePressed
+
+    private void jList1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jList1FocusLost
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jList1FocusLost
 
     /**
      * @param args the command line arguments

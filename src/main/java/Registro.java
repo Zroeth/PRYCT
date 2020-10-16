@@ -76,11 +76,7 @@ public class Registro extends javax.swing.JFrame {
         
     }
     
-    public void opciones()
-    {
-        
-    }
-
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -699,7 +695,7 @@ public class Registro extends javax.swing.JFrame {
         
         if(esMultiplo(cantidadCuentas, maxReor))
         {
-        Reordenar orden=new Reordenar();
+        Globales orden=new Globales();
         orden.Ordenar();
         }
         

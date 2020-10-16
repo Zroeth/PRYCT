@@ -793,7 +793,7 @@ public int Max()
         
         if(esMultiplo(cantidadCuentas, maxReor))
         {
-        Reordenar orden=new Reordenar();
+        Globales orden=new Globales();
         orden.Ordenar();
         }
         

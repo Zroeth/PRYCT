@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +13,10 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -23,8 +27,12 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.ListCellRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,7 +44,7 @@ import javax.swing.JPanel;
  *
  * @author Zer0
  */
-public class Reordenar {
+public class Globales {
     
     public void Ordenar()
     {
@@ -73,11 +81,19 @@ public class Reordenar {
                 }
               
                      
-                     lineas = Stream.concat(activos.stream(), inactivos.stream())
-                             .collect(Collectors.toList());
-             
-                Path out = Paths.get("C:\\MEIA\\usuario.txt");
-                    Files.write(out,lineas);
+                     lineas = Stream.concat(activos.stream(), inactivos.stream()).collect(Collectors.toList());
+                     Path out = Paths.get("C:\\MEIA\\usuario.txt");
+                     Files.write(out,lineas);
+                     
+                      lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                      Iterator<String> i = lineas.iterator();
+                      while (i.hasNext())
+                      {
+                          String line = i.next();
+                          if (line.trim().isEmpty())
+                              i.remove();
+                      }
+                      Files.write(Path.of("C:\\MEIA\\usuario.txt"), lineas);
              
              
                 // JOptionPane.showMessageDialog(null,"Ordenado" );
@@ -123,13 +139,21 @@ public class Reordenar {
                 }
               
                      
-                     lineas = Stream.concat(activos.stream(), inactivos.stream())
-                             .collect(Collectors.toList());
-             
-                Path out = Paths.get("C:\\MEIA\\usuario.txt");
-                    Files.write(out,lineas);
-             
-             
+                    
+              lineas = Stream.concat(activos.stream(), inactivos.stream()).collect(Collectors.toList());
+              Path out = Paths.get("C:\\MEIA\\contactos.txt");
+              Files.write(out,lineas);
+
+              lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+              Iterator<String> i = lineas.iterator();
+              while (i.hasNext())
+              {
+                  String line = i.next();
+                  if (line.trim().isEmpty())
+                      i.remove();
+              }
+              Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);
+              
                 // JOptionPane.showMessageDialog(null,"Ordenado" );
                  
              }
@@ -140,4 +164,3 @@ public class Reordenar {
         
     }
 }
-
