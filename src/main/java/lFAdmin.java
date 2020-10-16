@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
@@ -256,6 +257,11 @@ public class lFAdmin extends javax.swing.JFrame {
                 txtMaxReoFocusLost(evt);
             }
         });
+        txtMaxReo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtMaxReoKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -267,22 +273,23 @@ public class lFAdmin extends javax.swing.JFrame {
                     .addComponent(crearCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(180, 180, 180))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(28, 28, 28)
-                        .addComponent(txtMaxReo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBackup, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(28, 28, 28)
+                                .addComponent(txtMaxReo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -351,6 +358,7 @@ int xx,xy;
                 // TODO add your handling code here:
         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern rol = Pattern.compile(patronUsuario);
+        btnMod.requestFocus();
         try {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
@@ -430,7 +438,14 @@ int xx,xy;
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void txtMaxReoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMaxReoFocusLost
+
+    }//GEN-LAST:event_txtMaxReoFocusLost
+
+    private void txtMaxReoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaxReoKeyPressed
         // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) 
+        {
+              // TODO add your handling code here:
         String patron="^(\\d)+$";
         Pattern rol = Pattern.compile(patron);
 
@@ -502,10 +517,9 @@ int xx,xy;
                System.err.format("IOException: %s%n", ioe);
            }
         }
-        
-        
-        
-    }//GEN-LAST:event_txtMaxReoFocusLost
+      
+        }
+    }//GEN-LAST:event_txtMaxReoKeyPressed
 
     /**
      * @param args the command line arguments

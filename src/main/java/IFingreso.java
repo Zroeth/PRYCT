@@ -86,11 +86,6 @@ public class IFingreso extends javax.swing.JFrame {
 
             logo.setIcon(new ImageIcon(ajustarTamaño));
         
-        
-        
-        
-        
-        
        // this.setContentPane(new JLabel(new ImageIcon("C:\\MEIA\\btnSalir.gif")));
         
         File dir = new File("C:\\MEIA");
@@ -134,29 +129,20 @@ public class IFingreso extends javax.swing.JFrame {
                      //JOptionPane.showMessageDialog(null, "Admin encontrado");
                      valorRol=true;
                      controlesAct(true);
-                         
                      break;
                      }
                      else
                      {
-                         //no son admi
-                         
+                         //no son admi   
                          controlesAct(false);
-                     }
-                     
+                     } 
                    }
                  else
                    {
                      //No hay admins
                      controlesAct(false);
                    }
-                 
-                 
              }
-                     
-                      
-                       
-                        
              } 
              catch (IOException ex) 
              {
@@ -356,21 +342,19 @@ int xx,xy;
                 {
                     Matcher m = rol.matcher(lineas.get(i));
                     Matcher m10 = rolE.matcher(lineas.get(i));
-                    
-                    if(m10.find())
-                    {
-                          if(m10.group(4).contains("0"))
-                            {
-                                JOptionPane.showMessageDialog(null, "Usuario deshabilitado");
-                                return;
-                            }
-                    }
                     if(m.find())
                     {
                         if(m.group(4).equals(txtUsuario.getText()))
                         {
                             //Usuario  existe
-                            //JOptionPane.showMessageDialog(null, "Usuario existe");
+                            if(m10.find())
+                            {
+                                if(m10.group(4).contains("0"))
+                                {
+                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado");   
+                                    return;
+                                }
+                            }
                             Matcher m2 = rolContraseña.matcher(lineas.get(i));
                             if(m2.find())
                             {                       

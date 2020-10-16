@@ -1,10 +1,12 @@
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,22 +16,29 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.plaf.metal.MetalIconFactory;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -41,6 +50,8 @@ import javax.swing.JTextField;
  *
  * @author ericd
  */
+
+
 public class IFEstandar extends javax.swing.JFrame {
 
     /**
@@ -52,9 +63,12 @@ public class IFEstandar extends javax.swing.JFrame {
    static String cuentaMod; 
    String pathFotografia;
    int maximaReorganizacion;
-   DefaultListModel listaContactosMostrar = new DefaultListModel();
+   DefaultListModel listaTodosLosContactos = new DefaultListModel();
    DefaultListModel listaContactosOcultar = new DefaultListModel();
-    
+   DefaultListModel listaContactosMostrar = new DefaultListModel();
+     
+    Map<Object, ImageIcon> icons = new HashMap<Object, ImageIcon>();
+      
     public IFEstandar(String usuario) {
         
         
@@ -67,7 +81,9 @@ public class IFEstandar extends javax.swing.JFrame {
         ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnBuscar.gif");
         btnBuscar.setIcon(imIc3);
         
+       
         
+         
         ImageIcon imIc4= new ImageIcon("src/main/java/Imagenes/btnModificar.gif");
         btnMod.setIcon(imIc4);
         
@@ -223,6 +239,7 @@ public class IFEstandar extends javax.swing.JFrame {
             }
         });
 
+        jList1.setFont(new java.awt.Font("Museo 300", 0, 24)); // NOI18N
         jList1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jList1FocusLost(evt);
@@ -246,11 +263,22 @@ public class IFEstandar extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 530, Short.MAX_VALUE)
+                                .addGap(0, 201, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(10, 10, 10)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(13, 13, 13)
+                                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(78, 78, 78)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(53, 53, 53))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(10, 10, 10)))))
                         .addGap(129, 129, 129))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,13 +286,7 @@ public class IFEstandar extends javax.swing.JFrame {
                                 .addGap(47, 47, 47)
                                 .addComponent(jButton1))
                             .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(182, 182, 182)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -283,17 +305,18 @@ public class IFEstandar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(42, 42, 42))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(42, 42, 42))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(21, 21, 21)))
+                                .addComponent(jButton1)
+                                .addGap(125, 125, 125))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))))
         );
 
@@ -340,8 +363,9 @@ int xx,xy;
          String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
          Pattern rolE = Pattern.compile(patronEstatus);
         
-         listaContactosMostrar.clear();
+         listaTodosLosContactos.clear();
          listaContactosOcultar.clear();
+         listaContactosMostrar.clear();
          List<String> lineas,lineasBitacora;
          try 
          {
@@ -397,27 +421,56 @@ int xx,xy;
                }
                 ordenarListaContactos(listaContactosMostrar);
                 ordenarListaContactos(listaContactosOcultar);
-               
+               for (int i = 0; i < listaContactosMostrar.size(); i++) 
+                {
+                    listaTodosLosContactos.addElement(listaContactosMostrar.getElementAt(i));
+                }
                 for (int i = 0; i < listaContactosOcultar.size(); i++) 
                 {
-                    listaContactosMostrar.addElement(listaContactosOcultar.getElementAt(i));
+                    listaTodosLosContactos.addElement(listaContactosOcultar.getElementAt(i));
                 }
                 
-             
                 
-                jList1.setModel(listaContactosMostrar);
+                jList1.setModel(listaTodosLosContactos);
+                
+           
+         
+         
+       
+                
+                
                 for (int i = 0; i < jList1.getModel().getSize(); i++) 
                 {
                     for (int j = 0; j < listaContactosOcultar.size(); j++)
                     {
                        if(jList1.getModel().getElementAt(i).equals(listaContactosOcultar.getElementAt(j)))
                        {
-                        //  jList1.setCellRenderer(cellRenderer);
+                        ImageIcon iconoIcon= new ImageIcon("src/main/java/Imagenes/desconectado.png");
+                        Image ajustarImgI = iconoIcon.getImage();                   
+                        Image ajustarTamañoI= ajustarImgI.getScaledInstance(30,30, Image.SCALE_SMOOTH);
+                        icons.put(jList1.getModel().getElementAt(i), new ImageIcon(ajustarTamañoI));
+                        jList1.setCellRenderer(new RenderDeIconos(icons));
                        }
                     }
-                }
-               
+                    for (int j = 0; j < listaContactosMostrar.size(); j++)
+                    {
+                        if(jList1.getModel().getElementAt(i).equals(listaContactosMostrar.getElementAt(j)))   
+                        {
+                          String ubicacion="C:\\MEIA\\Fotografias\\"+jList1.getModel().getElementAt(i)+".jpg";
+                          File f = new File(ubicacion);
+                          if(!(f.exists() && !f.isDirectory())) 
+                          {
+                              ubicacion="C:\\MEIA\\Fotografias\\"+jList1.getModel().getElementAt(i)+".png";
+                          }
+                        ImageIcon iconoIcon= new ImageIcon(ubicacion);
+                        Image ajustarImgI = iconoIcon.getImage();                   
+                        Image ajustarTamañoI= ajustarImgI.getScaledInstance(30,30, Image.SCALE_SMOOTH);
+                        icons.put(jList1.getModel().getElementAt(i), new ImageIcon(ajustarTamañoI));
+                        jList1.setCellRenderer(new RenderDeIconos(icons));
+                        }
+                    }
            }
+         }
          }
          catch (IOException ex)
          {
@@ -832,6 +885,8 @@ int xx,xy;
         JMenuItem agregarConntacItem = new JMenuItem("Agregar contacto");
         try
         {
+                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+                Pattern usuarioPattern = Pattern.compile(patronUsuario);
                 String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
                 String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
@@ -845,8 +900,11 @@ int xx,xy;
                 {   
                     Matcher m1 = contacPattern.matcher(lineasBitacoraList.get(i));
                     Matcher m10 = rolE.matcher(lineasBitacoraList.get(i));
-                    if(m10.find()&&m1.find())
+                    Matcher m = usuarioPattern.matcher(lineasBitacoraList.get(i));
+                    if(m10.find()&&m1.find()&&m.find())
                     {
+                        if(m.group(4).equals(cuenta))
+                        {
                         if(m1.group(4).equals(jList1.getSelectedValue()))
                         {
                             if(m10.group(4).contains("1"))
@@ -858,14 +916,18 @@ int xx,xy;
                                 menu.add(agregarConntacItem);
                             }
                         }
+                        }
                     }
                 }
                 for (int i = 0; i < lineasList.size(); i++)
                 {   
                     Matcher m1 = contacPattern.matcher(lineasList.get(i));
                     Matcher m10 = rolE.matcher(lineasList.get(i));
-                    if(m10.find()&&m1.find())
+                    Matcher m = usuarioPattern.matcher(lineasList.get(i));
+                    if(m10.find()&&m1.find()&&m.find())
                     {
+                        if(m.group(4).equals(cuenta))
+                        {
                         if(m1.group(4).equals(jList1.getSelectedValue()))
                         {
                             if(m10.group(4).contains("1"))
@@ -876,6 +938,7 @@ int xx,xy;
                             {
                                 menu.add(agregarConntacItem);
                             }
+                        }
                         }
                     }
                 }
@@ -890,6 +953,41 @@ int xx,xy;
         {
             public void actionPerformed(ActionEvent e)   
             {
+                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+                Pattern rol = Pattern.compile(patronUsuario);
+                Pattern rolE = Pattern.compile(patronEstatus);        
+                try 
+                {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++)
+                {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    Matcher m10 = rolE.matcher(lineas.get(i));
+                    if(m.find())
+                    {
+                        if(m.group(4).equals(jList1.getSelectedValue()))
+                        {
+                            //Usuario  existe
+                            if(m10.find())
+                            {
+                                if(m10.group(4).contains("0"))
+                                {
+                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado, no puedes agregar de nuevo a este contacto");   
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }        
+                }
+                catch(IOException exception)               
+                {                   
+                }
+                
+                
+                
                 Object[] options = { "Agregar", "Cancelar" };
                 int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a "+jList1.getSelectedValue()+"?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);  
                 if(dialogResult == 0)

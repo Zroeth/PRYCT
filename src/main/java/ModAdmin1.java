@@ -942,17 +942,7 @@ int xx,xy;
 
     private void btnCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearMouseClicked
         // TODO add your handling code here:
-        // TODO add your handling code here:
-        
-       
-      
-               
-        
-        
-        
-        
-        
-        
+ 
         if(password==null)
         {
             JOptionPane.showMessageDialog(null,"Ingrese una nueva Contraseña" );
@@ -1059,12 +1049,69 @@ int xx,xy;
             }
             desc_Usuario();
             desc_Backup_Usuario();
+            borrar(usuarioMod, opEstatusValor);
             limpiar();
             dispose();
         }
 
     }//GEN-LAST:event_btnCrearMouseClicked
 
+    
+       public void borrar(String contactoB,int operacion)        
+       {
+        String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+        String camposReemplazar="(Usuario)(\\:)(	| |)*(.+)(\\|)(|)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+        Pattern camposPattern = Pattern.compile(camposReemplazar);
+       
+        try 
+         {
+             List<String> lineas,lineasBitacora;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m1 = contacPattern.matcher(lineas.get(i));
+              Matcher m2 = camposPattern.matcher(lineas.get(i));
+                if(m1.find()&&m2.find())
+                {
+                        if(m1.group(4).equals(contactoB))
+                        {
+                         String reemplazar=m2.group(0)+"Estatus:"+0;
+                         lineas.set(i, reemplazar);
+                         Path out = Paths.get("C:\\MEIA\\contactos.txt");
+                         Files.write(out,lineas);
+                        }
+                }   
+             }
+             for (int i = 0; i < lineasBitacora.size(); i++)
+             {
+              Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
+              Matcher m2 = camposPattern.matcher(lineasBitacora.get(i));
+              if(m1.find()&&m2.find())
+              {
+                      if(m1.group(4).equals(contactoB))   
+                      {
+                          String reemplazar=m2.group(0)+"Estatus:"+0;
+                          lineasBitacora.set(i, reemplazar);
+                          Path out = Paths.get("C:\\MEIA\\bitacora_contactos.txt");
+                          Files.write(out,lineasBitacora);
+                      }
+                  }
+             }
+              
+             
+              
+         }
+           
+         
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         
+    }
+    
     private void btnSalir1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalir1MouseClicked
         // TODO add your handling code here:
         limpiar();
