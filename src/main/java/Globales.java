@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -162,5 +164,19 @@ public class Globales {
                         Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
              }
         
+    }
+     public DefaultListModel ordenarListaContactos(DefaultListModel model) 
+    {
+    List<String> list = new ArrayList<>();
+    for (int i = 0; i < model.size(); i++) 
+    {
+        list.add(model.get(i).toString());
+    }
+    Collections.sort(list);
+    model.removeAllElements();
+    list.forEach(s -> {
+        model.addElement(s);
+       });
+    return model;
     }
 }

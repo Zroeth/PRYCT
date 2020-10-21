@@ -5,6 +5,8 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,11 +24,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -36,8 +42,11 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.plaf.metal.MetalIconFactory;
 
 /*
@@ -45,37 +54,33 @@ import javax.swing.plaf.metal.MetalIconFactory;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+public  class IFEstandar extends javax.swing.JFrame {
 
-/**
- *
- * @author ericd
- */
-
-
-public class IFEstandar extends javax.swing.JFrame {
-
-    /**
-     * Creates new form IFEstandar
-     */
-    
    static String cuenta;
    static boolean valorRol;
    static String cuentaMod; 
    String pathFotografia;
    int maximaReorganizacion;
+   int xx,xy;
    DefaultListModel listaTodosLosContactos = new DefaultListModel();
    DefaultListModel listaContactosOcultar = new DefaultListModel();
    DefaultListModel listaContactosMostrar = new DefaultListModel();
+   
+   DefaultListModel listaTodasLasListas = new DefaultListModel();
+   DefaultListModel listaListasOcultar = new DefaultListModel();
+   DefaultListModel listaListasMostrar = new DefaultListModel();
      
-    Map<Object, ImageIcon> icons = new HashMap<Object, ImageIcon>();
-      
+    Map<Object, ImageIcon> icons = new HashMap<>();
+    
+    Map<Object, Integer> numerosMap = new HashMap<>();
+    
     public IFEstandar(String usuario) {
         
         
         setUndecorated(true);
         initComponents();
         getContentPane().setBackground(Color.white);    
-        cuenta=usuario;
+        cuenta="Nueva";
         lblBienvenido.setText("Bienvenido usuario "+cuenta);
         
         ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnBuscar.gif");
@@ -91,11 +96,13 @@ public class IFEstandar extends javax.swing.JFrame {
         btnSalir.setIcon(imIc5);
         
         mostrarContactos();
+        mostrarListas();
         String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         String patronPathFoto="(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
         Pattern rol = Pattern.compile(patron);
         Pattern rolPath = Pattern.compile(patronPathFoto);
         maximaReorganizacion=Max();
+        
         try
         {
                 List<String> lineas;
@@ -124,37 +131,8 @@ public class IFEstandar extends javax.swing.JFrame {
                 Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
                  JOptionPane.showMessageDialog(null, ":D");
         }
-    }
         
-    public int Max()
-    {
-        
-        String patronDesc="(Max reorganizacion)(\\:)(	| |)*(\\d*)";
-        Pattern maxReorganizacion = Pattern.compile(patronDesc);
-        try 
-        {
-             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
-             if(lineas.size()==0)
-             {
-                 return 3;
-             }
-             Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size()-1));    
-             if(m.find())  
-             {
-                 return Integer.parseInt(m.group(4));   
-             }
-             else
-             {
-                 return 3;   
-             }
-        } 
-        catch (IOException ex) 
-        {
-    
-        }
-        return 3;
     }
-    
     
 
     /**
@@ -170,11 +148,12 @@ public class IFEstandar extends javax.swing.JFrame {
         btnMod = new javax.swing.JLabel();
         Foto = new javax.swing.JLabel();
         btnSalir = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         txtUsuario = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -212,23 +191,11 @@ public class IFEstandar extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         txtUsuario.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
         txtUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtUsuario.setText("Buscar Usuario");
         txtUsuario.setToolTipText("");
         txtUsuario.setName(""); // NOI18N
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
-            }
-        });
 
         btnBuscar.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
         btnBuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -240,11 +207,6 @@ public class IFEstandar extends javax.swing.JFrame {
         });
 
         jList1.setFont(new java.awt.Font("Museo 300", 0, 24)); // NOI18N
-        jList1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jList1FocusLost(evt);
-            }
-        });
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jList1MousePressed(evt);
@@ -252,41 +214,44 @@ public class IFEstandar extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
+        jList2.setFont(new java.awt.Font("Museo 300", 0, 24)); // NOI18N
+        jList2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jList2MousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jList2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 201, Short.MAX_VALUE)
+                                .addContainerGap()
+                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(286, 286, 286)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(13, 13, 13)
-                                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(78, 78, 78)
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(53, 53, 53))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(10, 10, 10)))))
-                        .addGap(129, 129, 129))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(jButton1))
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addContainerGap()
+                                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(81, 81, 81)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 38, Short.MAX_VALUE)))
+                .addGap(129, 129, 129)
                 .addComponent(Foto, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -295,29 +260,25 @@ public class IFEstandar extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(Foto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblBienvenido)
-                        .addGap(26, 26, 26)
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(42, 42, 42))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(21, 21, 21)))
-                                .addComponent(jButton1)
-                                .addGap(125, 125, 125))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))))
+                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 152, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1))
+                                .addGap(150, 150, 150)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
 
         pack();
@@ -337,7 +298,7 @@ public class IFEstandar extends javax.swing.JFrame {
                Ifingreso.setLocationRelativeTo(null);
                dispose();
     }//GEN-LAST:event_btnSalirMouseClicked
-int xx,xy;
+
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         // TODO add your handling code here:
              int x=evt.getXOnScreen();
@@ -352,7 +313,443 @@ int xx,xy;
         xy=evt.getY();
     }//GEN-LAST:event_formMousePressed
 
-    public void mostrarContactos()
+   
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern rol = Pattern.compile(patronUsuario);
+        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";  
+        Pattern rolE = Pattern.compile(patronEstatus);
+        
+        try {
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++)
+            {
+                Matcher m = rol.matcher(lineas.get(i));
+                Matcher m10 = rolE.matcher(lineas.get(i));
+                if(m.find()&&m10.find())
+                {
+                    if(m.group(4).equals(txtUsuario.getText()))
+                    {
+                        //Usuario  existe
+                        //JOptionPane.showMessageDialog(null, "Usuario existe");
+                        if(m10.group(4).contains("0"))
+                        {
+                            JOptionPane.showMessageDialog(null, "Este usuario esta deshabilitado, no puedes agregarlo");
+                            return;
+                        }
+                        Object[] options = { "Agregar", "Cancelar" };
+                        int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar contacto?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
+                        if(dialogResult == 0)
+                        {
+                            if(txtUsuario.getText().equals(cuenta))
+                            {
+                                JOptionPane.showMessageDialog(null, "No estas sol@! busca contactos :')");
+                                return;
+                            }
+                            if(buscarContacto(txtUsuario.getText()))
+                            {
+                               agregarContacto(txtUsuario.getText(),1);
+                               return;
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        } 
+                        else 
+                        {
+                         //pues no   System.out.println("No");
+                             return;
+                        } 
+                       
+                    }
+                    else
+                    {
+                        //El usuario no existe :D
+                        //  JOptionPane.showMessageDialog(null, "Este usuario no existe");
+                    }
+                }
+                else
+                {
+                    //No hay usuarios
+
+                }
+            }
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnBuscarMouseClicked
+
+    private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
+        jList1.setSelectedIndex(jList1.locationToIndex(evt.getPoint()));
+        JPopupMenu menu = new JPopupMenu();        
+        JPopupMenu menuListas = new JPopupMenu();
+        jList1.setSelectedIndex(jList1.getSelectedIndex());
+        Color azulColor = new Color(51,153,255);
+        jList1.setSelectionBackground(azulColor);
+        JMenuItem borrarContactoItem = new JMenuItem("Borrar contacto");
+        JMenuItem agregarConntacItem = new JMenuItem("Agregar contacto");
+        JMenu agregarALista = new JMenu("Agregar a una lista");
+        JMenuItem NuevaLista = new JMenuItem("Agregar nueva lista");
+        
+        try
+        {
+                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+                Pattern usuarioPattern = Pattern.compile(patronUsuario);
+                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+                Pattern rolE = Pattern.compile(patronEstatus);
+                String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+                Pattern contacPattern = Pattern.compile(contactoString);
+              
+                List<String> lineasBitacoraList,lineasList;
+                lineasList=Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+                lineasBitacoraList = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+                
+                for (int i = 0; i < lineasBitacoraList.size(); i++)
+                {   
+                    Matcher m1 = contacPattern.matcher(lineasBitacoraList.get(i));
+                    Matcher m10 = rolE.matcher(lineasBitacoraList.get(i));
+                    Matcher m = usuarioPattern.matcher(lineasBitacoraList.get(i));
+                    if(m10.find()&&m1.find()&&m.find())
+                    {
+                        if(m.group(4).equals(cuenta))
+                        {
+                        if(m1.group(4).equals(jList1.getSelectedValue()))
+                        {
+                            if(m10.group(4).contains("1"))
+                            {
+                                menu.add(borrarContactoItem);
+                                agregarALista.add(NuevaLista);
+                                menu.add(agregarALista);
+                            }
+                            else
+                            {
+                                menu.add(agregarConntacItem);
+                            }
+                        }
+                        }
+                    }
+                }
+                for (int i = 0; i < lineasList.size(); i++)
+                {   
+                    Matcher m1 = contacPattern.matcher(lineasList.get(i));
+                    Matcher m10 = rolE.matcher(lineasList.get(i));
+                    Matcher m = usuarioPattern.matcher(lineasList.get(i));
+                    if(m10.find()&&m1.find()&&m.find())
+                    {
+                        if(m.group(4).equals(cuenta))
+                        {
+                        if(m1.group(4).equals(jList1.getSelectedValue()))
+                        {
+                            if(m10.group(4).contains("1"))
+                            {
+                                menu.add(borrarContactoItem);
+                                agregarALista.add(NuevaLista);
+                                menu.add(agregarALista);
+                            }
+                            else
+                            {
+                                menu.add(agregarConntacItem);
+                            }
+                        }
+                        }
+                    }
+                }
+            }
+         catch(IOException exception)       
+         {
+         }
+        agregarConntacItem.addActionListener((ActionEvent e) -> {
+            String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+            String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";   
+            Pattern rol = Pattern.compile(patronUsuario);
+            Pattern rolE = Pattern.compile(patronEstatus);
+            try
+            {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++)
+                {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    Matcher m10 = rolE.matcher(lineas.get(i));
+                    if(m.find())
+                    {
+                        if(m.group(4).equals(jList1.getSelectedValue()))
+                        {
+                            //Usuario  existe
+                            if(m10.find())
+                            {
+                                if(m10.group(4).contains("0"))
+                                {
+                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado, no puedes agregar de nuevo a este contacto");   
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch(IOException exception)
+            {
+            }
+            
+            Object[] options = { "Agregar", "Cancelar" };
+            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a "+jList1.getSelectedValue()+"?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
+            if(dialogResult == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Contacto reestablecido");
+                borrarContactos(jList1.getSelectedValue(),1);
+                mostrarContactos();
+            }
+           
+        });
+        borrarContactoItem.addActionListener((ActionEvent e) -> {
+            Object[] options = { "Borrar", "Cancelar" };
+            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar a "+jList1.getSelectedValue()+" de contactos?", "Borrar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);   
+            if(dialogResult == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Contacto borrado");
+                borrarContactos(jList1.getSelectedValue(),0);
+                mostrarContactos();
+            }
+            else
+            {
+                //pues no   System.out.println("No");
+                return;
+            }
+        });
+        //LISTAS
+        obtenerLista(agregarALista);
+        
+        NuevaLista.addActionListener((ActionEvent e) -> {    
+            JTextField nombreListaField = new JTextField(30);
+            JTextField descripcionListaField = new JTextField(30);
+            descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 70));
+            
+            
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Nombre de la lista:"));
+            myPanel.add(nombreListaField);
+            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+            myPanel.add(new JLabel("Descripcion:"));
+            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+            myPanel.add(descripcionListaField);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Ingrese los datos de la nueva lista", JOptionPane.OK_CANCEL_OPTION);
+            
+            if (result == JOptionPane.OK_OPTION)
+            {
+                if(nombreListaField.getText().length()<3||nombreListaField.getText().length()>30)
+                {
+                    JOptionPane.showMessageDialog(null, "El nombre de la lista debe ser mayor a 3 caracteres y menor a 30");
+                    return;
+                }
+                if(nombreListaField.getText().contains("|"))
+                {
+                    JOptionPane.showMessageDialog(null, "El nombre de la lista no puede contener | ");
+                    return;
+                }
+                if(descripcionListaField.getText().length()<1||descripcionListaField.getText().length()>40)
+                {
+                    JOptionPane.showMessageDialog(null, "La descripcion no puede estar vacia y no debe ser mayor a 40");
+                    return;
+                }
+                if(descripcionListaField.getText().contains("|"))
+                {
+                    JOptionPane.showMessageDialog(null, "La descripcion no puede contener | ");
+                    return;
+                }
+                
+                if(buscarEnLista(nombreListaField.getText()))
+                {
+                    //Nueva lista
+                    agregarLista(nombreListaField.getText(), descripcionListaField.getText(), 1, 1);
+                    
+                    //Lista-usuario
+                    
+                }
+                else
+                {
+                    //Ya existe, agregar en esa lista
+                    
+                }
+                
+            }
+             
+        });
+        menu.show(jList1, evt.getPoint().x, evt.getPoint().y);     
+        
+    }//GEN-LAST:event_jList1MousePressed
+
+    private void jList2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MousePressed
+        jList2.setSelectedIndex(jList2.locationToIndex(evt.getPoint()));
+        JPopupMenu menu = new JPopupMenu();
+        jList2.setSelectedIndex(jList2.getSelectedIndex());
+        Color azulColor = new Color(51,153,255);
+        jList2.setSelectionBackground(azulColor);
+        JMenuItem borrarContactoItem = new JMenuItem("Borrar Lista");
+        JMenuItem agregarConntacItem = new JMenuItem("Activar Lista");
+        
+        try
+        {
+                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+                Pattern usuarioPattern = Pattern.compile(patronUsuario);
+                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+                Pattern rolE = Pattern.compile(patronEstatus);
+                String contactoString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+                Pattern contacPattern = Pattern.compile(contactoString);
+              
+                List<String> lineasBitacoraList,lineasList;
+                lineasList=Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+                lineasBitacoraList = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+                
+                for (int i = 0; i < lineasBitacoraList.size(); i++)
+                {   
+                    Matcher m1 = contacPattern.matcher(lineasBitacoraList.get(i));
+                    Matcher m10 = rolE.matcher(lineasBitacoraList.get(i));
+                    Matcher m = usuarioPattern.matcher(lineasBitacoraList.get(i));
+                    if(m10.find()&&m1.find()&&m.find())
+                    {
+                        if(m.group(4).equals(cuenta))
+                        {
+                        if(m1.group(4).equals(jList2.getSelectedValue()))
+                        {
+                            if(m10.group(4).contains("1"))
+                            {
+                                menu.add(borrarContactoItem);
+                            }
+                            else
+                            {
+                                menu.add(agregarConntacItem);
+                            }
+                        }
+                        }
+                    }
+                }
+                for (int i = 0; i < lineasList.size(); i++)
+                {   
+                    Matcher m1 = contacPattern.matcher(lineasList.get(i));
+                    Matcher m10 = rolE.matcher(lineasList.get(i));
+                    Matcher m = usuarioPattern.matcher(lineasList.get(i));
+                    if(m10.find()&&m1.find()&&m.find())
+                    {
+                        if(m.group(4).equals(cuenta))
+                        {
+                        if(m1.group(4).equals(jList2.getSelectedValue()))
+                        {
+                            if(m10.group(4).contains("1"))
+                            {
+                                menu.add(borrarContactoItem);
+                            }
+                            else
+                            {
+                                menu.add(agregarConntacItem);
+                            }
+                        }
+                        }
+                    }
+                }
+            }
+         catch(IOException exception)       
+         {
+         }
+         menu.show(jList2, evt.getPoint().x, evt.getPoint().y);     
+    }//GEN-LAST:event_jList2MousePressed
+   
+    public int cantidadUsuarios(String nombreLista)
+    {
+        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern rolUsuario = Pattern.compile(patronUsuario);
+        
+        String patronListas="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";   
+        Pattern listaPattern = Pattern.compile(patronListas);
+        
+        String numeroUsuariosString="(Numero Usuarios)(\\:)(	| |)*(.+)(\\|)(E)";   
+        Pattern numeroUPattern = Pattern.compile(numeroUsuariosString);
+        
+        int cantidadUsuarios=0;
+        
+         try 
+         {
+             List<String> lineas,lineasBitacora;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = rolUsuario.matcher(lineas.get(i));
+              Matcher m1 = listaPattern.matcher(lineas.get(i));
+              Matcher m2 = numeroUPattern.matcher(lineas.get(i));
+              
+                if(m.find()&&m1.find()&&m2.find())
+                {
+                    if(m.group(4).equals(cuenta))
+                    {
+                        if(m1.group(4).equals(nombreLista))
+                        {
+                         cantidadUsuarios+=Integer.parseInt(m2.group(4));
+                        }
+                    }
+                }
+             }
+             for (int i = 0; i < lineasBitacora.size(); i++)
+             {
+                 Matcher m = rolUsuario.matcher(lineasBitacora.get(i));
+                 Matcher m1 = listaPattern.matcher(lineasBitacora.get(i));
+                 Matcher m2 = numeroUPattern.matcher(lineasBitacora.get(i));
+                 if(m.find()&&m1.find()&&m2.find())
+                 {
+                     if(m.group(4).equals(cuenta))
+                     {
+                         if(m1.group(4).equals(nombreLista))
+                         {
+                             cantidadUsuarios+=Integer.parseInt(m2.group(4));
+                         }
+                     }
+                 }
+             }
+         }
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        return cantidadUsuarios;
+    }
+    
+    
+    
+    public int Max()
+    {
+        String patronDesc="(Max reorganizacion)(\\:)(	| |)*(\\d*)";
+        Pattern maxReorganizacion = Pattern.compile(patronDesc);
+        try 
+        {
+             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
+             if(lineas.isEmpty())
+             {
+                 return 3;
+             }
+             Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size()-1));    
+             if(m.find())  
+             {
+                 return Integer.parseInt(m.group(4));   
+             }
+             else
+             {
+                 return 3;   
+             }
+        } 
+        catch (IOException ex) 
+        {
+    
+        }
+        return 3;
+    }
+     public void mostrarContactos()
     {
          String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
          Pattern rolUsuario = Pattern.compile(patronUsuario);
@@ -419,8 +816,8 @@ int xx,xy;
                        }
                    }
                }
-                ordenarListaContactos(listaContactosMostrar);
-                ordenarListaContactos(listaContactosOcultar);
+                listaContactosMostrar=new Globales().ordenarListaContactos(listaContactosMostrar); 
+                listaContactosOcultar=new Globales().ordenarListaContactos(listaContactosOcultar);
                for (int i = 0; i < listaContactosMostrar.size(); i++) 
                 {
                     listaTodosLosContactos.addElement(listaContactosMostrar.getElementAt(i));
@@ -431,13 +828,7 @@ int xx,xy;
                 }
                 
                 
-                jList1.setModel(listaTodosLosContactos);
-                
-           
-         
-         
-       
-                
+                jList1.setModel(listaTodosLosContactos);         
                 
                 for (int i = 0; i < jList1.getModel().getSize(); i++) 
                 {
@@ -478,113 +869,98 @@ int xx,xy;
          }
            
     }
-    
-    private void ordenarListaContactos(DefaultListModel model) 
+      public void mostrarListas()
     {
-    List<String> list = new ArrayList<>();
-    for (int i = 0; i < model.size(); i++) 
-    {
-        list.add(model.get(i).toString());
-    }
-    Collections.sort(list);
-    model.removeAllElements();
-    for (String s : list) 
-    {
-        model.addElement(s);
-    }
-    }
-    
-    
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+         Pattern rolUsuario = Pattern.compile(patronUsuario);
+         
+         String patronListas="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+         Pattern listaPattern = Pattern.compile(patronListas);
+         
+         
+         String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+         Pattern rolE = Pattern.compile(patronEstatus);
         
-       String m = JOptionPane.showInputDialog(null, "Ingrese nombre de la lista: ",
-                "Crear lista", JOptionPane.INFORMATION_MESSAGE);
-        
-        JOptionPane.showMessageDialog(null, m);
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsuarioActionPerformed
-
-    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
-        // TODO add your handling code here:
-        // TODO add your handling code here:
-        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-        Pattern rol = Pattern.compile(patronUsuario);
-        String patronContacto="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
-        Pattern contacto = Pattern.compile(patronContacto);
-        
-        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";  
-        Pattern rolE = Pattern.compile(patronEstatus);
-        
-        try {
-            List<String> lineas;
-            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-            for (int i = 0; i < lineas.size(); i++)
-            {
-                Matcher m = rol.matcher(lineas.get(i));
-                Matcher m10 = rolE.matcher(lineas.get(i));
-                if(m.find()&&m10.find())
+         listaTodasLasListas.clear();
+         listaListasOcultar.clear();
+         listaListasMostrar.clear();
+         List<String> lineas,lineasBitacora;
+         try 
+         {
+           lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+           lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+           
+           if(lineas.isEmpty()&&lineasBitacora.isEmpty())
+           {
+               //No tiene contactos, no existen contactos
+           }
+           else
+           {
+               for (int i = 0; i < lineas.size(); i++)
+               {
+                   Matcher m = rolUsuario.matcher(lineas.get(i));
+                   Matcher m1 = listaPattern.matcher(lineas.get(i));
+                   Matcher estadMatcher = rolE.matcher(lineas.get(i));
+                   if(m.find()&&estadMatcher.find()&&m1.find())
+                   {
+                       if(m.group(4).equals(cuenta))
+                       {
+                           if(estadMatcher.group(4).contains("1"))
+                           {
+                               listaListasMostrar.addElement(m1.group(4));
+                           }
+                           else
+                           {
+                               listaListasOcultar.addElement(m1.group(4));
+                           }
+                       }
+                   }
+               }
+               for (int i = 0; i < lineasBitacora.size(); i++)
+               {  
+                   Matcher m2 = rolUsuario.matcher(lineasBitacora.get(i));
+                   Matcher m3 = listaPattern.matcher(lineasBitacora.get(i));
+                   Matcher estadMatcher = rolE.matcher(lineasBitacora.get(i));
+                   if(m2.find()&&m3.find()&&estadMatcher.find())
+                   {
+                       if(m2.group(4).equals(cuenta))
+                       {        
+                         if(estadMatcher.group(4).contains("1"))
+                           {
+                           
+                               listaListasMostrar.addElement(m3.group(4));
+                           }
+                           else
+                           {
+                               listaListasOcultar.addElement(m3.group(4));
+                           }
+                       }
+                   }
+               }
+               
+                listaListasMostrar=new Globales().ordenarListaContactos(listaListasMostrar); 
+                listaListasOcultar=new Globales().ordenarListaContactos(listaListasOcultar);
+               for (int i = 0; i < listaListasMostrar.size(); i++) 
                 {
-                    if(m.group(4).equals(txtUsuario.getText()))
-                    {
-                        //Usuario  existe
-                        //JOptionPane.showMessageDialog(null, "Usuario existe");
-                        if(m10.group(4).contains("0"))
-                        {
-                            JOptionPane.showMessageDialog(null, "Este usuario esta deshabilitado, no puedes agregarlo");
-                            return;
-                        }
-                        Object[] options = { "Agregar", "Cancelar" };
-                        int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar contacto?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
-                        if(dialogResult == 0)
-                        {
-                            if(txtUsuario.getText().equals(cuenta))
-                            {
-                                JOptionPane.showMessageDialog(null, "No estas sol@! busca contactos :')");
-                                return;
-                            }
-                            if(buscarContacto(txtUsuario.getText()))
-                            {
-                               agregarContacto(txtUsuario.getText(),1);
-                               return;
-                            }
-                            else
-                            {
-                                return;
-                            }
-                        } 
-                        else 
-                        {
-                         //pues no   System.out.println("No");
-                             return;
-                        } 
-                       
-                    }
-                    else
-                    {
-                        //El usuario no existe :D
-                        //  JOptionPane.showMessageDialog(null, "Este usuario no existe");
-                    }
+                    listaTodasLasListas.addElement(listaListasMostrar.getElementAt(i));
                 }
-                else
+                for (int i = 0; i < listaListasOcultar.size(); i++) 
                 {
-                    //No hay usuarios
-
+                    listaTodasLasListas.addElement(listaListasOcultar.getElementAt(i));
                 }
-            }
-        }
-
-        catch (IOException ex)
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_btnBuscarMouseClicked
-
+                
+                
+                jList2.setModel(listaTodasLasListas);         
+                
+                
+           }
+         }
+         catch (IOException ex)
+         {
+           Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
+         }
+           
+    }
     public boolean buscarContacto(String contactoB)
     {
         String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
@@ -636,13 +1012,13 @@ int xx,xy;
          }
          return true;
     }
-    public void borrar(String contactoB,int operacion)
+    
+    public void borrarContactos(String contactoB,int operacion)
     {
         String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
         String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern contacPattern = Pattern.compile(contactoString);
-        
          try 
          {
              List<String> lineas,lineasBitacora;
@@ -676,43 +1052,106 @@ int xx,xy;
              }
              for (int i = 0; i < lineasBitacora.size(); i++)
              {
-              Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
-              Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
-              if(m.find()&&m1.find())  
-              {
-                  if(m.group(4).equals(cuenta))
-                  {
-                      if(m1.group(4).equals(contactoB))   
-                      {
-                            lineasBitacora.remove(i);
-                            Path out1 = Paths.get("C:\\MEIA\\bitacora_contactos.txt");           
-              Files.write(out1,lineasBitacora);
-              Iterator<String> it = lineasBitacora.iterator();
-              while (it.hasNext())
-              {
-                  String line = it.next();
-                  if (line.trim().isEmpty())
-                      it.remove();
-              }
-              Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineasBitacora);
-                            
-                            agregarContacto(contactoB, operacion);
-                            
-                      }
-                  }
-              }   
+                 Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
+                 Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
+                 if(m.find()&&m1.find())
+                 {
+                     if(m.group(4).equals(cuenta))
+                     {
+                         if(m1.group(4).equals(contactoB))
+                         {
+                             lineasBitacora.remove(i);
+                             Path out1 = Paths.get("C:\\MEIA\\bitacora_contactos.txt");                
+                             Files.write(out1,lineasBitacora);
+                             Iterator<String> it = lineasBitacora.iterator();
+                             while (it.hasNext())
+                             {
+                                 String line = it.next();
+                                 if (line.trim().isEmpty())
+                                     it.remove();
+                             }
+                             Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineasBitacora);
+                             agregarContacto(contactoB, operacion);
+                      
+                         }
+                     }
+                 }
              }
-              
-             
-              
          }
-           
-         
          catch (IOException ex)
          {
              Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
          }
-         
+    }
+    public void borrarLista(String nombreLista,String descripcionString,int operacion)
+    {
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+         try 
+         {
+             List<String> lineas,lineasBitacora;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineas.get(i));
+              Matcher m1 = contacPattern.matcher(lineas.get(i));
+                if(m.find()&&m1.find())
+                {
+                    if(m.group(4).equals(cuenta))
+                    {
+                        if(m1.group(4).equals(nombreLista))
+                        {
+                         lineas.remove(i);
+                         Path out = Paths.get("C:\\MEIA\\lista.txt");
+                         Files.write(out,lineas);
+                         Iterator<String> i2It = lineas.iterator();
+                         while (i2It.hasNext())
+                         {
+                             String line = i2It.next();
+                             if (line.trim().isEmpty())
+                                 i2It.remove();
+                         }
+                         Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);
+                         agregarLista(nombreLista, usuarioString, operacion, operacion);
+                        }
+                    }
+                }
+             }
+             for (int i = 0; i < lineasBitacora.size(); i++)
+             {
+                 Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
+                 Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
+                 if(m.find()&&m1.find())
+                 {
+                     if(m.group(4).equals(cuenta))
+                     {
+                         if(m1.group(4).equals(nombreLista))
+                         {
+                             lineasBitacora.remove(i);
+                             Path out1 = Paths.get("C:\\MEIA\\bitacora_lista.txt");                
+                             Files.write(out1,lineasBitacora);
+                             Iterator<String> it = lineasBitacora.iterator();
+                             while (it.hasNext())
+                             {
+                                 String line = it.next();
+                                 if (line.trim().isEmpty())
+                                     it.remove();
+                             }
+                             Files.write(Path.of("C:\\MEIA\\bitacora_lista.txt"), lineasBitacora);
+                             agregarLista(nombreLista, usuarioString, operacion, operacion);
+                      
+                         }
+                     }
+                 }
+             }
+         }
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
     public void agregarContacto(String contactoN,int operacion)
     {
@@ -810,7 +1249,7 @@ int xx,xy;
              }
         
         
-        if(cantidadCuentas==maximaReorganizacion)
+        if(cantidadCuentas>=maximaReorganizacion)
         {
             //JOptionPane.showMessageDialog(null,"Cantidad de cuentas:"+cantidadCuentas );
             try
@@ -873,172 +1312,293 @@ int xx,xy;
         }
         mostrarContactos();
     }
-
-    private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
-        jList1.setSelectedIndex(jList1.locationToIndex(evt.getPoint()));
-        JPopupMenu menu = new JPopupMenu();        
-        JPopupMenu menu1 = new JPopupMenu();
-        jList1.setSelectedIndex(jList1.getSelectedIndex());
-        Color azulColor = new Color(51,153,255);
-        jList1.setSelectionBackground(azulColor);
-        JMenuItem borrarContactoItem = new JMenuItem("Borrar contacto");
-        JMenuItem agregarConntacItem = new JMenuItem("Agregar contacto");
-        try
+    public boolean buscarEnLista(String nombreLista)
+    {
+        String nombreListaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern listaPattern = Pattern.compile(nombreListaString);
+        String usuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern usuarioPattern = Pattern.compile(usuario);
+         try 
+         {
+             List<String> lineas,lineasBitacora;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = listaPattern.matcher(lineas.get(i));
+              Matcher m1 = usuarioPattern.matcher(lineas.get(i));
+                if(m.find()&&m1.find())
+                {
+                    if(m.group(4).equals(nombreLista))
+                    {
+                        if(m1.group(4).equals(cuenta))
+                        {
+                         JOptionPane.showMessageDialog(null, "Ya tienes una lista llamada "+nombreLista);
+                         return false;
+                        }
+                    }
+                }   
+             }
+             for (int i = 0; i < lineasBitacora.size(); i++)
+             {
+              Matcher m = listaPattern.matcher(lineasBitacora.get(i));
+              Matcher m1 = usuarioPattern.matcher(lineasBitacora.get(i));
+              if(m.find()&&m1.find())  
+              {
+                  if(m.group(4).equals(nombreLista))
+                  {
+                      if(m1.group(4).equals(cuenta))   
+                      {
+                         JOptionPane.showMessageDialog(null, "Ya tienes una lista llamada "+nombreLista);
+                         return false;
+                      }
+                  }
+              }   
+             }
+         }
+           
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return true;
+    }
+    
+    public void obtenerLista(JMenu menu)
+    {
+        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+        Pattern rolE = Pattern.compile(patronEstatus);
+        String nombreListaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern listaPattern = Pattern.compile(nombreListaString);
+        String usuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern usuarioPattern = Pattern.compile(usuario);
+         try 
+         {
+             List<String> lineas,lineasBitacora;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = rolE.matcher(lineas.get(i));
+              Matcher m1 = usuarioPattern.matcher(lineas.get(i));
+              Matcher m2 = listaPattern.matcher(lineas.get(i));
+              
+                if(m.find()&&m1.find()&&m2.find())
+                {
+                    if(m1.group(4).equals(cuenta))
+                    {
+                        if(m.group(4).contains("1"))
+                        {
+                         menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));
+                        }
+                    }
+                }   
+             }
+             for (int i = 0; i < lineasBitacora.size(); i++)
+             {
+              Matcher m = rolE.matcher(lineasBitacora.get(i));
+              Matcher m1 = usuarioPattern.matcher(lineasBitacora.get(i));            
+              Matcher m2 = listaPattern.matcher(lineasBitacora.get(i));
+             
+              if(m.find()&&m1.find()&&m2.find())
+              {  
+                  if(m1.group(4).equals(cuenta))
+                  {
+                      if(m.group(4).contains("1"))   
+                      {
+                         menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));
+                      }
+                  }
+              }   
+             }
+         }
+           
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+       
+    }
+    
+    public void agregarLista(String nombreListaString,String descripcionString,int operacion,int numeroUsuarios)
+    {
+        String patron="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatus = Pattern.compile(patron);
+        
+        Path p = Paths.get("C:\\MEIA\\bitacora_lista.txt");
+        
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        String s = System.lineSeparator() + "Nombre Lista:"+nombreListaString+"|"+ "Usuario:"+cuenta+"|"
+                 + "Fecha Creacion:"+jfecha+"|"+ "Descripcion:"+descripcionString+"|"+"Numero Usuarios:"+numeroUsuarios+"|"+ "Estatus:"+operacion;
+        
+        try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
         {
-                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
-                Pattern usuarioPattern = Pattern.compile(patronUsuario);
+               writer.write(s);
+               writer.close();
+        }
+         
+        catch (IOException ioe) 
+        {
+               System.err.format("IOException: %s%n", ioe);
+        }
+        int cantidadCuentas=0;
+        int cantidadActivos=0;
+        int cantidadInactivos=0;
+        try 
+        {
+            List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+            for (int i = 0; i < lineas.size(); i++)
+            {
+                Matcher m = estatus.matcher(lineas.get(i));
+                if(m.find())
+                {
+                    cantidadCuentas++;
+                    if(m.group(4).contains("1"))
+                    {
+                     //Esta activo
+                        cantidadActivos++;
+                    }   
+                    else   
+                    {
+                      //No esta activo
+                        cantidadInactivos++;
+                    }
+                }   
+            }   
+            
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
+            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }  
+        
+        /////////////////////////////////////////////////////////////////////////
+        try 
+            {
+               
+         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+             String nombresimbolicoString;
+             
+             if (operacion==1)             
+             {
+                 nombresimbolicoString="Crear lista";  
+             }
+             else
+             {
+                 nombresimbolicoString="Borrar lista";
+             }
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineas.set(0, "Nombre simbolico:"+nombresimbolicoString+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
+                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadActivos+"|"+
+                             "Registros Inactivos:"+cantidadInactivos+"|"+"Max reorganizacion:"+maximaReorganizacion);
+                
+             Path out = Paths.get("C:\\MEIA\\bitacora_lista.txt");
+             Files.write(out,lineas);
+             
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             Iterator<String> i = lineas.iterator();
+             while (i.hasNext())
+             {
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();       
+             }
+             Files.write(Path.of("C:\\MEIA\\bitacora_lista.txt"), lineas);             
+             
+             }
+             catch (IOException ex) 
+             {
+                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        
+        
+        if(cantidadCuentas>=maximaReorganizacion)
+        {
+            //JOptionPane.showMessageDialog(null,"Cantidad de cuentas:"+cantidadCuentas );
+            try
+            {
                 String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
-                String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
-                Pattern contacPattern = Pattern.compile(contactoString);
-              
-                List<String> lineasBitacoraList,lineasList;
-                lineasList=Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-                lineasBitacoraList = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
-                
-                for (int i = 0; i < lineasBitacoraList.size(); i++)
-                {   
-                    Matcher m1 = contacPattern.matcher(lineasBitacoraList.get(i));
-                    Matcher m10 = rolE.matcher(lineasBitacoraList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineasBitacoraList.get(i));
-                    if(m10.find()&&m1.find()&&m.find())
-                    {
-                        if(m.group(4).equals(cuenta))
-                        {
-                        if(m1.group(4).equals(jList1.getSelectedValue()))
-                        {
-                            if(m10.group(4).contains("1"))
-                            {
-                                menu.add(borrarContactoItem);
-                            }
-                            else
-                            {
-                                menu.add(agregarConntacItem);
-                            }
-                        }
-                        }
-                    }
-                }
-                for (int i = 0; i < lineasList.size(); i++)
-                {   
-                    Matcher m1 = contacPattern.matcher(lineasList.get(i));
-                    Matcher m10 = rolE.matcher(lineasList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineasList.get(i));
-                    if(m10.find()&&m1.find()&&m.find())
-                    {
-                        if(m.group(4).equals(cuenta))
-                        {
-                        if(m1.group(4).equals(jList1.getSelectedValue()))
-                        {
-                            if(m10.group(4).contains("1"))
-                            {
-                                menu.add(borrarContactoItem);
-                            }
-                            else
-                            {
-                                menu.add(agregarConntacItem);
-                            }
-                        }
-                        }
-                    }
-                }
-            }
-         catch(IOException exception)
-                 
-         {
-         
-                 
-         }
-        agregarConntacItem.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)   
-            {
-                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
-                Pattern rol = Pattern.compile(patronUsuario);
-                Pattern rolE = Pattern.compile(patronEstatus);        
-                try 
-                {
                 List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+                List<String> cuentasList = new ArrayList<String>();
                 for (int i = 0; i < lineas.size(); i++)
-                {
-                    Matcher m = rol.matcher(lineas.get(i));
+                {   
                     Matcher m10 = rolE.matcher(lineas.get(i));
-                    if(m.find())
+                    if(m10.find())
                     {
-                        if(m.group(4).equals(jList1.getSelectedValue()))
-                        {
-                            //Usuario  existe
-                            if(m10.find())
-                            {
-                                if(m10.group(4).contains("0"))
-                                {
-                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado, no puedes agregar de nuevo a este contacto");   
-                                    return;
-                                }
-                            }
-                        }
+                        cuentasList.add(lineas.get(i));
+                        lineas.remove(i);
+                        i=0;
                     }
-                }        
                 }
-                catch(IOException exception)               
-                {                   
-                }
+                Path out = Paths.get("C:\\MEIA\\bitacora_lista.txt");   
+                Files.write(out,lineas);
                 
-                
-                
-                Object[] options = { "Agregar", "Cancelar" };
-                int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a "+jList1.getSelectedValue()+"?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);  
-                if(dialogResult == 0)
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));             
+                Iterator<String> i = lineas.iterator();
+                while (i.hasNext())
                 {
-                    JOptionPane.showMessageDialog(null, "Contacto reestablecido");
-                    borrar(jList1.getSelectedValue(),1);
-                   mostrarContactos();
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();
                 }
-                else
+                
+                Files.write(Path.of("C:\\MEIA\\bitacora_lista.txt"), lineas); 
+                p = Paths.get("C:\\MEIA\\lista.txt");
+        
+        
+                try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))
                 {
-                    //pues no   System.out.println("No");   
-                    return;
+                    for(String str: cuentasList) 
+                    {
+                        writer.write(System.lineSeparator()+str);
+                    }
                 }
-            }
-        });
-        
-        
-        
-        
-       
-        
-        
-        borrarContactoItem.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)   
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));             
+                Iterator<String> i2It = lineas.iterator();
+                while (i2It.hasNext())
+                {
+                 String line = i2It.next();
+                 if (line.trim().isEmpty())
+                     i2It.remove();
+                }
+             Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);  
+                
+             }
+             catch (IOException ex) 
+             {
+                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        }
+       mostrarListas();
+    }
+    private class AccionesEnLasListas extends AbstractAction {
+        public AccionesEnLasListas(String name) {
+            super(name);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //System.out.println("Menu item: " + e.getActionCommand());
+            Object[] options = { "Agregar", "Cancelar" };                        
+            int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar "+jList1.getSelectedValue()+" a la lista "+e.getActionCommand()+"?", "Agregar contacto a lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
+            if(dialogResult == 0)
             {
-                Object[] options = { "Borrar", "Cancelar" };
-                int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar a "+jList1.getSelectedValue()+" de contactos?", "Borrar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);  
-                if(dialogResult == 0)
-                {
-                    JOptionPane.showMessageDialog(null, "Contacto borrado");
-                    borrar(jList1.getSelectedValue(),0);
-                   mostrarContactos();
-                }
-                else
-                {
-                    //pues no   System.out.println("No");   
-                    return;
-                }
+                //Si
+                JOptionPane.showMessageDialog(null, "Agregado");
+                //codigo 
             }
-        });
-       
-        menu.add("otra cosa");
-        menu.show(jList1, evt.getPoint().x, evt.getPoint().y);     
-    }//GEN-LAST:event_jList1MousePressed
-
-    private void jList1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jList1FocusLost
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jList1FocusLost
-
+            else
+            {
+                
+            }
+                       
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -1079,9 +1639,10 @@ int xx,xy;
     private javax.swing.JLabel btnBuscar;
     private javax.swing.JLabel btnMod;
     private javax.swing.JLabel btnSalir;
-    private javax.swing.JButton jButton1;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBienvenido;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
