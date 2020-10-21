@@ -3,10 +3,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +47,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.metal.MetalIconFactory;
@@ -75,11 +79,16 @@ public  class IFEstandar extends javax.swing.JFrame {
     Map<Object, Integer> numerosMap = new HashMap<>();
     
     public IFEstandar(String usuario) {
+       
         
         
         setUndecorated(true);
         initComponents();
+        
+        
         getContentPane().setBackground(Color.white);    
+ 
+        
         cuenta="Nueva";
         lblBienvenido.setText("Bienvenido usuario "+cuenta);
         
@@ -102,6 +111,12 @@ public  class IFEstandar extends javax.swing.JFrame {
         Pattern rol = Pattern.compile(patron);
         Pattern rolPath = Pattern.compile(patronPathFoto);
         maximaReorganizacion=Max();
+        
+        
+        
+        
+        
+        
         
         try
         {
@@ -215,6 +230,11 @@ public  class IFEstandar extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         jList2.setFont(new java.awt.Font("Museo 300", 0, 24)); // NOI18N
+        jList2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jList2MouseMoved(evt);
+            }
+        });
         jList2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jList2MousePressed(evt);
@@ -227,25 +247,19 @@ public  class IFEstandar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(286, 286, 286)
                                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(81, 81, 81)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -509,6 +523,7 @@ public  class IFEstandar extends javax.swing.JFrame {
             }
            
         });
+        //
         borrarContactoItem.addActionListener((ActionEvent e) -> {
             Object[] options = { "Borrar", "Cancelar" };
             int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar a "+jList1.getSelectedValue()+" de contactos?", "Borrar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);   
@@ -582,6 +597,7 @@ public  class IFEstandar extends javax.swing.JFrame {
             }
              
         });
+        
         menu.show(jList1, evt.getPoint().x, evt.getPoint().y);     
         
     }//GEN-LAST:event_jList1MousePressed
@@ -592,8 +608,8 @@ public  class IFEstandar extends javax.swing.JFrame {
         jList2.setSelectedIndex(jList2.getSelectedIndex());
         Color azulColor = new Color(51,153,255);
         jList2.setSelectionBackground(azulColor);
-        JMenuItem borrarContactoItem = new JMenuItem("Borrar Lista");
-        JMenuItem agregarConntacItem = new JMenuItem("Activar Lista");
+        JMenuItem borrarLista = new JMenuItem("Borrar Lista");
+        JMenuItem agregarLista = new JMenuItem("Activar Lista");
         
         try
         {
@@ -621,11 +637,11 @@ public  class IFEstandar extends javax.swing.JFrame {
                         {
                             if(m10.group(4).contains("1"))
                             {
-                                menu.add(borrarContactoItem);
+                                menu.add(borrarLista);
                             }
                             else
                             {
-                                menu.add(agregarConntacItem);
+                                menu.add(agregarLista);
                             }
                         }
                         }
@@ -644,11 +660,11 @@ public  class IFEstandar extends javax.swing.JFrame {
                         {
                             if(m10.group(4).contains("1"))
                             {
-                                menu.add(borrarContactoItem);
+                                menu.add(borrarLista);
                             }
                             else
                             {
-                                menu.add(agregarConntacItem);
+                                menu.add(agregarLista);
                             }
                         }
                         }
@@ -658,9 +674,126 @@ public  class IFEstandar extends javax.swing.JFrame {
          catch(IOException exception)       
          {
          }
+        
+         borrarLista.addActionListener((ActionEvent e) -> {
+            Object[] options = { "Borrar", "Cancelar" };
+            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar la lista "+jList2.getSelectedValue()+"?", "Borrar Lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);   
+            if(dialogResult == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Lista borrada");
+                borrarLista(jList2.getSelectedValue(), 0);
+                mostrarListas();
+            }
+        });
+        
+        
+      
+         agregarLista.addActionListener((ActionEvent e) -> {            
+            Object[] options = { "Agregar", "Cancelar" };
+            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere reestablecer la lista "+jList2.getSelectedValue()+"?", "Reestablecer Lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
+            if(dialogResult == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Lista reestablecida");
+                borrarLista(jList2.getSelectedValue(),1);
+                mostrarListas();
+            }
+           
+        });
+        
+        
+        
+        
+        
          menu.show(jList2, evt.getPoint().x, evt.getPoint().y);     
     }//GEN-LAST:event_jList2MousePressed
+
+    private void jList2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MouseMoved
+        // TODO add your handling code here:
+        jList2.setToolTipText(getToolTipText(evt));
+    }//GEN-LAST:event_jList2MouseMoved
    
+    
+     public String getToolTipText(MouseEvent me) 
+     {        
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        
+        String descripcionString="(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern descripcionPattern = Pattern.compile(descripcionString);
+        
+        String listaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern listaPattern = Pattern.compile(listaString);
+        
+        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)"; 
+        Pattern rolE = Pattern.compile(patronEstatus);
+           
+        int index = jList2.locationToIndex(me.getPoint());
+        
+        try 
+         {
+             List<String> lineas,lineasBitacora;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineas.get(i));
+              Matcher m1 = listaPattern.matcher(lineas.get(i));
+              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+              Matcher m3 = rolE.matcher(lineas.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                    if(m.group(4).equals(cuenta))
+                    {
+                        
+                        if(m1.group(4).equals((String) jList2.getModel().getElementAt(index)))
+                        {
+                        if(m3.group(4).contains("1"))
+                        {
+                            return m2.group(4);
+                        }
+                         else
+                        {
+                            return "Lista deshabilitada";
+                        }
+                        }
+                        
+                    }
+                }
+             }
+             for (int i = 0; i < lineasBitacora.size(); i++)
+             {
+                 Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
+                 Matcher m1 = listaPattern.matcher(lineasBitacora.get(i));
+                 Matcher m2 = descripcionPattern.matcher(lineasBitacora.get(i));
+                 Matcher m3 = rolE.matcher(lineasBitacora.get(i));
+                 if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                 {
+                     if(m.group(4).equals(cuenta))
+                     {
+                         if(m1.group(4).equals((String) jList2.getModel().getElementAt(index)))
+                         {
+                             if(m3.group(4).contains("1"))
+                             {
+                                 return m2.group(4);
+                             }
+                             else
+                             {
+                                 return "Lista deshabilitada";
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }  
+            
+            return null;
+     }
+    
+    
     public int cantidadUsuarios(String nombreLista)
     {
         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
@@ -1083,12 +1216,16 @@ public  class IFEstandar extends javax.swing.JFrame {
              Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
-    public void borrarLista(String nombreLista,String descripcionString,int operacion)
+    public void borrarLista(String nombreLista,int operacion)
     {
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
-        Pattern contacPattern = Pattern.compile(contactoString);
+        
+        String descripcionString="(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern descripcionPattern = Pattern.compile(descripcionString);
+        
+        String listaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern listaPattern = Pattern.compile(listaString);
          try 
          {
              List<String> lineas,lineasBitacora;
@@ -1097,8 +1234,9 @@ public  class IFEstandar extends javax.swing.JFrame {
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = usuarioPattern.matcher(lineas.get(i));
-              Matcher m1 = contacPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find())
+              Matcher m1 = listaPattern.matcher(lineas.get(i));
+              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+                if(m.find()&&m1.find()&&m2.find())
                 {
                     if(m.group(4).equals(cuenta))
                     {
@@ -1115,7 +1253,8 @@ public  class IFEstandar extends javax.swing.JFrame {
                                  i2It.remove();
                          }
                          Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);
-                         agregarLista(nombreLista, usuarioString, operacion, operacion);
+                         agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuarios(nombreLista));
+                        
                         }
                     }
                 }
@@ -1123,8 +1262,9 @@ public  class IFEstandar extends javax.swing.JFrame {
              for (int i = 0; i < lineasBitacora.size(); i++)
              {
                  Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
-                 Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
-                 if(m.find()&&m1.find())
+                 Matcher m1 = listaPattern.matcher(lineasBitacora.get(i));
+                 Matcher m2 = descripcionPattern.matcher(lineasBitacora.get(i));
+                 if(m.find()&&m1.find()&&m2.find())
                  {
                      if(m.group(4).equals(cuenta))
                      {
@@ -1141,8 +1281,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                                      it.remove();
                              }
                              Files.write(Path.of("C:\\MEIA\\bitacora_lista.txt"), lineasBitacora);
-                             agregarLista(nombreLista, usuarioString, operacion, operacion);
-                      
+                            agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuarios(nombreLista));
                          }
                      }
                  }
@@ -1576,6 +1715,14 @@ public  class IFEstandar extends javax.swing.JFrame {
         }
        mostrarListas();
     }
+
+    private int locationToIndex(Point point) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Object getModel() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     private class AccionesEnLasListas extends AbstractAction {
         public AccionesEnLasListas(String name) {
             super(name);
@@ -1629,6 +1776,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new IFEstandar(IFingreso.cuenta).setVisible(true);
             }
         });
