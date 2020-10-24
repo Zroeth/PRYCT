@@ -31,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -76,7 +77,7 @@ public  class IFEstandar extends javax.swing.JFrame {
      
     Map<Object, ImageIcon> icons = new HashMap<>();
     
-    Map<Object, Integer> numerosMap = new HashMap<>();
+    Map<Object, Icon> numerosMap = new HashMap<>();
     
     public IFEstandar(String usuario) {
        
@@ -90,9 +91,10 @@ public  class IFEstandar extends javax.swing.JFrame {
  
         
         cuenta="Nueva";
+        
         lblBienvenido.setText("Bienvenido usuario "+cuenta);
         
-        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnBuscar.gif");
+        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnAgregar.gif");
         btnBuscar.setIcon(imIc3);
         
        
@@ -163,7 +165,6 @@ public  class IFEstandar extends javax.swing.JFrame {
         btnMod = new javax.swing.JLabel();
         Foto = new javax.swing.JLabel();
         btnSalir = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
@@ -206,12 +207,6 @@ public  class IFEstandar extends javax.swing.JFrame {
             }
         });
 
-        txtUsuario.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
-        txtUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtUsuario.setText("Buscar Usuario");
-        txtUsuario.setToolTipText("");
-        txtUsuario.setName(""); // NOI18N
-
         btnBuscar.setFont(new java.awt.Font("Museo 300", 0, 18)); // NOI18N
         btnBuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -252,10 +247,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                     .addComponent(lblBienvenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(286, 286, 286)
-                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -283,9 +275,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                                 .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 152, Short.MAX_VALUE))
+                                .addGap(0, 196, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
@@ -329,9 +319,16 @@ public  class IFEstandar extends javax.swing.JFrame {
 
    
     private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
-        // TODO add your handling code here:
-        // TODO add your handling code here:
-        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        
+        JTextField usuarioBuscarField = new JTextField(30);
+        usuarioBuscarField.setPreferredSize(new java.awt.Dimension(30, 50));
+        JPanel myPanel = new JPanel(); 
+        myPanel.add(new JLabel("Usuario:"));
+        myPanel.add(usuarioBuscarField);
+        int result = JOptionPane.showConfirmDialog(null, myPanel,"Agregar cuenta", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION)
+        {
+         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern rol = Pattern.compile(patronUsuario);
         String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";  
         Pattern rolE = Pattern.compile(patronEstatus);
@@ -345,7 +342,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                 Matcher m10 = rolE.matcher(lineas.get(i));
                 if(m.find()&&m10.find())
                 {
-                    if(m.group(4).equals(txtUsuario.getText()))
+                    if(m.group(4).equals(usuarioBuscarField.getText()))
                     {
                         //Usuario  existe
                         //JOptionPane.showMessageDialog(null, "Usuario existe");
@@ -358,14 +355,14 @@ public  class IFEstandar extends javax.swing.JFrame {
                         int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar contacto?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
                         if(dialogResult == 0)
                         {
-                            if(txtUsuario.getText().equals(cuenta))
+                            if(usuarioBuscarField.getText().equals(cuenta))
                             {
                                 JOptionPane.showMessageDialog(null, "No estas sol@! busca contactos :')");
                                 return;
                             }
-                            if(buscarContacto(txtUsuario.getText()))
+                            if(buscarContacto(usuarioBuscarField.getText()))
                             {
-                               agregarContacto(txtUsuario.getText(),1);
+                               agregarContacto(usuarioBuscarField.getText(),1);
                                return;
                             }
                             else
@@ -398,6 +395,11 @@ public  class IFEstandar extends javax.swing.JFrame {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        
+        }
+        
+        
+       
     }//GEN-LAST:event_btnBuscarMouseClicked
 
     private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
@@ -993,7 +995,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                         jList1.setCellRenderer(new RenderDeIconos(icons));
                         }
                     }
-           }
+                }
          }
          }
          catch (IOException ex)
@@ -1083,7 +1085,39 @@ public  class IFEstandar extends javax.swing.JFrame {
                 }
                 
                 
-                jList2.setModel(listaTodasLasListas);         
+                jList2.setModel(listaTodasLasListas);
+                
+                for (int i = 0; i < jList2.getModel().getSize(); i++) 
+                {
+                    for (int j = 0; j < listaListasOcultar.size(); j++)
+                    {
+                       if(jList2.getModel().getElementAt(i).equals(listaListasOcultar.getElementAt(j)))
+                       {
+                        Image ajustarImgI =  ImageIO.read(new File("src/main/java/Imagenes/desconectado.png"));
+                        Image ajustarTamañoI= ajustarImgI.getScaledInstance(30,30, Image.SCALE_SMOOTH);
+                        ImageIcon icon = new ImageIcon(ajustarTamañoI);
+                        numerosMap.put(jList2.getModel().getElementAt(i),icon);
+                        jList2.setCellRenderer(new RenderNumeros(numerosMap));
+                       }
+                    } 
+                    for (int j = 0; j < listaListasMostrar.size(); j++)
+                    {
+                        if(jList2.getModel().getElementAt(i).equals(listaListasMostrar.getElementAt(j)))   
+                        {
+                            if(cantidadUsuarios(jList2.getModel().getElementAt(i))>9)
+                            {
+                                numerosMap.put(jList2.getModel().getElementAt(i), new DynamicIcon(cantidadUsuarios(jList2.getModel().getElementAt(i))+" "));
+                                jList2.setCellRenderer(new RenderNumeros(numerosMap));
+                            }
+                            else
+                            {
+                                numerosMap.put(jList2.getModel().getElementAt(i), new DynamicIcon(cantidadUsuarios(jList2.getModel().getElementAt(i))+"  "));
+                                jList2.setCellRenderer(new RenderNumeros(numerosMap));
+                            }
+                        }
+                    }
+                   
+                }
                 
                 
            }
@@ -1093,6 +1127,8 @@ public  class IFEstandar extends javax.swing.JFrame {
            Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
          }
            
+         
+         
     }
     public boolean buscarContacto(String contactoB)
     {
@@ -1716,13 +1752,7 @@ public  class IFEstandar extends javax.swing.JFrame {
        mostrarListas();
     }
 
-    private int locationToIndex(Point point) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
-    private Object getModel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     private class AccionesEnLasListas extends AbstractAction {
         public AccionesEnLasListas(String name) {
             super(name);
@@ -1792,6 +1822,5 @@ public  class IFEstandar extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBienvenido;
-    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
