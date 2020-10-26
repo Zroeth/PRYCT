@@ -709,7 +709,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         
         if(Operacion==1)
         {
-        if(posicionReemplazar==999999)
+        if(posicionReemplazar==0)
         {
         try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
         {
