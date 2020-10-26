@@ -65,7 +65,8 @@ public  class IFEstandar extends javax.swing.JFrame {
    static boolean valorRol;
    static String cuentaMod; 
    String pathFotografia;
-   int maximaReorganizacion;
+   int maximaReorganizacion;    
+   String descripcionLista;
    int xx,xy;
    DefaultListModel listaTodosLosContactos = new DefaultListModel();
    DefaultListModel listaContactosOcultar = new DefaultListModel();
@@ -424,10 +425,11 @@ public  class IFEstandar extends javax.swing.JFrame {
        
     }//GEN-LAST:event_btnBuscarMouseClicked
 
+
+    
     private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
         jList1.setSelectedIndex(jList1.locationToIndex(evt.getPoint()));
         JPopupMenu menu = new JPopupMenu();        
-        JPopupMenu menuListas = new JPopupMenu();
         jList1.setSelectedIndex(jList1.getSelectedIndex());
         Color azulColor = new Color(51,153,255);
         jList1.setSelectionBackground(azulColor);
@@ -445,15 +447,15 @@ public  class IFEstandar extends javax.swing.JFrame {
                 String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
                 Pattern contacPattern = Pattern.compile(contactoString);
               
-                List<String> lineasBitacoraList,lineasList;
+                List<String> lineaDescList,lineasList;
                 lineasList=Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-                lineasBitacoraList = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+                lineaDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
                 
-                for (int i = 0; i < lineasBitacoraList.size(); i++)
+                for (int i = 0; i < lineaDescList.size(); i++)
                 {   
-                    Matcher m1 = contacPattern.matcher(lineasBitacoraList.get(i));
-                    Matcher m10 = rolE.matcher(lineasBitacoraList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineasBitacoraList.get(i));
+                    Matcher m1 = contacPattern.matcher(lineaDescList.get(i));
+                    Matcher m10 = rolE.matcher(lineaDescList.get(i));
+                    Matcher m = usuarioPattern.matcher(lineaDescList.get(i));
                     if(m10.find()&&m1.find()&&m.find())
                     {
                         if(m.group(4).equals(cuenta))
@@ -541,9 +543,12 @@ public  class IFEstandar extends javax.swing.JFrame {
             int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a "+jList1.getSelectedValue()+"?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
             if(dialogResult == 0)
             {
+                String temp=jList1.getSelectedValue();
                 JOptionPane.showMessageDialog(null, "Contacto reestablecido");
-                borrarContactos(jList1.getSelectedValue(),1);
+                borrarContactos(jList1.getSelectedValue(),1);   
+                borrarUsuarioDeLista(temp, "Todas", 1);
                 mostrarContactos();
+                mostrarListas();
             }
            
         });
@@ -553,9 +558,12 @@ public  class IFEstandar extends javax.swing.JFrame {
             int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar a "+jList1.getSelectedValue()+" de contactos?", "Borrar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);   
             if(dialogResult == 0)
             {
+                String temp=jList1.getSelectedValue();
                 JOptionPane.showMessageDialog(null, "Contacto borrado");
                 borrarContactos(jList1.getSelectedValue(),0);
                 mostrarContactos();
+                borrarUsuarioDeLista(temp, "Todas", 0);
+                mostrarListas();
             }
             else
             {
@@ -603,19 +611,18 @@ public  class IFEstandar extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "La descripcion no puede contener | ");
                     return;
                 }
-                
+                descripcionLista=descripcionListaField.getText();
                 if(buscarEnLista(nombreListaField.getText()))
                 {
                     //Nueva lista
-                    agregarLista(nombreListaField.getText(), descripcionListaField.getText(), 1, 1);
+                    agregarLista(nombreListaField.getText(), descripcionListaField.getText(), 1, 0);
                     
-                    //Lista-usuario
                     
-                }
-                else
-                {
-                    //Ya existe, agregar en esa lista
-                    
+                    //Ya existe este usuario en lista?
+                    if(BuscarListaUsuario(nombreListaField.getText(), jList1.getSelectedValue()))
+                    {
+                         AgregarIndice(nombreListaField.getText(), jList1.getSelectedValue(),1);
+                    }
                 }
                 
             }
@@ -626,6 +633,358 @@ public  class IFEstandar extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jList1MousePressed
 
+    public int ActualizarCantidadCuentasAsociadas(String nombreLista,boolean Operacion,int cantidadUsuariosActual)
+    {
+        
+        if(cantidadUsuariosActual!=0)
+        {
+        
+        if(Operacion==true)
+        {
+            return cantidadUsuariosActual+1;
+        }
+        else
+        {
+            return cantidadUsuariosActual-1;
+        }
+        }
+        else
+        {
+            if (Operacion==true)
+            {
+                return cantidadUsuariosActual+1;
+            }
+            else
+            {
+                 return 0;
+            }
+        }
+    }
+    public void AgregarIndice(String nombreLista,String usuarioAsociado,int Operacion)
+    {
+        String patron="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatus = Pattern.compile(patron);
+        
+        String descripcionAhuahsasudjaus="(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
+        Pattern descripcionPattern = Pattern.compile(descripcionAhuahsasudjaus);
+        
+        String nombreString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern listaPattern = Pattern.compile(nombreString);
+        
+        String descripcionString="";
+        try 
+        {
+            List<String> lineas,lineasDesc;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+             lineasDesc = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = descripcionPattern.matcher(lineas.get(i));
+              Matcher m2 = listaPattern.matcher(lineas.get(i));
+              if(m.find()&&m2.find())
+              {
+                  if(m2.group(4).equals(nombreLista))
+                  {
+                      descripcionString=m.group(4);
+                  }
+              }
+             }
+             for (int i = 0; i < lineasDesc.size(); i++)
+             {
+              Matcher m = descripcionPattern.matcher(lineasDesc.get(i));
+              Matcher m2 = listaPattern.matcher(lineasDesc.get(i));
+              if(m.find()&&m2.find())
+              {
+                  if(m2.group(4).equals(nombreLista))
+                  {
+                      descripcionString=m.group(4);
+                  }
+              }
+             }
+        } 
+        catch (Exception e) 
+        {
+        } 
+        Path p = Paths.get("C:\\MEIA\\lista_usuario.txt");
+        
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        String s = System.lineSeparator() + "Nombre lista:"+nombreLista+"|"+ "Usuario:"+cuenta+"|"
+                 + "Usuario asociado:"+usuarioAsociado+"|"+ "Descripcion:"+descripcionString+"|"+ "Fecha creacion:"+jfecha+"|"+"Estatus:"+Operacion;
+        
+        if(Operacion==1)
+        {
+        if(posicionReemplazar==999999)
+        {
+        try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
+        {
+               writer.write(s);
+               writer.close();
+        }
+        catch (IOException ioe) 
+        {
+               System.err.format("IOException: %s%n", ioe);
+        }
+        }
+        else
+        {
+            try
+            {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+                lineas.set(posicionReemplazar, s);
+                Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
+            }
+            catch(IOException e)
+            {
+                
+            }
+        }
+        }
+        else
+        {
+            try
+            {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+                lineas.set(posicionReemplazar, s);
+                Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
+            }
+            catch(IOException e)
+            {
+                
+            }
+        }
+        
+        List<String> lineas;
+
+        try
+        {
+        lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+        Iterator<String> i2It = lineas.iterator();
+        while (i2It.hasNext())
+        {
+            String line = i2It.next();
+            if (line.trim().isEmpty())
+                i2It.remove();       
+        }
+        Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
+        }
+        catch(IOException e)
+        {
+            
+        }
+        
+        borrarLista(nombreLista, Operacion, false);
+        generarIndex();
+    }
+    
+    
+    public void generarIndex()
+    {
+        String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
+        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+        
+        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatusPattern = Pattern.compile(estatusString);
+         
+        String s="";
+        int numeroRegistro=0;
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        try 
+         {
+             List<String> lineasIndiceList;
+             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             Path p = Paths.get("C:\\MEIA\\indice.txt");
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
+              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
+              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
+              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                  if(m3.group(4).contains("1"))
+                  {
+                 
+                  s += System.lineSeparator() + "Nombre Lista:"+m2.group(4)+"|"+ "Usuario:"+cuenta+"|"+ "Usuario asociado:"+m1.group(4)+"|"+"Fecha creacion:"+jfecha+"|"+"Estatus:"+1+"|"+"Registro:"+(numeroRegistro+1)+"|"+ "Posicion:1."+(numeroRegistro+1)
+                  ;  
+                  numeroRegistro++;
+                  }
+                }
+             }
+             
+             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
+             {
+               writer.write(s);
+               writer.close();
+               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
+              Iterator<String> i2It = lineasIndiceList.iterator();
+              while (i2It.hasNext())
+              {
+                  String line = i2It.next();
+                  if (line.trim().isEmpty())
+                      i2It.remove();       
+              }              
+              Files.write(Path.of("C:\\MEIA\\indice.txt"), lineasIndiceList);
+             }
+             
+             catch (IOException ioe) 
+             {
+               System.err.format("IOException: %s%n", ioe);
+             }
+             int mayor=0;
+             int menor=0;
+             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
+             Pattern registroPattern = Pattern.compile(regisString);
+             
+             
+             String temporal;
+             
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+                 for (int j = 1; j < lineasIndiceList.size(); j++)
+                 {
+                     
+                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
+                     {
+                         temporal=lineasIndiceList.get(i);
+                         lineasIndiceList.set(i, lineasIndiceList.get(j));
+                         lineasIndiceList.set(j, temporal);
+                         
+                     }
+                     
+                 }
+             }
+             if(!lineasIndiceList.isEmpty())
+             {
+             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
+             if(m.find())
+             {
+                 menor=Integer.parseInt(m.group(4));
+             }
+             }
+             
+             int cantidadCuentas=0;
+        
+        try 
+        {
+            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
+            for (int i = 0; i < lineas2.size(); i++)
+            {
+                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
+                if(m2.find())
+                {
+                    cantidadCuentas++;   
+                }   
+            }
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
+            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }  
+        List<String> lineas;
+         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
+                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
+                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
+         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
+        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
+        {
+               writer.write(s1);
+               writer.close();
+        }
+                      
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
+             Iterator<String> i = lineas.iterator();
+             while (i.hasNext())
+             {
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();       
+             }
+             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
+        
+             
+         } 
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+    
+    
+        
+  
+
+        
+    
+    public boolean BuscarListaUsuario(String nombreLista,String usuarioAsociado)
+    { 
+        String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
+        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+        
+        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatusPattern = Pattern.compile(estatusString);
+         
+        try 
+         {
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineas.get(i));
+              Matcher m1 = contacPattern.matcher(lineas.get(i));
+              Matcher m2 = nombreListaPattern.matcher(lineas.get(i));
+              Matcher m3 = estatusPattern.matcher(lineas.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                    if(m2.group(4).equals(nombreLista))
+                    {
+                        if(m.group(4).equals(cuenta))
+                        {
+                            if (m1.group(4).equals(usuarioAsociado)) 
+                            {
+                                
+                                
+                                if(m3.group(4).contains("0"))
+                                {
+                                    Object[] options = { "Reestablecer", "Cancelar" };
+                                    int dialogResult =JOptionPane.showOptionDialog(null, "Puedes reestablecer el contacto "+ usuarioAsociado+" en la lista "+nombreLista, "Reestablecer contacto en lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
+                                    if(dialogResult == 0)
+                                    {
+                                        JOptionPane.showMessageDialog(null, "Contacto reestablecido");
+                                        borrarUsuarioDeLista(usuarioAsociado, nombreLista, 1);
+                                    }
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(null, "Ya tienes a "+usuarioAsociado+" como contacto en la lista "+nombreLista);
+                                }
+                                return false;
+                            }
+                     
+                        }
+                    }
+                }   
+             }
+         } 
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return true;
+        
+        
+    }
     private void jList2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MousePressed
         jList2.setSelectedIndex(jList2.locationToIndex(evt.getPoint()));
         JPopupMenu menu = new JPopupMenu();
@@ -634,6 +993,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         jList2.setSelectionBackground(azulColor);
         JMenuItem borrarLista = new JMenuItem("Borrar Lista");
         JMenuItem agregarLista = new JMenuItem("Activar Lista");
+        JMenu verContactos = new JMenu("Ver Contactos");
         
         try
         {
@@ -644,15 +1004,15 @@ public  class IFEstandar extends javax.swing.JFrame {
                 String contactoString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
                 Pattern contacPattern = Pattern.compile(contactoString);
               
-                List<String> lineasBitacoraList,lineasList;
+                List<String> lineasDescList,lineasList;
                 lineasList=Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-                lineasBitacoraList = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+                lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
                 
-                for (int i = 0; i < lineasBitacoraList.size(); i++)
+                for (int i = 0; i < lineasDescList.size(); i++)
                 {   
-                    Matcher m1 = contacPattern.matcher(lineasBitacoraList.get(i));
-                    Matcher m10 = rolE.matcher(lineasBitacoraList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineasBitacoraList.get(i));
+                    Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
+                    Matcher m10 = rolE.matcher(lineasDescList.get(i));
+                    Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
                     if(m10.find()&&m1.find()&&m.find())
                     {
                         if(m.group(4).equals(cuenta))
@@ -662,6 +1022,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                             if(m10.group(4).contains("1"))
                             {
                                 menu.add(borrarLista);
+                                menu.add(verContactos); 
                             }
                             else
                             {
@@ -705,12 +1066,12 @@ public  class IFEstandar extends javax.swing.JFrame {
             if(dialogResult == 0)
             {
                 JOptionPane.showMessageDialog(null, "Lista borrada");
-                borrarLista(jList2.getSelectedValue(), 0);
+                borrarLista(jList2.getSelectedValue(), 0,true);
                 mostrarListas();
             }
         });
         
-        
+        obtenerUsuariosDeLista(verContactos);
       
          agregarLista.addActionListener((ActionEvent e) -> {            
             Object[] options = { "Agregar", "Cancelar" };
@@ -718,7 +1079,7 @@ public  class IFEstandar extends javax.swing.JFrame {
             if(dialogResult == 0)
             {
                 JOptionPane.showMessageDialog(null, "Lista reestablecida");
-                borrarLista(jList2.getSelectedValue(),1);
+                borrarLista(jList2.getSelectedValue(),1,true);
                 mostrarListas();
             }
            
@@ -755,9 +1116,9 @@ public  class IFEstandar extends javax.swing.JFrame {
         
         try 
          {
-             List<String> lineas,lineasBitacora;
+             List<String> lineas,lineasDescList;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = usuarioPattern.matcher(lineas.get(i));
@@ -784,12 +1145,12 @@ public  class IFEstandar extends javax.swing.JFrame {
                     }
                 }
              }
-             for (int i = 0; i < lineasBitacora.size(); i++)
+             for (int i = 0; i < lineasDescList.size(); i++)
              {
-                 Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
-                 Matcher m1 = listaPattern.matcher(lineasBitacora.get(i));
-                 Matcher m2 = descripcionPattern.matcher(lineasBitacora.get(i));
-                 Matcher m3 = rolE.matcher(lineasBitacora.get(i));
+                 Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                 Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
+                 Matcher m2 = descripcionPattern.matcher(lineasDescList.get(i));
+                 Matcher m3 = rolE.matcher(lineasDescList.get(i));
                  if(m.find()&&m1.find()&&m2.find()&&m3.find())
                  {
                      if(m.group(4).equals(cuenta))
@@ -812,7 +1173,8 @@ public  class IFEstandar extends javax.swing.JFrame {
          catch (IOException ex)
          {
              Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }  
+         }
+        
             
             return null;
      }
@@ -833,9 +1195,9 @@ public  class IFEstandar extends javax.swing.JFrame {
         
          try 
          {
-             List<String> lineas,lineasBitacora;
+             List<String> lineas,lineasDescList;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = rolUsuario.matcher(lineas.get(i));
@@ -853,11 +1215,11 @@ public  class IFEstandar extends javax.swing.JFrame {
                     }
                 }
              }
-             for (int i = 0; i < lineasBitacora.size(); i++)
+             for (int i = 0; i < lineasDescList.size(); i++)
              {
-                 Matcher m = rolUsuario.matcher(lineasBitacora.get(i));
-                 Matcher m1 = listaPattern.matcher(lineasBitacora.get(i));
-                 Matcher m2 = numeroUPattern.matcher(lineasBitacora.get(i));
+                 Matcher m = rolUsuario.matcher(lineasDescList.get(i));
+                 Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
+                 Matcher m2 = numeroUPattern.matcher(lineasDescList.get(i));
                  if(m.find()&&m1.find()&&m2.find())
                  {
                      if(m.group(4).equals(cuenta))
@@ -920,13 +1282,13 @@ public  class IFEstandar extends javax.swing.JFrame {
          listaTodosLosContactos.clear();
          listaContactosOcultar.clear();
          listaContactosMostrar.clear();
-         List<String> lineas,lineasBitacora;
+         List<String> lineas,lineasDescList;
          try 
          {
            lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-           lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+           lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
            
-           if(lineas.isEmpty()&&lineasBitacora.isEmpty())
+           if(lineas.isEmpty()&&lineasDescList.isEmpty())
            {
                //No tiene contactos, no existen contactos
            }
@@ -952,11 +1314,11 @@ public  class IFEstandar extends javax.swing.JFrame {
                        }
                    }
                }
-               for (int i = 0; i < lineasBitacora.size(); i++)
+               for (int i = 0; i < lineasDescList.size(); i++)
                {  
-                   Matcher m2 = rolUsuario.matcher(lineasBitacora.get(i));
-                   Matcher m3 = rolContacto.matcher(lineasBitacora.get(i));
-                   Matcher estadMatcher = rolE.matcher(lineasBitacora.get(i));
+                   Matcher m2 = rolUsuario.matcher(lineasDescList.get(i));
+                   Matcher m3 = rolContacto.matcher(lineasDescList.get(i));
+                   Matcher estadMatcher = rolE.matcher(lineasDescList.get(i));
                    if(m2.find()&&m3.find()&&estadMatcher.find())
                    {
                        if(m2.group(4).equals(cuenta))
@@ -1041,13 +1403,13 @@ public  class IFEstandar extends javax.swing.JFrame {
          listaTodasLasListas.clear();
          listaListasOcultar.clear();
          listaListasMostrar.clear();
-         List<String> lineas,lineasBitacora;
+         List<String> lineas,lineasDescList;
          try 
          {
            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-           lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+           lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
            
-           if(lineas.isEmpty()&&lineasBitacora.isEmpty())
+           if(lineas.isEmpty()&&lineasDescList.isEmpty())
            {
                //No tiene contactos, no existen contactos
            }
@@ -1073,11 +1435,11 @@ public  class IFEstandar extends javax.swing.JFrame {
                        }
                    }
                }
-               for (int i = 0; i < lineasBitacora.size(); i++)
+               for (int i = 0; i < lineasDescList.size(); i++)
                {  
-                   Matcher m2 = rolUsuario.matcher(lineasBitacora.get(i));
-                   Matcher m3 = listaPattern.matcher(lineasBitacora.get(i));
-                   Matcher estadMatcher = rolE.matcher(lineasBitacora.get(i));
+                   Matcher m2 = rolUsuario.matcher(lineasDescList.get(i));
+                   Matcher m3 = listaPattern.matcher(lineasDescList.get(i));
+                   Matcher estadMatcher = rolE.matcher(lineasDescList.get(i));
                    if(m2.find()&&m3.find()&&estadMatcher.find())
                    {
                        if(m2.group(4).equals(cuenta))
@@ -1148,9 +1510,6 @@ public  class IFEstandar extends javax.swing.JFrame {
          {
            Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
          }
-           
-         
-         
     }
     public boolean buscarContacto(String contactoB)
     {
@@ -1160,9 +1519,9 @@ public  class IFEstandar extends javax.swing.JFrame {
         Pattern contacPattern = Pattern.compile(contactoString);
          try 
          {
-             List<String> lineas,lineasBitacora;
+             List<String> lineas,lineasDescList;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = usuarioPattern.matcher(lineas.get(i));
@@ -1179,10 +1538,10 @@ public  class IFEstandar extends javax.swing.JFrame {
                     }
                 }   
              }
-             for (int i = 0; i < lineasBitacora.size(); i++)
+             for (int i = 0; i < lineasDescList.size(); i++)
              {
-              Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
-              Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
+              Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+              Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
               if(m.find()&&m1.find())  
               {
                   if(m.group(4).equals(cuenta))
@@ -1212,9 +1571,9 @@ public  class IFEstandar extends javax.swing.JFrame {
         Pattern contacPattern = Pattern.compile(contactoString);
          try 
          {
-             List<String> lineas,lineasBitacora;
+             List<String> lineas,lineasDescList;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = usuarioPattern.matcher(lineas.get(i));
@@ -1241,27 +1600,27 @@ public  class IFEstandar extends javax.swing.JFrame {
                     }
                 }   
              }
-             for (int i = 0; i < lineasBitacora.size(); i++)
+             for (int i = 0; i < lineasDescList.size(); i++)
              {
-                 Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
-                 Matcher m1 = contacPattern.matcher(lineasBitacora.get(i));
+                 Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                 Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
                  if(m.find()&&m1.find())
                  {
                      if(m.group(4).equals(cuenta))
                      {
                          if(m1.group(4).equals(contactoB))
                          {
-                             lineasBitacora.remove(i);
-                             Path out1 = Paths.get("C:\\MEIA\\bitacora_contactos.txt");                
-                             Files.write(out1,lineasBitacora);
-                             Iterator<String> it = lineasBitacora.iterator();
+                             lineasDescList.remove(i);
+                             Path out1 = Paths.get("C:\\MEIA\\desc_contactos.txt");                
+                             Files.write(out1,lineasDescList);
+                             Iterator<String> it = lineasDescList.iterator();
                              while (it.hasNext())
                              {
                                  String line = it.next();
                                  if (line.trim().isEmpty())
                                      it.remove();
                              }
-                             Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineasBitacora);
+                             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineasDescList);
                              agregarContacto(contactoB, operacion);
                       
                          }
@@ -1274,7 +1633,88 @@ public  class IFEstandar extends javax.swing.JFrame {
              Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
-    public void borrarLista(String nombreLista,int operacion)
+    int posicionReemplazar;
+    public void borrarUsuarioDeLista(String usuarioAsociadoString,String nombreLista,int operacion)
+    {
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+       
+        String usuarioAsociado="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        Pattern usuarioAsociadoPattern = Pattern.compile(usuarioAsociado);
+        
+        String descripcionString="(Descripcion)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern descripcionPattern = Pattern.compile(descripcionString);
+        
+        String listaString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
+        Pattern listaPattern = Pattern.compile(listaString);
+        
+        if("Todas".equals(nombreLista))
+        {  
+         try 
+         {
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = usuarioAsociadoPattern.matcher(lineas.get(i));
+              Matcher m1 = listaPattern.matcher(lineas.get(i));
+              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+              Matcher m3 = usuarioPattern.matcher(lineas.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                        if(m.group(4).equals(usuarioAsociadoString))
+                        {
+                            if(m3.group(4).equals(cuenta))
+                            {
+                                posicionReemplazar=i;
+                                AgregarIndice(m1.group(4), usuarioAsociadoString, operacion);
+                                posicionReemplazar=999999;
+                            }
+                        }
+                }
+             }
+         }
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        }
+        else
+        {
+         try 
+         {
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = usuarioAsociadoPattern.matcher(lineas.get(i));
+              Matcher m1 = listaPattern.matcher(lineas.get(i));
+              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+              Matcher m3 = usuarioPattern.matcher(lineas.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                    if(m1.group(4).equals(nombreLista))
+                    {
+                        if(m.group(4).equals(usuarioAsociadoString))
+                        {
+                            if(m3.group(4).equals(cuenta))
+                            {
+                                posicionReemplazar=i;
+                                AgregarIndice(nombreLista, usuarioAsociadoString, operacion);
+                            }
+                        }
+                    }
+                }
+             }
+         }
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        }
+    }
+    
+    public void borrarLista(String nombreLista,int operacion,boolean actualizarValor)
     {
         String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
@@ -1284,11 +1724,12 @@ public  class IFEstandar extends javax.swing.JFrame {
         
         String listaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(listaString);
+        int cantidadUsuariosActual=cantidadUsuarios(nombreLista);
          try 
          {
-             List<String> lineas,lineasBitacora;
+             List<String> lineas,lineasDescList;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = usuarioPattern.matcher(lineas.get(i));
@@ -1311,35 +1752,66 @@ public  class IFEstandar extends javax.swing.JFrame {
                                  i2It.remove();
                          }
                          Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);
-                         agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuarios(nombreLista));
+                         if (actualizarValor)
+                         {
+                             agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuariosActual);
+                         }
+                         else
+                         {
+                             if(operacion==1)
+                             {
+                                 agregarLista(nombreLista, m2.group(4), operacion, ActualizarCantidadCuentasAsociadas(nombreLista, true,cantidadUsuariosActual));
+                             }
+                             else
+                             {
+                                 agregarLista(nombreLista, m2.group(4), operacion, ActualizarCantidadCuentasAsociadas(nombreLista, false,cantidadUsuariosActual));
+                             }
+                            
+                         }
+                         
                         
                         }
                     }
                 }
              }
-             for (int i = 0; i < lineasBitacora.size(); i++)
+             for (int i = 0; i < lineasDescList.size(); i++)
              {
-                 Matcher m = usuarioPattern.matcher(lineasBitacora.get(i));
-                 Matcher m1 = listaPattern.matcher(lineasBitacora.get(i));
-                 Matcher m2 = descripcionPattern.matcher(lineasBitacora.get(i));
+                 Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                 Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
+                 Matcher m2 = descripcionPattern.matcher(lineasDescList.get(i));
                  if(m.find()&&m1.find()&&m2.find())
                  {
                      if(m.group(4).equals(cuenta))
                      {
                          if(m1.group(4).equals(nombreLista))
                          {
-                             lineasBitacora.remove(i);
-                             Path out1 = Paths.get("C:\\MEIA\\bitacora_lista.txt");                
-                             Files.write(out1,lineasBitacora);
-                             Iterator<String> it = lineasBitacora.iterator();
+                             lineasDescList.remove(i);
+                             Path out1 = Paths.get("C:\\MEIA\\desc_lista.txt");                
+                             Files.write(out1,lineasDescList);
+                             Iterator<String> it = lineasDescList.iterator();
                              while (it.hasNext())
                              {
                                  String line = it.next();
                                  if (line.trim().isEmpty())
                                      it.remove();
                              }
-                             Files.write(Path.of("C:\\MEIA\\bitacora_lista.txt"), lineasBitacora);
-                            agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuarios(nombreLista));
+                             Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineasDescList);
+                             if (actualizarValor)
+                             {
+                             agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuariosActual);
+                             }
+                             else
+                             {
+                             if(operacion==1)
+                             {
+                                 agregarLista(nombreLista, m2.group(4), 1, ActualizarCantidadCuentasAsociadas(nombreLista, true,cantidadUsuariosActual));
+                             }
+                             else
+                             {
+                                 agregarLista(nombreLista, m2.group(4), 1, ActualizarCantidadCuentasAsociadas(nombreLista, false,cantidadUsuariosActual));
+                             }
+                            
+                             }
                          }
                      }
                  }
@@ -1350,12 +1822,13 @@ public  class IFEstandar extends javax.swing.JFrame {
              Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
+    
     public void agregarContacto(String contactoN,int operacion)
     {
         String patron="(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
         
-        Path p = Paths.get("C:\\MEIA\\bitacora_contactos.txt");
+        Path p = Paths.get("C:\\MEIA\\desc_contactos.txt");
         
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         String s = System.lineSeparator() + "Usuario:"+cuenta+"|"+ "Contacto:"+contactoN+"|"
@@ -1376,7 +1849,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         int cantidadInactivos=0;
         try 
         {
-            List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+            List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
             for (int i = 0; i < lineas.size(); i++)
             {
                 Matcher m = estatus.matcher(lineas.get(i));
@@ -1420,16 +1893,16 @@ public  class IFEstandar extends javax.swing.JFrame {
                  nombresimbolicoString="borrar contacto";
              }
              List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
              lineas.set(0, "Nombre simbolico:"+nombresimbolicoString+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
                      cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadActivos+"|"+
                              "Registros Inactivos:"+cantidadInactivos+"|"+"Max reorganizacion:"+maximaReorganizacion);
                 
-             Path out = Paths.get("C:\\MEIA\\bitacora_contactos.txt");
+             Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");
              Files.write(out,lineas);
              
                       
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
              Iterator<String> i = lineas.iterator();
              while (i.hasNext())
              {
@@ -1437,7 +1910,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                  if (line.trim().isEmpty())
                      i.remove();       
              }
-             Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineas);             
+             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);             
              
              }
              catch (IOException ex) 
@@ -1455,7 +1928,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                 String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
                 List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
                 List<String> cuentasList = new ArrayList<String>();
                 for (int i = 0; i < lineas.size(); i++)
                 {   
@@ -1467,11 +1940,11 @@ public  class IFEstandar extends javax.swing.JFrame {
                         i=0;
                     }
                 }
-                Path out = Paths.get("C:\\MEIA\\bitacora_contactos.txt");   
+                Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");   
                 Files.write(out,lineas);
                 
                              
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_contactos.txt"));             
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));             
                 Iterator<String> i = lineas.iterator();
                 while (i.hasNext())
                 {
@@ -1479,7 +1952,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                  if (line.trim().isEmpty())
                      i.remove();
                 }
-             Files.write(Path.of("C:\\MEIA\\bitacora_contactos.txt"), lineas);   
+             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);   
                 
                 p = Paths.get("C:\\MEIA\\contactos.txt");
         
@@ -1517,9 +1990,9 @@ public  class IFEstandar extends javax.swing.JFrame {
         Pattern usuarioPattern = Pattern.compile(usuario);
          try 
          {
-             List<String> lineas,lineasBitacora;
+             List<String> lineas,lineasDescList;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = listaPattern.matcher(lineas.get(i));
@@ -1536,10 +2009,10 @@ public  class IFEstandar extends javax.swing.JFrame {
                     }
                 }   
              }
-             for (int i = 0; i < lineasBitacora.size(); i++)
+             for (int i = 0; i < lineasDescList.size(); i++)
              {
-              Matcher m = listaPattern.matcher(lineasBitacora.get(i));
-              Matcher m1 = usuarioPattern.matcher(lineasBitacora.get(i));
+              Matcher m = listaPattern.matcher(lineasDescList.get(i));
+              Matcher m1 = usuarioPattern.matcher(lineasDescList.get(i));
               if(m.find()&&m1.find())  
               {
                   if(m.group(4).equals(nombreLista))
@@ -1560,6 +2033,79 @@ public  class IFEstandar extends javax.swing.JFrame {
          }
          return true;
     }
+    public boolean estadoContacto(String contacto)
+    {
+        String usuarioContactos="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+        Pattern usuarioContactosPattern = Pattern.compile(usuarioContactos);
+        
+        String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern contactosPattern = Pattern.compile(contactoString);
+        
+        String estatusContacto="(Estatus)(\\:)(	| |)*(.+)";
+        Pattern estatusContactoPattern = Pattern.compile(estatusContacto);
+        
+         try 
+         {
+             List<String> lineas,lineasDescList;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = usuarioContactosPattern.matcher(lineas.get(i));
+              Matcher m1 = contactosPattern.matcher(lineas.get(i));
+              Matcher m2 = estatusContactoPattern.matcher(lineas.get(i));
+              
+                if(m.find()&&m1.find()&&m2.find())
+                {
+                    if(m.group(4).equals(cuenta))
+                    {
+                        if(m1.group(4).equals(contacto))
+                        {
+                         if(m2.group(4).contains("1"))
+                         {
+                             return true;
+                         }
+                         else
+                         {
+                             return false;
+                         }
+                        }
+                    }
+                }   
+             }
+             for (int i = 0; i < lineasDescList.size(); i++)
+             {
+              Matcher m = usuarioContactosPattern.matcher(lineasDescList.get(i));
+              Matcher m1 = contactosPattern.matcher(lineasDescList.get(i));            
+              Matcher m2 = estatusContactoPattern.matcher(lineasDescList.get(i));
+             
+              if(m.find()&&m1.find()&&m2.find())
+              {  
+                  if(m.group(4).equals(cuenta))
+                  {
+                      if(m1.group(4).equals(contacto))
+                        {
+                         if(m2.group(4).contains("1"))
+                         {
+                             return true;
+                         }
+                         else
+                         {
+                             return false;
+                         }
+                        }
+                  }
+              }   
+             }
+         }
+           
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        
+        return false;
+    }
     
     public void obtenerLista(JMenu menu)
     {
@@ -1569,11 +2115,12 @@ public  class IFEstandar extends javax.swing.JFrame {
         Pattern listaPattern = Pattern.compile(nombreListaString);
         String usuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuario);
+        
          try 
          {
-             List<String> lineas,lineasBitacora;
+             List<String> lineas,lineasDescList;
              lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasBitacora = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
              for (int i = 0; i < lineas.size(); i++)
              {
               Matcher m = rolE.matcher(lineas.get(i));
@@ -1585,26 +2132,23 @@ public  class IFEstandar extends javax.swing.JFrame {
                     if(m1.group(4).equals(cuenta))
                     {
                         if(m.group(4).contains("1"))
-                        {
-                         menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));
+                        {    
+                            menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));   
                         }
                     }
                 }   
              }
-             for (int i = 0; i < lineasBitacora.size(); i++)
+             for (int i = 0; i < lineasDescList.size(); i++)
              {
-              Matcher m = rolE.matcher(lineasBitacora.get(i));
-              Matcher m1 = usuarioPattern.matcher(lineasBitacora.get(i));            
-              Matcher m2 = listaPattern.matcher(lineasBitacora.get(i));
+              Matcher m = rolE.matcher(lineasDescList.get(i));
+              Matcher m1 = usuarioPattern.matcher(lineasDescList.get(i));            
+              Matcher m2 = listaPattern.matcher(lineasDescList.get(i));
              
               if(m.find()&&m1.find()&&m2.find())
               {  
                   if(m1.group(4).equals(cuenta))
                   {
-                      if(m.group(4).contains("1"))   
-                      {
-                         menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));
-                      }
+                      menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));   
                   }
               }   
              }
@@ -1617,12 +2161,59 @@ public  class IFEstandar extends javax.swing.JFrame {
        
     }
     
+    public void obtenerUsuariosDeLista(JMenu menu)
+    {
+        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+        Pattern rolE = Pattern.compile(patronEstatus);
+        String nombreListaString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
+        Pattern listaPattern = Pattern.compile(nombreListaString);
+        String usuarioAsociado="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        Pattern usuarioAsociadoPattern = Pattern.compile(usuarioAsociado);
+        String usuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern usuarioPattern = Pattern.compile(usuario);
+        
+        try 
+         {
+             List<String> lineas;
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             for (int i = 0; i < lineas.size(); i++)
+             {
+              Matcher m = rolE.matcher(lineas.get(i));
+              Matcher m1 = usuarioAsociadoPattern.matcher(lineas.get(i));
+              Matcher m2 = listaPattern.matcher(lineas.get(i));
+              Matcher m3 = usuarioPattern.matcher(lineas.get(i));
+              
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                    if(m3.group(4).equals(cuenta))
+                    {
+                       if(m2.group(4).equals(jList2.getSelectedValue()))
+                       {
+                        if(m.group(4).contains("1"))
+                        {
+                            if(estadoContacto(m1.group(4)))
+                            {
+                                menu.add(new JMenuItem(new ContactosEnLasListas(m1.group(4))));
+                            }
+                        }
+                       }
+                    }
+                }   
+             }
+         }
+           
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+       
+    }
     public void agregarLista(String nombreListaString,String descripcionString,int operacion,int numeroUsuarios)
     {
         String patron="(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
         
-        Path p = Paths.get("C:\\MEIA\\bitacora_lista.txt");
+        Path p = Paths.get("C:\\MEIA\\desc_lista.txt");
         
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         String s = System.lineSeparator() + "Nombre Lista:"+nombreListaString+"|"+ "Usuario:"+cuenta+"|"
@@ -1643,7 +2234,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         int cantidadInactivos=0;
         try 
         {
-            List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+            List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
             for (int i = 0; i < lineas.size(); i++)
             {
                 Matcher m = estatus.matcher(lineas.get(i));
@@ -1687,15 +2278,15 @@ public  class IFEstandar extends javax.swing.JFrame {
                  nombresimbolicoString="Borrar lista";
              }
              List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
              lineas.set(0, "Nombre simbolico:"+nombresimbolicoString+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
                      cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadActivos+"|"+
                              "Registros Inactivos:"+cantidadInactivos+"|"+"Max reorganizacion:"+maximaReorganizacion);
                 
-             Path out = Paths.get("C:\\MEIA\\bitacora_lista.txt");
+             Path out = Paths.get("C:\\MEIA\\desc_lista.txt");
              Files.write(out,lineas);
              
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
              Iterator<String> i = lineas.iterator();
              while (i.hasNext())
              {
@@ -1703,7 +2294,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                  if (line.trim().isEmpty())
                      i.remove();       
              }
-             Files.write(Path.of("C:\\MEIA\\bitacora_lista.txt"), lineas);             
+             Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas);             
              
              }
              catch (IOException ex) 
@@ -1720,7 +2311,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                 String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
                 List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
                 List<String> cuentasList = new ArrayList<String>();
                 for (int i = 0; i < lineas.size(); i++)
                 {   
@@ -1732,10 +2323,10 @@ public  class IFEstandar extends javax.swing.JFrame {
                         i=0;
                     }
                 }
-                Path out = Paths.get("C:\\MEIA\\bitacora_lista.txt");   
+                Path out = Paths.get("C:\\MEIA\\desc_lista.txt");   
                 Files.write(out,lineas);
                 
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\bitacora_lista.txt"));             
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));             
                 Iterator<String> i = lineas.iterator();
                 while (i.hasNext())
                 {
@@ -1744,7 +2335,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                      i.remove();
                 }
                 
-                Files.write(Path.of("C:\\MEIA\\bitacora_lista.txt"), lineas); 
+                Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas); 
                 p = Paths.get("C:\\MEIA\\lista.txt");
         
         
@@ -1783,12 +2374,45 @@ public  class IFEstandar extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             //System.out.println("Menu item: " + e.getActionCommand());
-            Object[] options = { "Agregar", "Cancelar" };                        
+            Object[] options = { "Agregar", "Cancelar" };         
+            
             int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar "+jList1.getSelectedValue()+" a la lista "+e.getActionCommand()+"?", "Agregar contacto a lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
             if(dialogResult == 0)
             {
                 //Si
-                JOptionPane.showMessageDialog(null, "Agregado");
+                 if(BuscarListaUsuario(e.getActionCommand(), jList1.getSelectedValue()))
+                    {
+                         JOptionPane.showMessageDialog(null, "Agregado");
+                         AgregarIndice(e.getActionCommand(), jList1.getSelectedValue(),1);
+                    }
+                
+              
+                //codigo 
+            }
+            else
+            {
+                
+            }
+                       
+        }
+    }
+     private class ContactosEnLasListas extends AbstractAction {
+        public ContactosEnLasListas(String name) {
+            super(name);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //System.out.println("Menu item: " + e.getActionCommand());
+            Object[] options = { "Borrar", "Cancelar" };         
+            
+            int dialogResult =JOptionPane.showOptionDialog(null, "¿Borrar "+e.getActionCommand()+" de la lista "+jList2.getSelectedValue()+"?", "Borrar contacto de lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
+            if(dialogResult == 0)
+            {
+                //Si
+                JOptionPane.showMessageDialog(null,"El usuario "+e.getActionCommand()+" fue borrado de la lista "+jList2.getSelectedValue());
+                 borrarUsuarioDeLista(e.getActionCommand(), jList2.getSelectedValue(), 0);
+              
                 //codigo 
             }
             else

@@ -57,10 +57,14 @@ public class IFingreso extends javax.swing.JFrame {
         File crearBitacora = new File("C:\\MEIA\\bitacora_backup.txt");
         File crearDescUsuario = new File("C:\\MEIA\\desc_usuario.txt");
         File crearDescBitacora = new File("C:\\MEIA\\desc_bitacora_backup.txt");
-        File crearCuentaBitacora = new File("C:\\MEIA\\bitacora_contactos.txt");
+        File crearCuentaBitacora = new File("C:\\MEIA\\desc_contactos.txt");
         File crearContactosFile = new File("C:\\MEIA\\contactos.txt");
         File crearLista = new File("C:\\MEIA\\lista.txt");
-        File crearListaBitacora = new File("C:\\MEIA\\bitacora_lista.txt");
+        File crearListaBitacora = new File("C:\\MEIA\\desc_lista.txt");
+        File crearListaUsuario = new File("C:\\MEIA\\lista_usuario.txt");
+        File crearIndice = new File("C:\\MEIA\\indice.txt");
+        File crearDescIndice = new File("C:\\MEIA\\desc_indice.txt");
+        
         try 
         {
             crearBitacora.createNewFile();
@@ -70,6 +74,9 @@ public class IFingreso extends javax.swing.JFrame {
             crearCuentaBitacora.createNewFile();
             crearContactosFile.createNewFile();
             crearLista.createNewFile();
+            crearIndice.createNewFile();
+            crearListaUsuario.createNewFile();
+            crearDescIndice.createNewFile();
             crearListaBitacora.createNewFile();
         } 
         catch (IOException ex) 
