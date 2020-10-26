@@ -91,7 +91,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         getContentPane().setBackground(Color.white);    
  
         
-        cuenta="Nueva";
+        cuenta=usuario;
         
         lblBienvenido.setText("Bienvenido usuario "+cuenta);
         
@@ -114,10 +114,6 @@ public  class IFEstandar extends javax.swing.JFrame {
         Pattern rol = Pattern.compile(patron);
         Pattern rolPath = Pattern.compile(patronPathFoto);
         maximaReorganizacion=Max();
-        
-        
-        
-        
         
         
         
