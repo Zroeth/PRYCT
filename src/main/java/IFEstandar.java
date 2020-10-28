@@ -616,8 +616,9 @@ public  class IFEstandar extends javax.swing.JFrame {
                     
                     //Ya existe este usuario en lista?
                     if(BuscarListaUsuario(nombreListaField.getText(), jList1.getSelectedValue()))
-                    {
-                         AgregarIndice(nombreListaField.getText(), jList1.getSelectedValue(),1);
+                    { 
+                        posicionReemplazar=0; 
+                        AgregarIndice(nombreListaField.getText(), jList1.getSelectedValue(),1);
                     }
                 }
                 
@@ -712,6 +713,18 @@ public  class IFEstandar extends javax.swing.JFrame {
         if(posicionReemplazar==0)
         {
         try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
+        {
+               writer.write(s);
+               writer.close();
+        }
+        catch (IOException ioe) 
+        {
+               System.err.format("IOException: %s%n", ioe);
+        }
+        }
+        if(posicionReemplazar==999999)
+        {
+            try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
         {
                writer.write(s);
                writer.close();
@@ -2820,7 +2833,9 @@ public  class IFEstandar extends javax.swing.JFrame {
                  if(BuscarListaUsuario(e.getActionCommand(), jList1.getSelectedValue()))
                     {
                          JOptionPane.showMessageDialog(null, "Agregado");
+                         posicionReemplazar=0;
                          AgregarIndice(e.getActionCommand(), jList1.getSelectedValue(),1);
+                         
                     }
                 
               
