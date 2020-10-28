@@ -62,6 +62,9 @@ public class IFingreso extends javax.swing.JFrame {
         File crearLista = new File("C:\\MEIA\\lista.txt");
         File crearListaBitacora = new File("C:\\MEIA\\desc_lista.txt");
         File crearListaUsuario = new File("C:\\MEIA\\lista_usuario.txt");
+        File crearLlaveLista = new File("C:\\MEIA\\llave_lista.txt");
+        File crearLlaveUsuario = new File("C:\\MEIA\\llave_usuario.txt");
+        File crearLlaveUsuarioAso = new File("C:\\MEIA\\llave_usuarioAso.txt");
         File crearIndice = new File("C:\\MEIA\\indice.txt");
         File crearDescIndice = new File("C:\\MEIA\\desc_indice.txt");
         
@@ -78,6 +81,10 @@ public class IFingreso extends javax.swing.JFrame {
             crearListaUsuario.createNewFile();
             crearDescIndice.createNewFile();
             crearListaBitacora.createNewFile();
+            crearLlaveLista.createNewFile();
+            crearLlaveUsuario.createNewFile();
+            crearLlaveUsuarioAso.createNewFile();
+            
         } 
         catch (IOException ex) 
         {

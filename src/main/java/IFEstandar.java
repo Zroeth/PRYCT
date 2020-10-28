@@ -772,6 +772,9 @@ public  class IFEstandar extends javax.swing.JFrame {
         
         borrarLista(nombreLista, Operacion, false);
         generarIndex();
+        generarllave1();
+        generarllave2();
+        generarllave3();
     }
     
     
@@ -788,6 +791,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         Pattern estatusPattern = Pattern.compile(estatusString);
          
         String s="";
+        
         int numeroRegistro=0;
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         try 
@@ -795,6 +799,7 @@ public  class IFEstandar extends javax.swing.JFrame {
              List<String> lineasIndiceList;
              lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
              Path p = Paths.get("C:\\MEIA\\indice.txt");
+          
              for (int i = 0; i < lineasIndiceList.size(); i++)
              {
               Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
@@ -807,7 +812,8 @@ public  class IFEstandar extends javax.swing.JFrame {
                   {
                  
                   s += System.lineSeparator() + "Nombre Lista:"+m2.group(4)+"|"+ "Usuario:"+cuenta+"|"+ "Usuario asociado:"+m1.group(4)+"|"+"Fecha creacion:"+jfecha+"|"+"Estatus:"+1+"|"+"Registro:"+(numeroRegistro+1)+"|"+ "Posicion:1."+(numeroRegistro+1)
-                  ;  
+                  ;
+                  
                   numeroRegistro++;
                   }
                 }
@@ -815,6 +821,7 @@ public  class IFEstandar extends javax.swing.JFrame {
              
              try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
              {
+          
                writer.write(s);
                writer.close();
                lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
@@ -826,7 +833,9 @@ public  class IFEstandar extends javax.swing.JFrame {
                       i2It.remove();       
               }              
               Files.write(Path.of("C:\\MEIA\\indice.txt"), lineasIndiceList);
+         
              }
+             
              
              catch (IOException ioe) 
              {
@@ -869,6 +878,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         try 
         {
             List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
+            
             for (int i = 0; i < lineas2.size(); i++)
             {
                 Matcher m2 = estatusPattern.matcher(lineas2.get(i));
@@ -913,8 +923,439 @@ public  class IFEstandar extends javax.swing.JFrame {
          }
     }
     
-    
+    public void generarllave1()
+    {
+     String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
+        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        Pattern contacPattern = Pattern.compile(contactoString);
         
+        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatusPattern = Pattern.compile(estatusString);
+         
+        String s="";
+        
+        int numeroRegistro=0;
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        try 
+         {
+             List<String> lineasIndiceList;
+             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             Path p = Paths.get("C:\\MEIA\\llave_lista.txt");
+          
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
+              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
+              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
+              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                  if(m3.group(4).contains("1"))
+                  {
+                 
+                  s += System.lineSeparator() + "Nombre Lista:"+m2.group(4)+"|"+ "Posicion:"+(numeroRegistro+1)+"|"+  "Usuario asociado:"+m1.group(4)
+                  ;
+                  
+                  numeroRegistro++;
+                  }
+                }
+             }
+             
+             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
+             {
+          
+               writer.write(s);
+               writer.close();
+               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\llave_lista.txt"));
+              Iterator<String> i2It = lineasIndiceList.iterator();
+              while (i2It.hasNext())
+              {
+                  String line = i2It.next();
+                  if (line.trim().isEmpty())
+                      i2It.remove();       
+              }              
+              Files.write(Path.of("C:\\MEIA\\llave_lista.txt"), lineasIndiceList);
+         
+             }
+             
+             
+             catch (IOException ioe) 
+             {
+               System.err.format("IOException: %s%n", ioe);
+             }
+             int mayor=0;
+             int menor=0;
+             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
+             Pattern registroPattern = Pattern.compile(regisString);
+             
+             
+             String temporal;
+             
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+                 for (int j = 1; j < lineasIndiceList.size(); j++)
+                 {
+                     
+                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
+                     {
+                         temporal=lineasIndiceList.get(i);
+                         lineasIndiceList.set(i, lineasIndiceList.get(j));
+                         lineasIndiceList.set(j, temporal);
+                         
+                     }
+                     
+                 }
+             }
+             if(!lineasIndiceList.isEmpty())
+             {
+             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
+             if(m.find())
+             {
+                 menor=Integer.parseInt(m.group(4));
+             }
+             }
+             
+             int cantidadCuentas=0;
+        
+        try 
+        {
+            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\llave_lista.txt"));
+            
+            for (int i = 0; i < lineas2.size(); i++)
+            {
+                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
+                if(m2.find())
+                {
+                    cantidadCuentas++;   
+                }   
+            }
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
+            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }  
+        List<String> lineas;
+         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
+                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
+                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
+         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
+        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
+        {
+               writer.write(s1);
+               writer.close();
+        }
+                      
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
+             Iterator<String> i = lineas.iterator();
+             while (i.hasNext())
+             {
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();       
+             }
+             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
+        
+             
+         } 
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+    
+     public void generarllave2()
+    {
+     String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
+        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+        
+        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatusPattern = Pattern.compile(estatusString);
+         
+        String s="";
+        
+        int numeroRegistro=0;
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        try 
+         {
+             List<String> lineasIndiceList;
+             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             Path p = Paths.get("C:\\MEIA\\llave_usuario.txt");
+          
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
+              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
+              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
+              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                  if(m3.group(4).contains("1"))
+                  {
+                 
+                  s += System.lineSeparator() + "Usuario:"+cuenta+"|"+ "Posicion:"+(numeroRegistro+1)+"|"+  "Usuario asociado:"+m1.group(4)
+                  ;
+                  
+                  numeroRegistro++;
+                  }
+                }
+             }
+             
+             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
+             {
+          
+               writer.write(s);
+               writer.close();
+               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\llave_usuario.txt"));
+              Iterator<String> i2It = lineasIndiceList.iterator();
+              while (i2It.hasNext())
+              {
+                  String line = i2It.next();
+                  if (line.trim().isEmpty())
+                      i2It.remove();       
+              }              
+              Files.write(Path.of("C:\\MEIA\\llave_usuario.txt"), lineasIndiceList);
+         
+             }
+             
+             
+             catch (IOException ioe) 
+             {
+               System.err.format("IOException: %s%n", ioe);
+             }
+             int mayor=0;
+             int menor=0;
+             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
+             Pattern registroPattern = Pattern.compile(regisString);
+             
+             
+             String temporal;
+             
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+                 for (int j = 1; j < lineasIndiceList.size(); j++)
+                 {
+                     
+                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
+                     {
+                         temporal=lineasIndiceList.get(i);
+                         lineasIndiceList.set(i, lineasIndiceList.get(j));
+                         lineasIndiceList.set(j, temporal);
+                         
+                     }
+                     
+                 }
+             }
+             if(!lineasIndiceList.isEmpty())
+             {
+             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
+             if(m.find())
+             {
+                 menor=Integer.parseInt(m.group(4));
+             }
+             }
+             
+             int cantidadCuentas=0;
+        
+        try 
+        {
+            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\llave_usuario.txt"));
+            
+            for (int i = 0; i < lineas2.size(); i++)
+            {
+                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
+                if(m2.find())
+                {
+                    cantidadCuentas++;   
+                }   
+            }
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
+            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }  
+        List<String> lineas;
+         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
+                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
+                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
+         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
+        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
+        {
+               writer.write(s1);
+               writer.close();
+        }
+                      
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
+             Iterator<String> i = lineas.iterator();
+             while (i.hasNext())
+             {
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();       
+             }
+             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
+        
+             
+         } 
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+     public void generarllave3()
+    {
+     String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
+        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
+        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+        
+        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
+        Pattern estatusPattern = Pattern.compile(estatusString);
+         
+        String s="";
+        
+        int numeroRegistro=0;
+        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        try 
+         {
+             List<String> lineasIndiceList;
+             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+             Path p = Paths.get("C:\\MEIA\\llave_usuarioAso.txt");
+          
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
+              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
+              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
+              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
+                if(m.find()&&m1.find()&&m2.find()&&m3.find())
+                {
+                  if(m3.group(4).contains("1"))
+                  {
+                 
+                  s += System.lineSeparator() + "Usuario asociado:"+m1.group(4)+"|"+ "Posicion:"+(numeroRegistro+1)
+                  ;
+                  
+                  numeroRegistro++;
+                  }
+                }
+             }
+             
+             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
+             {
+          
+               writer.write(s);
+               writer.close();
+               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\llave_usuarioAso.txt"));
+              Iterator<String> i2It = lineasIndiceList.iterator();
+              while (i2It.hasNext())
+              {
+                  String line = i2It.next();
+                  if (line.trim().isEmpty())
+                      i2It.remove();       
+              }              
+              Files.write(Path.of("C:\\MEIA\\llave_usuarioAso.txt"), lineasIndiceList);
+         
+             }
+             
+             
+             catch (IOException ioe) 
+             {
+               System.err.format("IOException: %s%n", ioe);
+             }
+             int mayor=0;
+             int menor=0;
+             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
+             Pattern registroPattern = Pattern.compile(regisString);
+             
+             
+             String temporal;
+             
+             for (int i = 0; i < lineasIndiceList.size(); i++)
+             {
+                 for (int j = 1; j < lineasIndiceList.size(); j++)
+                 {
+                     
+                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
+                     {
+                         temporal=lineasIndiceList.get(i);
+                         lineasIndiceList.set(i, lineasIndiceList.get(j));
+                         lineasIndiceList.set(j, temporal);
+                         
+                     }
+                     
+                 }
+             }
+             if(!lineasIndiceList.isEmpty())
+             {
+             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
+             if(m.find())
+             {
+                 menor=Integer.parseInt(m.group(4));
+             }
+             }
+             
+             int cantidadCuentas=0;
+        
+        try 
+        {
+            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\llave_usuarioAso.txt"));
+            
+            for (int i = 0; i < lineas2.size(); i++)
+            {
+                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
+                if(m2.find())
+                {
+                    cantidadCuentas++;   
+                }   
+            }
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
+            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+            return;
+        }  
+        List<String> lineas;
+         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
+                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
+                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
+         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
+        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
+        {
+               writer.write(s1);
+               writer.close();
+        }
+                      
+             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
+             Iterator<String> i = lineas.iterator();
+             while (i.hasNext())
+             {
+                 String line = i.next();
+                 if (line.trim().isEmpty())
+                     i.remove();       
+             }
+             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
+        
+             
+         } 
+         catch (IOException ex)
+         {
+             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }     
   
 
         
