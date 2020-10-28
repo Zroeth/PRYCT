@@ -617,7 +617,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                     //Ya existe este usuario en lista?
                     if(BuscarListaUsuario(nombreListaField.getText(), jList1.getSelectedValue()))
                     { 
-                        posicionReemplazar=0; 
+                        manejarPos=0; 
                         AgregarIndice(nombreListaField.getText(), jList1.getSelectedValue(),1);
                     }
                 }
@@ -657,6 +657,7 @@ public  class IFEstandar extends javax.swing.JFrame {
             }
         }
     }
+    int manejarPos;
     public void AgregarIndice(String nombreLista,String usuarioAsociado,int Operacion)
     {
         String patron="(Estatus)(\\:)(	| |)*(\\d)";
@@ -710,21 +711,9 @@ public  class IFEstandar extends javax.swing.JFrame {
         
         if(Operacion==1)
         {
-        if(posicionReemplazar==0)
+        if(manejarPos==0)
         {
         try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
-        {
-               writer.write(s);
-               writer.close();
-        }
-        catch (IOException ioe) 
-        {
-               System.err.format("IOException: %s%n", ioe);
-        }
-        }
-        if(posicionReemplazar==999999)
-        {
-            try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
         {
                writer.write(s);
                writer.close();
@@ -2118,7 +2107,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                             {
                                 posicionReemplazar=i;
                                 AgregarIndice(m1.group(4), usuarioAsociadoString, operacion);
-                                posicionReemplazar=999999;
+                                manejarPos=999999;
                             }
                         }
                 }
@@ -2833,7 +2822,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                  if(BuscarListaUsuario(e.getActionCommand(), jList1.getSelectedValue()))
                     {
                          JOptionPane.showMessageDialog(null, "Agregado");
-                         posicionReemplazar=0;
+                         manejarPos=0;
                          AgregarIndice(e.getActionCommand(), jList1.getSelectedValue(),1);
                          
                     }
