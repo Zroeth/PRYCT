@@ -1,13 +1,17 @@
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,6 +43,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -52,6 +58,7 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalIconFactory;
 
 /*
@@ -91,7 +98,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         getContentPane().setBackground(Color.white);    
  
         
-        cuenta=usuario;
+        cuenta="Nueva";
         
         lblBienvenido.setText("Bienvenido usuario "+cuenta);
         
@@ -431,6 +438,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         jList1.setSelectionBackground(azulColor);
         JMenuItem borrarContactoItem = new JMenuItem("Borrar contacto");
         JMenuItem agregarConntacItem = new JMenuItem("Agregar contacto");
+        JMenuItem enviarMensaje = new JMenuItem("Enviar Mensaje");
         JMenu agregarALista = new JMenu("Agregar a una lista");
         JMenuItem NuevaLista = new JMenuItem("Agregar nueva lista");
         
@@ -461,6 +469,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                             if(m10.group(4).contains("1"))
                             {
                                 menu.add(borrarContactoItem);
+                                menu.add(enviarMensaje);
                                 agregarALista.add(NuevaLista);
                                 menu.add(agregarALista);
                             }
@@ -486,6 +495,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                             if(m10.group(4).contains("1"))
                             {
                                 menu.add(borrarContactoItem);
+                                menu.add(enviarMensaje);
                                 agregarALista.add(NuevaLista);
                                 menu.add(agregarALista);
                             }
@@ -624,6 +634,90 @@ public  class IFEstandar extends javax.swing.JFrame {
                 
             }
              
+        });
+        
+        
+         enviarMensaje.addActionListener((ActionEvent e) -> {            
+            JTextField nombreListaField = new JTextField(30);
+            JTextField descripcionListaField = new JTextField(30);
+            descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 200));
+            
+            JLabel boton=new JLabel();
+            ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnMensaje.gif");
+        
+            boton.setIcon(imIc3);
+            boton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Asunto:"));
+            myPanel.add(nombreListaField);
+            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+            myPanel.add(new JLabel("Mensaje:"));
+            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+            myPanel.add(descripcionListaField);
+            myPanel.setLayout( new GridBagLayout() );
+            myPanel.add(boton,new GridBagConstraints());
+            
+            
+                
+            boton.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent  e){
+                   JFileChooser escogerImagen = new JFileChooser();
+                   FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
+                   escogerImagen.setFileFilter(filtro);
+                   int seleccionado=escogerImagen.showOpenDialog(null);
+                   if(seleccionado==JFileChooser.APPROVE_OPTION)  
+                   {
+                       File archivo=escogerImagen.getSelectedFile();
+                       String obtener = archivo.getAbsolutePath();
+                       ImageIcon imIc= new ImageIcon(obtener);
+                       
+                       Image ajustarImg = imIc.getImage();
+                       Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
+                       Foto.setIcon(new ImageIcon(ajustarTamaño));
+                       JOptionPane.showMessageDialog(null, "Algo");
+                  /*     try
+                       {
+                           ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
+                           pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
+                       }
+                       catch (IOException ex)
+                       {
+                           Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                       */
+                   }
+                }
+            });
+            
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Enviar mensaje", JOptionPane.OK_CANCEL_OPTION);
+            
+            if (result == JOptionPane.OK_OPTION)
+            {
+                if(nombreListaField.getText().length()<3||nombreListaField.getText().length()>30)
+                {
+                    JOptionPane.showMessageDialog(null, "El asunto del mensaje debe ser mayor a 3 caracteres y menor a 30");
+                    return;
+                }
+                if(nombreListaField.getText().contains("|"))
+                {
+                    JOptionPane.showMessageDialog(null, "El asunto del mensaje no puede contener | ");
+                    return;
+                }
+                if(descripcionListaField.getText().length()<1)
+                {
+                    JOptionPane.showMessageDialog(null, "El mensaje no puede estar vacio");
+                    return;
+                }
+                if(descripcionListaField.getText().contains("|"))
+                {
+                    JOptionPane.showMessageDialog(null, "El mensaje no puede contener |");
+                } 
+                
+                
+                    //MENSAJE
+            }
+           
         });
         
         menu.show(jList1, evt.getPoint().x, evt.getPoint().y);     
@@ -774,9 +868,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         
         borrarLista(nombreLista, Operacion, false);
         generarIndex();
-        generarllave1();
-        generarllave2();
-        generarllave3();
+
     }
     
     
@@ -837,8 +929,6 @@ public  class IFEstandar extends javax.swing.JFrame {
               Files.write(Path.of("C:\\MEIA\\indice.txt"), lineasIndiceList);
          
              }
-             
-             
              catch (IOException ioe) 
              {
                System.err.format("IOException: %s%n", ioe);
@@ -925,440 +1015,7 @@ public  class IFEstandar extends javax.swing.JFrame {
          }
     }
     
-    public void generarllave1()
-    {
-     String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
-        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
-        Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
-        Pattern contacPattern = Pattern.compile(contactoString);
-        
-        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
-        Pattern estatusPattern = Pattern.compile(estatusString);
-         
-        String s="";
-        
-        int numeroRegistro=0;
-        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        try 
-         {
-             List<String> lineasIndiceList;
-             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             Path p = Paths.get("C:\\MEIA\\llave_lista.txt");
-          
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
-              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
-              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
-              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                  if(m3.group(4).contains("1"))
-                  {
-                 
-                  s += System.lineSeparator() + "Nombre Lista:"+m2.group(4)+"|"+ "Posicion:"+(numeroRegistro+1)+"|"+  "Usuario asociado:"+m1.group(4)
-                  ;
-                  
-                  numeroRegistro++;
-                  }
-                }
-             }
-             
-             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
-             {
-          
-               writer.write(s);
-               writer.close();
-               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\llave_lista.txt"));
-              Iterator<String> i2It = lineasIndiceList.iterator();
-              while (i2It.hasNext())
-              {
-                  String line = i2It.next();
-                  if (line.trim().isEmpty())
-                      i2It.remove();       
-              }              
-              Files.write(Path.of("C:\\MEIA\\llave_lista.txt"), lineasIndiceList);
-         
-             }
-             
-             
-             catch (IOException ioe) 
-             {
-               System.err.format("IOException: %s%n", ioe);
-             }
-             int mayor=0;
-             int menor=0;
-             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
-             Pattern registroPattern = Pattern.compile(regisString);
-             
-             
-             String temporal;
-             
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-                 for (int j = 1; j < lineasIndiceList.size(); j++)
-                 {
-                     
-                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
-                     {
-                         temporal=lineasIndiceList.get(i);
-                         lineasIndiceList.set(i, lineasIndiceList.get(j));
-                         lineasIndiceList.set(j, temporal);
-                         
-                     }
-                     
-                 }
-             }
-             if(!lineasIndiceList.isEmpty())
-             {
-             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
-             if(m.find())
-             {
-                 menor=Integer.parseInt(m.group(4));
-             }
-             }
-             
-             int cantidadCuentas=0;
-        
-        try 
-        {
-            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\llave_lista.txt"));
-            
-            for (int i = 0; i < lineas2.size(); i++)
-            {
-                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
-                if(m2.find())
-                {
-                    cantidadCuentas++;   
-                }   
-            }
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
-            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
-            return;
-        }  
-        List<String> lineas;
-         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
-                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
-                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
-         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
-        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
-        {
-               writer.write(s1);
-               writer.close();
-        }
-                      
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
-             Iterator<String> i = lineas.iterator();
-             while (i.hasNext())
-             {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();       
-             }
-             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
-        
-             
-         } 
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-    }
     
-     public void generarllave2()
-    {
-     String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
-        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
-        Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
-        Pattern contacPattern = Pattern.compile(contactoString);
-        
-        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
-        Pattern estatusPattern = Pattern.compile(estatusString);
-         
-        String s="";
-        
-        int numeroRegistro=0;
-        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        try 
-         {
-             List<String> lineasIndiceList;
-             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             Path p = Paths.get("C:\\MEIA\\llave_usuario.txt");
-          
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
-              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
-              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
-              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                  if(m3.group(4).contains("1"))
-                  {
-                 
-                  s += System.lineSeparator() + "Usuario:"+cuenta+"|"+ "Posicion:"+(numeroRegistro+1)+"|"+  "Usuario asociado:"+m1.group(4)
-                  ;
-                  
-                  numeroRegistro++;
-                  }
-                }
-             }
-             
-             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
-             {
-          
-               writer.write(s);
-               writer.close();
-               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\llave_usuario.txt"));
-              Iterator<String> i2It = lineasIndiceList.iterator();
-              while (i2It.hasNext())
-              {
-                  String line = i2It.next();
-                  if (line.trim().isEmpty())
-                      i2It.remove();       
-              }              
-              Files.write(Path.of("C:\\MEIA\\llave_usuario.txt"), lineasIndiceList);
-         
-             }
-             
-             
-             catch (IOException ioe) 
-             {
-               System.err.format("IOException: %s%n", ioe);
-             }
-             int mayor=0;
-             int menor=0;
-             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
-             Pattern registroPattern = Pattern.compile(regisString);
-             
-             
-             String temporal;
-             
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-                 for (int j = 1; j < lineasIndiceList.size(); j++)
-                 {
-                     
-                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
-                     {
-                         temporal=lineasIndiceList.get(i);
-                         lineasIndiceList.set(i, lineasIndiceList.get(j));
-                         lineasIndiceList.set(j, temporal);
-                         
-                     }
-                     
-                 }
-             }
-             if(!lineasIndiceList.isEmpty())
-             {
-             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
-             if(m.find())
-             {
-                 menor=Integer.parseInt(m.group(4));
-             }
-             }
-             
-             int cantidadCuentas=0;
-        
-        try 
-        {
-            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\llave_usuario.txt"));
-            
-            for (int i = 0; i < lineas2.size(); i++)
-            {
-                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
-                if(m2.find())
-                {
-                    cantidadCuentas++;   
-                }   
-            }
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
-            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
-            return;
-        }  
-        List<String> lineas;
-         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
-                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
-                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
-         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
-        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
-        {
-               writer.write(s1);
-               writer.close();
-        }
-                      
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
-             Iterator<String> i = lineas.iterator();
-             while (i.hasNext())
-             {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();       
-             }
-             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
-        
-             
-         } 
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-    }
-     public void generarllave3()
-    {
-     String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
-        Pattern nombreListaPattern = Pattern.compile(nombreListasString);
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
-        Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
-        Pattern contacPattern = Pattern.compile(contactoString);
-        
-        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
-        Pattern estatusPattern = Pattern.compile(estatusString);
-         
-        String s="";
-        
-        int numeroRegistro=0;
-        String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        try 
-         {
-             List<String> lineasIndiceList;
-             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             Path p = Paths.get("C:\\MEIA\\llave_usuarioAso.txt");
-          
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
-              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
-              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
-              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                  if(m3.group(4).contains("1"))
-                  {
-                 
-                  s += System.lineSeparator() + "Usuario asociado:"+m1.group(4)+"|"+ "Posicion:"+(numeroRegistro+1)
-                  ;
-                  
-                  numeroRegistro++;
-                  }
-                }
-             }
-             
-             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
-             {
-          
-               writer.write(s);
-               writer.close();
-               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\llave_usuarioAso.txt"));
-              Iterator<String> i2It = lineasIndiceList.iterator();
-              while (i2It.hasNext())
-              {
-                  String line = i2It.next();
-                  if (line.trim().isEmpty())
-                      i2It.remove();       
-              }              
-              Files.write(Path.of("C:\\MEIA\\llave_usuarioAso.txt"), lineasIndiceList);
-         
-             }
-             
-             
-             catch (IOException ioe) 
-             {
-               System.err.format("IOException: %s%n", ioe);
-             }
-             int mayor=0;
-             int menor=0;
-             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
-             Pattern registroPattern = Pattern.compile(regisString);
-             
-             
-             String temporal;
-             
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-                 for (int j = 1; j < lineasIndiceList.size(); j++)
-                 {
-                     
-                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
-                     {
-                         temporal=lineasIndiceList.get(i);
-                         lineasIndiceList.set(i, lineasIndiceList.get(j));
-                         lineasIndiceList.set(j, temporal);
-                         
-                     }
-                     
-                 }
-             }
-             if(!lineasIndiceList.isEmpty())
-             {
-             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
-             if(m.find())
-             {
-                 menor=Integer.parseInt(m.group(4));
-             }
-             }
-             
-             int cantidadCuentas=0;
-        
-        try 
-        {
-            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\llave_usuarioAso.txt"));
-            
-            for (int i = 0; i < lineas2.size(); i++)
-            {
-                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
-                if(m2.find())
-                {
-                    cantidadCuentas++;   
-                }   
-            }
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
-            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
-            return;
-        }  
-        List<String> lineas;
-         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
-                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
-                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
-         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
-        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
-        {
-               writer.write(s1);
-               writer.close();
-        }
-                      
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
-             Iterator<String> i = lineas.iterator();
-             while (i.hasNext())
-             {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();       
-             }
-             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
-        
-             
-         } 
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-    }     
-  
 
         
     
@@ -1432,6 +1089,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         jList2.setSelectionBackground(azulColor);
         JMenuItem borrarLista = new JMenuItem("Borrar Lista");
         JMenuItem agregarLista = new JMenuItem("Activar Lista");
+        JMenuItem enviarMensaje = new JMenuItem("Enviar Mensaje");
         JMenu verContactos = new JMenu("Ver Contactos");
         
         try
@@ -1461,6 +1119,7 @@ public  class IFEstandar extends javax.swing.JFrame {
                             if(m10.group(4).contains("1"))
                             {
                                 menu.add(borrarLista);
+                                menu.add(enviarMensaje);
                                 menu.add(verContactos); 
                             }
                             else
@@ -1511,8 +1170,7 @@ public  class IFEstandar extends javax.swing.JFrame {
         });
         
         obtenerUsuariosDeLista(verContactos);
-      
-         agregarLista.addActionListener((ActionEvent e) -> {            
+        agregarLista.addActionListener((ActionEvent e) -> {            
             Object[] options = { "Agregar", "Cancelar" };
             int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere reestablecer la lista "+jList2.getSelectedValue()+"?", "Reestablecer Lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
             if(dialogResult == 0)
@@ -1524,8 +1182,88 @@ public  class IFEstandar extends javax.swing.JFrame {
            
         });
         
+        enviarMensaje.addActionListener((ActionEvent e) -> {            
+            JTextField nombreListaField = new JTextField(30);
+            JTextField descripcionListaField = new JTextField(30);
+            descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 200));
+            
+            JLabel boton=new JLabel();
+            ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnMensaje.gif");
         
-        
+            boton.setIcon(imIc3);
+            boton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Asunto:"));
+            myPanel.add(nombreListaField);
+            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+            myPanel.add(new JLabel("Mensaje:"));
+            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+            myPanel.add(descripcionListaField);
+            myPanel.setLayout( new GridBagLayout() );
+            myPanel.add(boton,new GridBagConstraints());
+            
+            
+                
+            boton.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent  e){
+                   JFileChooser escogerImagen = new JFileChooser();
+                   FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
+                   escogerImagen.setFileFilter(filtro);
+                   int seleccionado=escogerImagen.showOpenDialog(null);
+                   if(seleccionado==JFileChooser.APPROVE_OPTION)  
+                   {
+                       File archivo=escogerImagen.getSelectedFile();
+                       String obtener = archivo.getAbsolutePath();
+                       ImageIcon imIc= new ImageIcon(obtener);
+                       
+                       Image ajustarImg = imIc.getImage();
+                       Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
+                       Foto.setIcon(new ImageIcon(ajustarTamaño));
+                       JOptionPane.showMessageDialog(null, "Algo");
+                  /*     try
+                       {
+                           ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
+                           pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
+                       }
+                       catch (IOException ex)
+                       {
+                           Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                       */
+                   }
+                }
+            });
+            
+            int result = JOptionPane.showConfirmDialog(null, myPanel,"Enviar mensaje", JOptionPane.OK_CANCEL_OPTION);
+            
+            if (result == JOptionPane.OK_OPTION)
+            {
+                if(nombreListaField.getText().length()<3||nombreListaField.getText().length()>30)
+                {
+                    JOptionPane.showMessageDialog(null, "El asunto del mensaje debe ser mayor a 3 caracteres y menor a 30");
+                    return;
+                }
+                if(nombreListaField.getText().contains("|"))
+                {
+                    JOptionPane.showMessageDialog(null, "El asunto del mensaje no puede contener | ");
+                    return;
+                }
+                if(descripcionListaField.getText().length()<1)
+                {
+                    JOptionPane.showMessageDialog(null, "El mensaje no puede estar vacio");
+                    return;
+                }
+                if(descripcionListaField.getText().contains("|"))
+                {
+                    JOptionPane.showMessageDialog(null, "El mensaje no puede contener |");
+                } 
+                
+                
+                    //MENSAJE
+            }
+           
+        });
         
         
          menu.show(jList2, evt.getPoint().x, evt.getPoint().y);     

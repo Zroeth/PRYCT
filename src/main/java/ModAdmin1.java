@@ -902,8 +902,8 @@ int xx,xy;
     }//GEN-LAST:event_FotoMousePressed
 
     private void FotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FotoMouseClicked
-        // TODO add your handling code here:
-           JFileChooser escogerImagen = new JFileChooser();
+        // TODO add your handling code here:  
+        JFileChooser escogerImagen = new JFileChooser();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
         escogerImagen.setFileFilter(filtro);
         int seleccionado=escogerImagen.showOpenDialog(this);
@@ -916,21 +916,16 @@ int xx,xy;
         Image ajustarImg = imIc.getImage();
         Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
         
-        Foto.setIcon(new ImageIcon(ajustarTamaño));
-        
-           
+        Foto.setIcon(new ImageIcon(ajustarTamaño));  
         try 
-        {
-          
-                
+        { 
                 ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
                 pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
         } 
          
         catch (IOException ex) 
         {
-                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-            
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);   
         }
         }
         
