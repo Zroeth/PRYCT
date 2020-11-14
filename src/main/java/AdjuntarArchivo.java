@@ -1,5 +1,4 @@
 
-
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,17 +15,18 @@ import javax.imageio.ImageIO;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Cathy
  */
 public class AdjuntarArchivo extends javax.swing.JFrame {
+
     JFileChooser seleccionar = new JFileChooser();
     File archivo;
     FileInputStream entrada;
     FileOutputStream salida;
     byte[] bytesImg;
+
     /**
      * Creates new form AdjuntarArchivo
      */
@@ -148,86 +148,80 @@ public class AdjuntarArchivo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BuscarArchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarArchActionPerformed
-       
-       
+
         int option = seleccionar.showOpenDialog(this);
-        if(option == JFileChooser.APPROVE_OPTION){
-            archivo=seleccionar.getSelectedFile();
-           String file = seleccionar.getSelectedFile().getPath();
-           String fileName= seleccionar.getSelectedFile().getName();
-           PathArc.setText("Archivo : "+ file);
-           NombreArch.setText("Archivo : "+ fileName);
-           if(archivo.canRead()){
-           if(archivo.getName().endsWith("txt")||archivo.getName().endsWith("docx")||archivo.getName().endsWith("pdf")){
-           String datos=AbrirArchivo(archivo);
-           ArchivoSel.setText(datos);
-         
-           
-           }
-           else{
-               //mejor si se prueba con archivo jpg
-           if(archivo.getName().endsWith("jpg")||archivo.getName().endsWith("png")||archivo.getName().endsWith("PNG")||archivo.getName().endsWith("JPG")||archivo.getName().endsWith("jpeg")){
-           bytesImg=AbrirImagen(archivo);
-           ImageIcon Imagen=new ImageIcon(bytesImg);
-           Icon ajustarTamaño= new ImageIcon(Imagen.getImage().getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_DEFAULT));
-           
-            Foto.setIcon(ajustarTamaño);
-            this.repaint();
-          
-           
-           }
-           else{
-               JOptionPane.showMessageDialog(null,"Seleccione otro archivo txt o jpg");
-           }
-           
-               }
-           }
-      
-        } 
+        if (option == JFileChooser.APPROVE_OPTION) {
+            archivo = seleccionar.getSelectedFile();
+            String file = seleccionar.getSelectedFile().getPath();
+            String fileName = seleccionar.getSelectedFile().getName();
+            PathArc.setText("Archivo : " + file);
+            NombreArch.setText("Archivo : " + fileName);
+            if (archivo.canRead()) {
+                if (archivo.getName().endsWith("txt") || archivo.getName().endsWith("docx") || archivo.getName().endsWith("pdf")) {
+                    String datos = AbrirArchivo(archivo);
+                    ArchivoSel.setText(datos);
+
+                } else {
+                    //mejor si se prueba con archivo jpg
+                    if (archivo.getName().endsWith("jpg") || archivo.getName().endsWith("png") || archivo.getName().endsWith("PNG") || archivo.getName().endsWith("JPG") || archivo.getName().endsWith("jpeg")) {
+                        bytesImg = AbrirImagen(archivo);
+                        ImageIcon Imagen = new ImageIcon(bytesImg);
+                        Icon ajustarTamaño = new ImageIcon(Imagen.getImage().getScaledInstance(Foto.getWidth(), Foto.getHeight(), Image.SCALE_DEFAULT));
+
+                        Foto.setIcon(ajustarTamaño);
+                        this.repaint();
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Seleccione otro archivo txt o jpg");
+                    }
+
+                }
+            }
+
+        }
     }//GEN-LAST:event_BuscarArchActionPerformed
-public byte[] AbrirImagen(File archivo){
-byte[] bytesImg=new byte[1024*100];
-try{
-entrada=new FileInputStream(archivo);
-entrada.read(bytesImg);
-}catch(Exception e){}
-return bytesImg;
-}
-    
+    public byte[] AbrirImagen(File archivo) {
+        byte[] bytesImg = new byte[1024 * 100];
+        try {
+            entrada = new FileInputStream(archivo);
+            entrada.read(bytesImg);
+        } catch (Exception e) {
+        }
+        return bytesImg;
+    }
+
     private void AceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptActionPerformed
-       
-       String info=NombreArch.getText();
-       Mensajeria.ArchivoAdjunto.setText(info);
-       String txt=ArchivoSel.getText();
-       Mensajeria.mostrarAd.setText("Nombre: "+info+" | "+"Contenido: "+txt);
-       Icon img=Foto.getIcon();
-       Mensajeria.FotoE.setIcon(img);
-       dispose();
-        
+
+        String info = NombreArch.getText();
+        Mensajeria.ArchivoAdjunto.setText(info);
+        String txt = ArchivoSel.getText();
+        Mensajeria.mostrarAd.setText("Nombre: " + info + " | " + "Contenido: " + txt);
+        Icon img = Foto.getIcon();
+        Mensajeria.FotoE.setIcon(img);
+        dispose();
+
     }//GEN-LAST:event_AceptActionPerformed
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
-        
+
         dispose();
-        
+
     }//GEN-LAST:event_CancelarActionPerformed
-   public String AbrirArchivo(File archivo){
-          
-            String datos= "";
-            try{
-            entrada=new FileInputStream(archivo);
+    public String AbrirArchivo(File archivo) {
+
+        String datos = "";
+        try {
+            entrada = new FileInputStream(archivo);
             int asc;
-            while((asc=entrada.read())!=-1){
-                char caracter=(char)asc;
-                datos+=caracter;
-            }}
-            
-            
-            catch(Exception e){
+            while ((asc = entrada.read()) != -1) {
+                char caracter = (char) asc;
+                datos += caracter;
+            }
+        } catch (Exception e) {
+        }
+        return datos;
     }
-            return datos;
-    }
-    
+
     /**
      * @param args the command line arguments
      */

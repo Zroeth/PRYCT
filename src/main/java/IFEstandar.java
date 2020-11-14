@@ -66,95 +66,78 @@ import javax.swing.plaf.metal.MetalIconFactory;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-public  class IFEstandar extends javax.swing.JFrame {
-
-   static String cuenta;
-   static boolean valorRol;
-   static String cuentaMod; 
-   String pathFotografia;
-   int maximaReorganizacion;    
-   String descripcionLista;
-   int xx,xy;
-   DefaultListModel listaTodosLosContactos = new DefaultListModel();
-   DefaultListModel listaContactosOcultar = new DefaultListModel();
-   DefaultListModel listaContactosMostrar = new DefaultListModel();
-   
-   DefaultListModel listaTodasLasListas = new DefaultListModel();
-   DefaultListModel listaListasOcultar = new DefaultListModel();
-   DefaultListModel listaListasMostrar = new DefaultListModel();
-     
+public class IFEstandar extends javax.swing.JFrame {
+    
+    static String cuenta;
+    static boolean valorRol;
+    static String cuentaMod;
+    String pathFotografia;
+    int maximaReorganizacion;
+    String descripcionLista;
+    int xx, xy;
+    DefaultListModel listaTodosLosContactos = new DefaultListModel();
+    DefaultListModel listaContactosOcultar = new DefaultListModel();
+    DefaultListModel listaContactosMostrar = new DefaultListModel();
+    
+    DefaultListModel listaTodasLasListas = new DefaultListModel();
+    DefaultListModel listaListasOcultar = new DefaultListModel();
+    DefaultListModel listaListasMostrar = new DefaultListModel();
+    
     Map<Object, ImageIcon> icons = new HashMap<>();
     
     Map<Object, Icon> numerosMap = new HashMap<>();
     
     public IFEstandar(String usuario) {
-       
-        
         
         setUndecorated(true);
         initComponents();
         
+        getContentPane().setBackground(Color.white);
         
-        getContentPane().setBackground(Color.white);    
- 
+        cuenta = "Nueva";
         
-        cuenta="Nueva";
+        lblBienvenido.setText("Bienvenido usuario " + cuenta);
         
-        lblBienvenido.setText("Bienvenido usuario "+cuenta);
-        
-        
-        ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnAgregar.gif");
+        ImageIcon imIc3 = new ImageIcon("src/main/java/Imagenes/btnAgregar.gif");
         btnBuscar.setIcon(imIc3);
         
-       
-        
-         
-        ImageIcon imIc4= new ImageIcon("src/main/java/Imagenes/btnModificar.gif");
+        ImageIcon imIc4 = new ImageIcon("src/main/java/Imagenes/btnModificar.gif");
         btnMod.setIcon(imIc4);
         
-        ImageIcon imIc5= new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
+        ImageIcon imIc5 = new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
         btnSalir.setIcon(imIc5);
         
         mostrarContactos();
         mostrarListas();
-        String patron="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-        String patronPathFoto="(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
+        String patron = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+        String patronPathFoto = "(Path_Fotografia)(\\:)(	| |)*(.+)(\\|)(E)";
         Pattern rol = Pattern.compile(patron);
         Pattern rolPath = Pattern.compile(patronPathFoto);
-        maximaReorganizacion=Max();
+        maximaReorganizacion = Max();
         
-        
-        
-        try
-        {
-                List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-                for (int i = 0; i < lineas.size(); i++)
-                {
-                    Matcher m = rol.matcher(lineas.get(i));
-                    Matcher m9 = rolPath.matcher(lineas.get(i));
-                    
-                    if(m.find()&&m9.find())
-                    {   
-                        if(m.group(4).contains(cuenta))
-                        {
-                            pathFotografia=m9.group(4);
-                            ImageIcon imIc= new ImageIcon(pathFotografia);
-                            Image ajustarImg = imIc.getImage();
-                          
-                            return;   
-                        }
+        try {
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = rol.matcher(lineas.get(i));
+                Matcher m9 = rolPath.matcher(lineas.get(i));
+                
+                if (m.find() && m9.find()) {
+                    if (m.group(4).contains(cuenta)) {
+                        pathFotografia = m9.group(4);
+                        ImageIcon imIc = new ImageIcon(pathFotografia);
+                        Image ajustarImg = imIc.getImage();
+                        
+                        return;
                     }
                 }
-        }   
-        catch (IOException ex)    
-        {
-                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-                 JOptionPane.showMessageDialog(null, ":D");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ":D");
         }
         
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -177,12 +160,12 @@ public  class IFEstandar extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         Bandejasalida = new javax.swing.JButton();
         BandejaEntrada = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        BandejaEn = new javax.swing.JTextArea();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        BandejaSa = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        BandEntr = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        BanSali = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -270,19 +253,25 @@ public  class IFEstandar extends javax.swing.JFrame {
             }
         });
 
-        BandejaEn.setColumns(20);
-        BandejaEn.setRows(5);
-        jScrollPane3.setViewportView(BandejaEn);
-
-        BandejaSa.setColumns(20);
-        BandejaSa.setRows(5);
-        jScrollPane4.setViewportView(BandejaSa);
-
         jLabel3.setFont(new java.awt.Font("Cooper Black", 0, 24)); // NOI18N
         jLabel3.setText("      Bandeja de Entrada");
 
         jLabel4.setFont(new java.awt.Font("Cooper Black", 0, 24)); // NOI18N
         jLabel4.setText("        Bandeja de Salida");
+
+        BandEntr.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane5.setViewportView(BandEntr);
+
+        BanSali.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(BanSali);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -318,14 +307,11 @@ public  class IFEstandar extends javax.swing.JFrame {
                         .addGap(51, 51, 51)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
-                                .addComponent(jScrollPane4)))))
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -365,13 +351,13 @@ public  class IFEstandar extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))))
         );
 
         pack();
@@ -380,262 +366,212 @@ public  class IFEstandar extends javax.swing.JFrame {
 
     private void btnModMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModMouseClicked
         // TODO add your handling code here:
-        ModAdmin1.getObj(cuenta,false).setVisible(true);
+        ModAdmin1.getObj(cuenta, false).setVisible(true);
     }//GEN-LAST:event_btnModMouseClicked
 
     private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
         // TODO add your handling code here:
-          IFingreso Ifingreso=new IFingreso();
-               Ifingreso.setVisible(true);
-               Ifingreso.pack();
-               Ifingreso.setLocationRelativeTo(null);
-               dispose();
+        IFingreso Ifingreso = new IFingreso();
+        Ifingreso.setVisible(true);
+        Ifingreso.pack();
+        Ifingreso.setLocationRelativeTo(null);
+        dispose();
     }//GEN-LAST:event_btnSalirMouseClicked
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         // TODO add your handling code here:
-             int x=evt.getXOnScreen();
-        int y=evt.getYOnScreen();
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
         
-        setLocation(x-xx,y-xy);
+        setLocation(x - xx, y - xy);
     }//GEN-LAST:event_formMouseDragged
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         // TODO add your handling code here:
-            xx=evt.getX();
-        xy=evt.getY();
+        xx = evt.getX();
+        xy = evt.getY();
     }//GEN-LAST:event_formMousePressed
+    
 
-   
     private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
         
         JTextField usuarioBuscarField = new JTextField(30);
         usuarioBuscarField.setPreferredSize(new java.awt.Dimension(30, 50));
-        JPanel myPanel = new JPanel(); 
+        JPanel myPanel = new JPanel();
         myPanel.add(new JLabel("Usuario:"));
         myPanel.add(usuarioBuscarField);
-        int result = JOptionPane.showConfirmDialog(null, myPanel,"Agregar cuenta", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION)
-        {
-         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-        Pattern rol = Pattern.compile(patronUsuario);
-        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";  
-        Pattern rolE = Pattern.compile(patronEstatus);
-        
-        try {
-            List<String> lineas;
-            lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-            for (int i = 0; i < lineas.size(); i++)
-            {
-                Matcher m = rol.matcher(lineas.get(i));
-                Matcher m10 = rolE.matcher(lineas.get(i));
-                if(m.find()&&m10.find())
-                {
-                    if(m.group(4).equals(usuarioBuscarField.getText()))
-                    {
-                        //Usuario  existe
-                        //JOptionPane.showMessageDialog(null, "Usuario existe");
-                        if(m10.group(4).contains("0"))
-                        {
-                            JOptionPane.showMessageDialog(null, "Este usuario esta deshabilitado, no puedes agregarlo");
-                            return;
+        int result = JOptionPane.showConfirmDialog(null, myPanel, "Agregar cuenta", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+            Pattern rol = Pattern.compile(patronUsuario);
+            String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
+            Pattern rolE = Pattern.compile(patronEstatus);
+            
+            try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++) {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    Matcher m10 = rolE.matcher(lineas.get(i));
+                    if (m.find() && m10.find()) {
+                        if (m.group(4).equals(usuarioBuscarField.getText())) {
+                            //Usuario  existe
+                            //JOptionPane.showMessageDialog(null, "Usuario existe");
+                            if (m10.group(4).contains("0")) {
+                                JOptionPane.showMessageDialog(null, "Este usuario esta deshabilitado, no puedes agregarlo");
+                                return;
+                            }
+                            Object[] options = {"Agregar", "Cancelar"};
+                            int dialogResult = JOptionPane.showOptionDialog(null, "¿Agregar contacto?", "Agregar contacto", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                            if (dialogResult == 0) {
+                                if (usuarioBuscarField.getText().equals(cuenta)) {
+                                    JOptionPane.showMessageDialog(null, "No estas sol@! busca contactos :')");
+                                    return;
+                                }
+                                if (buscarContacto(usuarioBuscarField.getText())) {
+                                    agregarContacto(usuarioBuscarField.getText(), 1);
+                                    return;
+                                } else {
+                                    return;
+                                }
+                            } else {
+                                //pues no   System.out.println("No");
+                                return;
+                            }
+                            
+                        } else {
+                            //El usuario no existe :D
+                            //  JOptionPane.showMessageDialog(null, "Este usuario no existe");
                         }
-                        Object[] options = { "Agregar", "Cancelar" };
-                        int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar contacto?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
-                        if(dialogResult == 0)
-                        {
-                            if(usuarioBuscarField.getText().equals(cuenta))
-                            {
-                                JOptionPane.showMessageDialog(null, "No estas sol@! busca contactos :')");
-                                return;
-                            }
-                            if(buscarContacto(usuarioBuscarField.getText()))
-                            {
-                               agregarContacto(usuarioBuscarField.getText(),1);
-                               return;
-                            }
-                            else
-                            {
-                                return;
-                            }
-                        } 
-                        else 
-                        {
-                         //pues no   System.out.println("No");
-                             return;
-                        } 
-                       
-                    }
-                    else
-                    {
-                        //El usuario no existe :D
-                        //  JOptionPane.showMessageDialog(null, "Este usuario no existe");
-                    }
-                }
-                else
-                {
-                    //No hay usuarios
+                    } else {
+                        //No hay usuarios
 
+                    }
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         }
-        catch (IOException ex)
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
 
-        
-        }
-        
-        
-       
     }//GEN-LAST:event_btnBuscarMouseClicked
-
-
     
+
     private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
         jList1.setSelectedIndex(jList1.locationToIndex(evt.getPoint()));
-        JPopupMenu menu = new JPopupMenu();        
+        JPopupMenu menu = new JPopupMenu();
         jList1.setSelectedIndex(jList1.getSelectedIndex());
-        Color azulColor = new Color(51,153,255);
+        Color azulColor = new Color(51, 153, 255);
         jList1.setSelectionBackground(azulColor);
         JMenuItem borrarContactoItem = new JMenuItem("Borrar contacto");
         JMenuItem agregarConntacItem = new JMenuItem("Agregar contacto");
-        JMenuItem enviarMensaje= new JMenuItem("Enviar Mensaje");
+        JMenuItem enviarMensaje = new JMenuItem("Enviar Mensaje");
         JMenu agregarALista = new JMenu("Agregar a una lista");
         JMenuItem NuevaLista = new JMenuItem("Agregar nueva lista");
         
-        try
-        {
-                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
-                Pattern usuarioPattern = Pattern.compile(patronUsuario);
-                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
-                Pattern rolE = Pattern.compile(patronEstatus);
-                String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
-                Pattern contacPattern = Pattern.compile(contactoString);
-              
-                List<String> lineaDescList,lineasList;
-                lineasList=Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-                lineaDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-                
-                for (int i = 0; i < lineaDescList.size(); i++)
-                {   
-                    Matcher m1 = contacPattern.matcher(lineaDescList.get(i));
-                    Matcher m10 = rolE.matcher(lineaDescList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineaDescList.get(i));
-                    if(m10.find()&&m1.find()&&m.find())
-                    {
-                        if(m.group(4).equals(cuenta))
-                        {
-                        if(m1.group(4).equals(jList1.getSelectedValue()))
-                        {
-                            if(m10.group(4).contains("1"))
-                            {
+        try {
+            String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+            Pattern usuarioPattern = Pattern.compile(patronUsuario);
+            String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
+            Pattern rolE = Pattern.compile(patronEstatus);
+            String contactoString = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+            Pattern contacPattern = Pattern.compile(contactoString);
+            
+            List<String> lineaDescList, lineasList;
+            lineasList = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+            lineaDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+            
+            for (int i = 0; i < lineaDescList.size(); i++) {
+                Matcher m1 = contacPattern.matcher(lineaDescList.get(i));
+                Matcher m10 = rolE.matcher(lineaDescList.get(i));
+                Matcher m = usuarioPattern.matcher(lineaDescList.get(i));
+                if (m10.find() && m1.find() && m.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(jList1.getSelectedValue())) {
+                            if (m10.group(4).contains("1")) {
                                 menu.add(borrarContactoItem);
                                 menu.add(enviarMensaje);
                                 agregarALista.add(NuevaLista);
                                 menu.add(agregarALista);
-                            }
-                            else
-                            {
+                            } else {
                                 menu.add(agregarConntacItem);
                             }
-                        }
-                        }
-                    }
-                }
-                for (int i = 0; i < lineasList.size(); i++)
-                {   
-                    Matcher m1 = contacPattern.matcher(lineasList.get(i));
-                    Matcher m10 = rolE.matcher(lineasList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineasList.get(i));
-                    if(m10.find()&&m1.find()&&m.find())
-                    {
-                        if(m.group(4).equals(cuenta))
-                        {
-                        if(m1.group(4).equals(jList1.getSelectedValue()))
-                        {
-                            if(m10.group(4).contains("1"))
-                            {
-                                menu.add(borrarContactoItem);
-                                menu.add(enviarMensaje);
-                                agregarALista.add(NuevaLista);
-                                menu.add(agregarALista);
-                            }
-                            else
-                            {
-                                menu.add(agregarConntacItem);
-                            }
-                        }
                         }
                     }
                 }
             }
-         catch(IOException exception)       
-         {
-         }
+            for (int i = 0; i < lineasList.size(); i++) {
+                Matcher m1 = contacPattern.matcher(lineasList.get(i));
+                Matcher m10 = rolE.matcher(lineasList.get(i));
+                Matcher m = usuarioPattern.matcher(lineasList.get(i));
+                if (m10.find() && m1.find() && m.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(jList1.getSelectedValue())) {
+                            if (m10.group(4).contains("1")) {
+                                menu.add(borrarContactoItem);
+                                menu.add(enviarMensaje);
+                                agregarALista.add(NuevaLista);
+                                menu.add(agregarALista);
+                            } else {
+                                menu.add(agregarConntacItem);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException exception) {
+        }
         agregarConntacItem.addActionListener((ActionEvent e) -> {
-            String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-            String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";   
+            String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+            String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
             Pattern rol = Pattern.compile(patronUsuario);
             Pattern rolE = Pattern.compile(patronEstatus);
-            try
-            {
+            try {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-                for (int i = 0; i < lineas.size(); i++)
-                {
+                for (int i = 0; i < lineas.size(); i++) {
                     Matcher m = rol.matcher(lineas.get(i));
                     Matcher m10 = rolE.matcher(lineas.get(i));
-                    if(m.find())
-                    {
-                        if(m.group(4).equals(jList1.getSelectedValue()))
-                        {
+                    if (m.find()) {
+                        if (m.group(4).equals(jList1.getSelectedValue())) {
                             //Usuario  existe
-                            if(m10.find())
-                            {
-                                if(m10.group(4).contains("0"))
-                                {
-                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado, no puedes agregar de nuevo a este contacto");   
+                            if (m10.find()) {
+                                if (m10.group(4).contains("0")) {
+                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado, no puedes agregar de nuevo a este contacto");
                                     return;
                                 }
                             }
                         }
                     }
                 }
-            }
-            catch(IOException exception)
-            {
+            } catch (IOException exception) {
             }
             
-            Object[] options = { "Agregar", "Cancelar" };
-            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a "+jList1.getSelectedValue()+"?", "Agregar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
-            if(dialogResult == 0)
-            {
-                String temp=jList1.getSelectedValue();
+            Object[] options = {"Agregar", "Cancelar"};
+            int dialogResult = JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a " + jList1.getSelectedValue() + "?", "Agregar contacto", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (dialogResult == 0) {
+                String temp = jList1.getSelectedValue();
                 JOptionPane.showMessageDialog(null, "Contacto reestablecido");
-                borrarContactos(jList1.getSelectedValue(),1);   
+                borrarContactos(jList1.getSelectedValue(), 1);
                 borrarUsuarioDeLista(temp, "Todas", 1);
                 mostrarContactos();
                 mostrarListas();
             }
-           
+            
         });
         //
         borrarContactoItem.addActionListener((ActionEvent e) -> {
-            Object[] options = { "Borrar", "Cancelar" };
-            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar a "+jList1.getSelectedValue()+" de contactos?", "Borrar contacto",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);   
-            if(dialogResult == 0)
-            {
-                String temp=jList1.getSelectedValue();
+            Object[] options = {"Borrar", "Cancelar"};
+            int dialogResult = JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar a " + jList1.getSelectedValue() + " de contactos?", "Borrar contacto", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (dialogResult == 0) {
+                String temp = jList1.getSelectedValue();
                 JOptionPane.showMessageDialog(null, "Contacto borrado");
-                borrarContactos(jList1.getSelectedValue(),0);
+                borrarContactos(jList1.getSelectedValue(), 0);
                 mostrarContactos();
                 borrarUsuarioDeLista(temp, "Todas", 0);
                 mostrarListas();
-            }
-            else
-            {
+            } else {
                 //pues no   System.out.println("No");
                 return;
             }
@@ -643,11 +579,10 @@ public  class IFEstandar extends javax.swing.JFrame {
         //LISTAS
         obtenerLista(agregarALista);
         
-        NuevaLista.addActionListener((ActionEvent e) -> {    
+        NuevaLista.addActionListener((ActionEvent e) -> {
             JTextField nombreListaField = new JTextField(30);
             JTextField descripcionListaField = new JTextField(30);
             descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 70));
-            
             
             JPanel myPanel = new JPanel();
             myPanel.add(new JLabel("Nombre de la lista:"));
@@ -656,55 +591,50 @@ public  class IFEstandar extends javax.swing.JFrame {
             myPanel.add(new JLabel("Descripcion:"));
             myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
             myPanel.add(descripcionListaField);
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Ingrese los datos de la nueva lista", JOptionPane.OK_CANCEL_OPTION);
+            int result = JOptionPane.showConfirmDialog(null, myPanel, "Ingrese los datos de la nueva lista", JOptionPane.OK_CANCEL_OPTION);
             
-            if (result == JOptionPane.OK_OPTION)
-            {
-                if(nombreListaField.getText().length()<3||nombreListaField.getText().length()>30)
-                {
+            if (result == JOptionPane.OK_OPTION) {
+                if (nombreListaField.getText().length() < 3 || nombreListaField.getText().length() > 30) {
                     JOptionPane.showMessageDialog(null, "El nombre de la lista debe ser mayor a 3 caracteres y menor a 30");
                     return;
                 }
-                if(nombreListaField.getText().contains("|"))
-                {
+                if (nombreListaField.getText().contains("|")) {
                     JOptionPane.showMessageDialog(null, "El nombre de la lista no puede contener | ");
                     return;
                 }
-                if(descripcionListaField.getText().length()<1||descripcionListaField.getText().length()>40)
-                {
+                if (descripcionListaField.getText().length() < 1 || descripcionListaField.getText().length() > 40) {
                     JOptionPane.showMessageDialog(null, "La descripcion no puede estar vacia y no debe ser mayor a 40");
                     return;
                 }
-                if(descripcionListaField.getText().contains("|"))
-                {
+                if (descripcionListaField.getText().contains("|")) {
                     JOptionPane.showMessageDialog(null, "La descripcion no puede contener | ");
                     return;
                 }
-                descripcionLista=descripcionListaField.getText();
-                if(buscarEnLista(nombreListaField.getText()))
-                {
+                descripcionLista = descripcionListaField.getText();
+                if (buscarEnLista(nombreListaField.getText())) {
                     //Nueva lista
                     agregarLista(nombreListaField.getText(), descripcionListaField.getText(), 1, 0);
-                    
-                    
+
                     //Ya existe este usuario en lista?
-                    if(BuscarListaUsuario(nombreListaField.getText(), jList1.getSelectedValue()))
-                    { 
-                        manejarPos=0; 
-                        AgregarIndice(nombreListaField.getText(), jList1.getSelectedValue(),1);
+                    if (BuscarListaUsuario(nombreListaField.getText(), jList1.getSelectedValue())) {
+                        manejarPos = 0;
+                        AgregarIndice(nombreListaField.getText(), jList1.getSelectedValue(), 1);
                     }
                 }
                 
             }
-             
+            
         });
         
-        enviarMensaje.addActionListener((ActionEvent e) -> {    
-           
-            Mensajeria Mensajer= new Mensajeria();
+        enviarMensaje.addActionListener((ActionEvent e) -> {
+            Mensaje mjs = new Mensaje();
+            Mensajeria Mensajer = new Mensajeria();
             Mensajeria.lblEnviadoPor.setText(cuenta);
+            mjs.setReceptor(jList1.getSelectedValue());
+            GestionarA.getInstance().ListaMensajes.add(mjs);
+            GestionarA.getInstance().Agregar();
             Mensajer.setVisible(true);
-          /*  JTextField nombreListaField = new JTextField(30);
+            /*  JTextField nombreListaField = new JTextField(30);
             JTextField descripcionListaField = new JTextField(30);
             descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 200));
             
@@ -722,10 +652,8 @@ public  class IFEstandar extends javax.swing.JFrame {
             myPanel.add(descripcionListaField);
             myPanel.setLayout( new GridBagLayout() );
             myPanel.add(boton,new GridBagConstraints());*/
-            
-            
-                
-           /* boton.addMouseListener(new MouseAdapter(){
+
+ /* boton.addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent  e){
                    JFileChooser escogerImagen = new JFileChooser();
@@ -783,477 +711,376 @@ public  class IFEstandar extends javax.swing.JFrame {
                 
                     //MENSAJE
             }*/
-           
         });
-                
-        menu.show(jList1, evt.getPoint().x, evt.getPoint().y);     
         
-    }//GEN-LAST:event_jList1MousePressed
+        menu.show(jList1, evt.getPoint().x, evt.getPoint().y);
 
-    public int ActualizarCantidadCuentasAsociadas(String nombreLista,boolean Operacion,int cantidadUsuariosActual)
-    {
+    }//GEN-LAST:event_jList1MousePressed
+    
+    public int ActualizarCantidadCuentasAsociadas(String nombreLista, boolean Operacion, int cantidadUsuariosActual) {
         
-        if(cantidadUsuariosActual!=0)
-        {
-        
-        if(Operacion==true)
-        {
-            return cantidadUsuariosActual+1;
-        }
-        else
-        {
-            return cantidadUsuariosActual-1;
-        }
-        }
-        else
-        {
-            if (Operacion==true)
-            {
-                return cantidadUsuariosActual+1;
+        if (cantidadUsuariosActual != 0) {
+            
+            if (Operacion == true) {
+                return cantidadUsuariosActual + 1;
+            } else {
+                return cantidadUsuariosActual - 1;
             }
-            else
-            {
-                 return 0;
+        } else {
+            if (Operacion == true) {
+                return cantidadUsuariosActual + 1;
+            } else {
+                return 0;
             }
         }
     }
     int manejarPos;
-    public void AgregarIndice(String nombreLista,String usuarioAsociado,int Operacion)
-    {
-        String patron="(Estatus)(\\:)(	| |)*(\\d)";
+    
+    public void AgregarIndice(String nombreLista, String usuarioAsociado, int Operacion) {
+        String patron = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
         
-        String descripcionAhuahsasudjaus="(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
+        String descripcionAhuahsasudjaus = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern descripcionPattern = Pattern.compile(descripcionAhuahsasudjaus);
         
-        String nombreString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        String nombreString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(nombreString);
         
-        String descripcionString="";
-        try 
-        {
-            List<String> lineas,lineasDesc;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasDesc = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = descripcionPattern.matcher(lineas.get(i));
-              Matcher m2 = listaPattern.matcher(lineas.get(i));
-              if(m.find()&&m2.find())
-              {
-                  if(m2.group(4).equals(nombreLista))
-                  {
-                      descripcionString=m.group(4);
-                  }
-              }
-             }
-             for (int i = 0; i < lineasDesc.size(); i++)
-             {
-              Matcher m = descripcionPattern.matcher(lineasDesc.get(i));
-              Matcher m2 = listaPattern.matcher(lineasDesc.get(i));
-              if(m.find()&&m2.find())
-              {
-                  if(m2.group(4).equals(nombreLista))
-                  {
-                      descripcionString=m.group(4);
-                  }
-              }
-             }
-        } 
-        catch (Exception e) 
-        {
-        } 
+        String descripcionString = "";
+        try {
+            List<String> lineas, lineasDesc;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDesc = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = descripcionPattern.matcher(lineas.get(i));
+                Matcher m2 = listaPattern.matcher(lineas.get(i));
+                if (m.find() && m2.find()) {
+                    if (m2.group(4).equals(nombreLista)) {
+                        descripcionString = m.group(4);
+                    }
+                }
+            }
+            for (int i = 0; i < lineasDesc.size(); i++) {
+                Matcher m = descripcionPattern.matcher(lineasDesc.get(i));
+                Matcher m2 = listaPattern.matcher(lineasDesc.get(i));
+                if (m.find() && m2.find()) {
+                    if (m2.group(4).equals(nombreLista)) {
+                        descripcionString = m.group(4);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
         Path p = Paths.get("C:\\MEIA\\lista_usuario.txt");
         
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        String s = System.lineSeparator() + "Nombre lista:"+nombreLista+"|"+ "Usuario:"+cuenta+"|"
-                 + "Usuario asociado:"+usuarioAsociado+"|"+ "Descripcion:"+descripcionString+"|"+ "Fecha creacion:"+jfecha+"|"+"Estatus:"+Operacion;
+        String s = System.lineSeparator() + "Nombre lista:" + nombreLista + "|" + "Usuario:" + cuenta + "|"
+                + "Usuario asociado:" + usuarioAsociado + "|" + "Descripcion:" + descripcionString + "|" + "Fecha creacion:" + jfecha + "|" + "Estatus:" + Operacion;
         
-        if(Operacion==1)
-        {
-        if(manejarPos==0)
-        {
-        try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
-        {
-               writer.write(s);
-               writer.close();
-        }
-        catch (IOException ioe) 
-        {
-               System.err.format("IOException: %s%n", ioe);
-        }
-        }
-        else
-        {
-            try
-            {
+        if (Operacion == 1) {
+            if (manejarPos == 0) {
+                try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+                    writer.write(s);
+                    writer.close();
+                } catch (IOException ioe) {
+                    System.err.format("IOException: %s%n", ioe);
+                }
+            } else {
+                try {
+                    List<String> lineas;
+                    lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+                    lineas.set(posicionReemplazar, s);
+                    Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
+                } catch (IOException e) {
+                    
+                }
+            }
+        } else {
+            try {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
                 lineas.set(posicionReemplazar, s);
                 Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
-            }
-            catch(IOException e)
-            {
-                
-            }
-        }
-        }
-        else
-        {
-            try
-            {
-                List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-                lineas.set(posicionReemplazar, s);
-                Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
-            }
-            catch(IOException e)
-            {
+            } catch (IOException e) {
                 
             }
         }
         
         List<String> lineas;
-
-        try
-        {
-        lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-        Iterator<String> i2It = lineas.iterator();
-        while (i2It.hasNext())
-        {
-            String line = i2It.next();
-            if (line.trim().isEmpty())
-                i2It.remove();       
-        }
-        Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
-        }
-        catch(IOException e)
-        {
+        
+        try {
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+            Iterator<String> i2It = lineas.iterator();
+            while (i2It.hasNext()) {
+                String line = i2It.next();
+                if (line.trim().isEmpty()) {
+                    i2It.remove();
+                }
+            }
+            Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
+        } catch (IOException e) {
             
         }
         
         borrarLista(nombreLista, Operacion, false);
         generarIndex();
-
+        
     }
     
-    
-    public void generarIndex()
-    {
-        String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
+    public void generarIndex() {
+        String nombreListasString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
         Pattern nombreListaPattern = Pattern.compile(nombreListasString);
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        String contactoString = "(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
         Pattern contacPattern = Pattern.compile(contactoString);
         
-        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
+        String estatusString = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatusPattern = Pattern.compile(estatusString);
-         
-        String s="";
         
-        int numeroRegistro=0;
+        String s = "";
+        
+        int numeroRegistro = 0;
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        try 
-         {
-             List<String> lineasIndiceList;
-             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             Path p = Paths.get("C:\\MEIA\\indice.txt");
-          
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
-              Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
-              Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
-              Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                  if(m3.group(4).contains("1"))
-                  {
-                 
-                  s += System.lineSeparator() + "Nombre Lista:"+m2.group(4)+"|"+ "Usuario:"+cuenta+"|"+ "Usuario asociado:"+m1.group(4)+"|"+"Fecha creacion:"+jfecha+"|"+"Estatus:"+1+"|"+"Registro:"+(numeroRegistro+1)+"|"+ "Posicion:1."+(numeroRegistro+1)
-                  ;
-                  
-                  numeroRegistro++;
-                  }
-                }
-             }
-             
-             try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING))
-             {
-          
-               writer.write(s);
-               writer.close();
-               lineasIndiceList=Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
-              Iterator<String> i2It = lineasIndiceList.iterator();
-              while (i2It.hasNext())
-              {
-                  String line = i2It.next();
-                  if (line.trim().isEmpty())
-                      i2It.remove();       
-              }              
-              Files.write(Path.of("C:\\MEIA\\indice.txt"), lineasIndiceList);
-         
-             }
-             catch (IOException ioe) 
-             {
-               System.err.format("IOException: %s%n", ioe);
-             }
-             int mayor=0;
-             int menor=0;
-             String regisString="(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
-             Pattern registroPattern = Pattern.compile(regisString);
-             
-             
-             String temporal;
-             
-             for (int i = 0; i < lineasIndiceList.size(); i++)
-             {
-                 for (int j = 1; j < lineasIndiceList.size(); j++)
-                 {
-                     
-                     if(lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j))>0)
-                     {
-                         temporal=lineasIndiceList.get(i);
-                         lineasIndiceList.set(i, lineasIndiceList.get(j));
-                         lineasIndiceList.set(j, temporal);
-                         
-                     }
-                     
-                 }
-             }
-             if(!lineasIndiceList.isEmpty())
-             {
-             Matcher m= registroPattern.matcher(lineasIndiceList.get(0));
-             if(m.find())
-             {
-                 menor=Integer.parseInt(m.group(4));
-             }
-             }
-             
-             int cantidadCuentas=0;
-        
-        try 
-        {
-            List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
+        try {
+            List<String> lineasIndiceList;
+            lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+            Path p = Paths.get("C:\\MEIA\\indice.txt");
             
-            for (int i = 0; i < lineas2.size(); i++)
-            {
-                Matcher m2 = estatusPattern.matcher(lineas2.get(i));
-                if(m2.find())
-                {
-                    cantidadCuentas++;   
-                }   
+            for (int i = 0; i < lineasIndiceList.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
+                Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
+                Matcher m2 = nombreListaPattern.matcher(lineasIndiceList.get(i));
+                Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
+                if (m.find() && m1.find() && m2.find() && m3.find()) {
+                    if (m3.group(4).contains("1")) {
+                        
+                        s += System.lineSeparator() + "Nombre Lista:" + m2.group(4) + "|" + "Usuario:" + cuenta + "|" + "Usuario asociado:" + m1.group(4) + "|" + "Fecha creacion:" + jfecha + "|" + "Estatus:" + 1 + "|" + "Registro:" + (numeroRegistro + 1) + "|" + "Posicion:1." + (numeroRegistro + 1);
+                        
+                        numeroRegistro++;
+                    }
+                }
             }
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
-            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
-            return;
-        }  
-        List<String> lineas;
-         String s1 = ("Nombre simbolico:Actualizacion Indice"+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
-                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadCuentas+"|"+
-                             "Registros Inactivos:"+0+"|"+"Registro Inicio:"+menor);    
-         Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
-        try (BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING))   
-        {
-               writer.write(s1);
-               writer.close();
+            
+            try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING)) {
+                
+                writer.write(s);
+                writer.close();
+                lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
+                Iterator<String> i2It = lineasIndiceList.iterator();
+                while (i2It.hasNext()) {
+                    String line = i2It.next();
+                    if (line.trim().isEmpty()) {
+                        i2It.remove();
+                    }
+                }
+                Files.write(Path.of("C:\\MEIA\\indice.txt"), lineasIndiceList);
+                
+            } catch (IOException ioe) {
+                System.err.format("IOException: %s%n", ioe);
+            }
+            int mayor = 0;
+            int menor = 0;
+            String regisString = "(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
+            Pattern registroPattern = Pattern.compile(regisString);
+            
+            String temporal;
+            
+            for (int i = 0; i < lineasIndiceList.size(); i++) {
+                for (int j = 1; j < lineasIndiceList.size(); j++) {
+                    
+                    if (lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j)) > 0) {
+                        temporal = lineasIndiceList.get(i);
+                        lineasIndiceList.set(i, lineasIndiceList.get(j));
+                        lineasIndiceList.set(j, temporal);
+                        
+                    }
+                    
+                }
+            }
+            if (!lineasIndiceList.isEmpty()) {
+                Matcher m = registroPattern.matcher(lineasIndiceList.get(0));
+                if (m.find()) {
+                    menor = Integer.parseInt(m.group(4));
+                }
+            }
+            
+            int cantidadCuentas = 0;
+            
+            try {
+                List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
+                
+                for (int i = 0; i < lineas2.size(); i++) {
+                    Matcher m2 = estatusPattern.matcher(lineas2.get(i));
+                    if (m2.find()) {
+                        cantidadCuentas++;
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                return;
+            }
+            List<String> lineas;
+            String s1 = ("Nombre simbolico:Actualizacion Indice" + "|" + "Fecha Creacion:" + jfecha + "|" + "Usuario Creacion:"
+                    + cuenta + "|" + "# Registros:" + cantidadCuentas + "|" + "Registros Activos:" + cantidadCuentas + "|"
+                    + "Registros Inactivos:" + 0 + "|" + "Registro Inicio:" + menor);
+            Path p1 = Paths.get("C:\\MEIA\\desc_indice.txt");
+            try ( BufferedWriter writer = Files.newBufferedWriter(p1, StandardOpenOption.TRUNCATE_EXISTING)) {
+                writer.write(s1);
+                writer.close();
+            }
+            
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
+            Iterator<String> i = lineas.iterator();
+            while (i.hasNext()) {
+                String line = i.next();
+                if (line.trim().isEmpty()) {
+                    i.remove();
+                }
+            }
+            Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-                      
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
-             Iterator<String> i = lineas.iterator();
-             while (i.hasNext())
-             {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();       
-             }
-             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);      
-        
-             
-         } 
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
     }
     
-    
-
-        
-    
-    public boolean BuscarListaUsuario(String nombreLista,String usuarioAsociado)
-    { 
-        String nombreListasString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
+    public boolean BuscarListaUsuario(String nombreLista, String usuarioAsociado) {
+        String nombreListasString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
         Pattern nombreListaPattern = Pattern.compile(nombreListasString);
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        String contactoString = "(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
         Pattern contacPattern = Pattern.compile(contactoString);
         
-        String estatusString="(Estatus)(\\:)(	| |)*(\\d)";
+        String estatusString = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatusPattern = Pattern.compile(estatusString);
-         
-        try 
-         {
-             List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineas.get(i));
-              Matcher m1 = contacPattern.matcher(lineas.get(i));
-              Matcher m2 = nombreListaPattern.matcher(lineas.get(i));
-              Matcher m3 = estatusPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                    if(m2.group(4).equals(nombreLista))
-                    {
-                        if(m.group(4).equals(cuenta))
-                        {
-                            if (m1.group(4).equals(usuarioAsociado)) 
-                            {
+        
+        try {
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineas.get(i));
+                Matcher m1 = contacPattern.matcher(lineas.get(i));
+                Matcher m2 = nombreListaPattern.matcher(lineas.get(i));
+                Matcher m3 = estatusPattern.matcher(lineas.get(i));
+                if (m.find() && m1.find() && m2.find() && m3.find()) {
+                    if (m2.group(4).equals(nombreLista)) {
+                        if (m.group(4).equals(cuenta)) {
+                            if (m1.group(4).equals(usuarioAsociado)) {
                                 
-                                
-                                if(m3.group(4).contains("0"))
-                                {
-                                    Object[] options = { "Reestablecer", "Cancelar" };
-                                    int dialogResult =JOptionPane.showOptionDialog(null, "Puedes reestablecer el contacto "+ usuarioAsociado+" en la lista "+nombreLista, "Reestablecer contacto en lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
-                                    if(dialogResult == 0)
-                                    {
+                                if (m3.group(4).contains("0")) {
+                                    Object[] options = {"Reestablecer", "Cancelar"};
+                                    int dialogResult = JOptionPane.showOptionDialog(null, "Puedes reestablecer el contacto " + usuarioAsociado + " en la lista " + nombreLista, "Reestablecer contacto en lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                                    if (dialogResult == 0) {
                                         JOptionPane.showMessageDialog(null, "Contacto reestablecido");
                                         borrarUsuarioDeLista(usuarioAsociado, nombreLista, 1);
                                     }
-                                }
-                                else
-                                {
-                                    JOptionPane.showMessageDialog(null, "Ya tienes a "+usuarioAsociado+" como contacto en la lista "+nombreLista);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Ya tienes a " + usuarioAsociado + " como contacto en la lista " + nombreLista);
                                 }
                                 return false;
                             }
-                     
+                            
                         }
                     }
-                }   
-             }
-         } 
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         return true;
-        
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
         
     }
     private void jList2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MousePressed
         jList2.setSelectedIndex(jList2.locationToIndex(evt.getPoint()));
         JPopupMenu menu = new JPopupMenu();
         jList2.setSelectedIndex(jList2.getSelectedIndex());
-        Color azulColor = new Color(51,153,255);
+        Color azulColor = new Color(51, 153, 255);
         jList2.setSelectionBackground(azulColor);
         JMenuItem borrarLista = new JMenuItem("Borrar Lista");
         JMenuItem agregarLista = new JMenuItem("Activar Lista");
         JMenuItem enviarMensaje = new JMenuItem("Enviar Mensaje");
         JMenu verContactos = new JMenu("Ver Contactos");
         
-        try
-        {
-                String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
-                Pattern usuarioPattern = Pattern.compile(patronUsuario);
-                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
-                Pattern rolE = Pattern.compile(patronEstatus);
-                String contactoString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
-                Pattern contacPattern = Pattern.compile(contactoString);
-              
-                List<String> lineasDescList,lineasList;
-                lineasList=Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-                lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-                
-                for (int i = 0; i < lineasDescList.size(); i++)
-                {   
-                    Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
-                    Matcher m10 = rolE.matcher(lineasDescList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
-                    if(m10.find()&&m1.find()&&m.find())
-                    {
-                        if(m.group(4).equals(cuenta))
-                        {
-                        if(m1.group(4).equals(jList2.getSelectedValue()))
-                        {
-                            if(m10.group(4).contains("1"))
-                            {
+        try {
+            String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+            Pattern usuarioPattern = Pattern.compile(patronUsuario);
+            String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
+            Pattern rolE = Pattern.compile(patronEstatus);
+            String contactoString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+            Pattern contacPattern = Pattern.compile(contactoString);
+            
+            List<String> lineasDescList, lineasList;
+            lineasList = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
+                Matcher m10 = rolE.matcher(lineasDescList.get(i));
+                Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                if (m10.find() && m1.find() && m.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(jList2.getSelectedValue())) {
+                            if (m10.group(4).contains("1")) {
                                 menu.add(borrarLista);
                                 menu.add(enviarMensaje);
-                                menu.add(verContactos); 
-                            }
-                            else
-                            {
+                                menu.add(verContactos);
+                            } else {
                                 menu.add(agregarLista);
                             }
-                        }
-                        }
-                    }
-                }
-                for (int i = 0; i < lineasList.size(); i++)
-                {   
-                    Matcher m1 = contacPattern.matcher(lineasList.get(i));
-                    Matcher m10 = rolE.matcher(lineasList.get(i));
-                    Matcher m = usuarioPattern.matcher(lineasList.get(i));
-                    if(m10.find()&&m1.find()&&m.find())
-                    {
-                        if(m.group(4).equals(cuenta))
-                        {
-                        if(m1.group(4).equals(jList2.getSelectedValue()))
-                        {
-                            if(m10.group(4).contains("1"))
-                            {
-                                menu.add(borrarLista);
-                            }
-                            else
-                            {
-                                menu.add(agregarLista);
-                            }
-                        }
                         }
                     }
                 }
             }
-         catch(IOException exception)       
-         {
-         }
+            for (int i = 0; i < lineasList.size(); i++) {
+                Matcher m1 = contacPattern.matcher(lineasList.get(i));
+                Matcher m10 = rolE.matcher(lineasList.get(i));
+                Matcher m = usuarioPattern.matcher(lineasList.get(i));
+                if (m10.find() && m1.find() && m.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(jList2.getSelectedValue())) {
+                            if (m10.group(4).contains("1")) {
+                                menu.add(borrarLista);
+                            } else {
+                                menu.add(agregarLista);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException exception) {
+        }
         
-         borrarLista.addActionListener((ActionEvent e) -> {
-            Object[] options = { "Borrar", "Cancelar" };
-            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar la lista "+jList2.getSelectedValue()+"?", "Borrar Lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);   
-            if(dialogResult == 0)
-            {
+        borrarLista.addActionListener((ActionEvent e) -> {
+            Object[] options = {"Borrar", "Cancelar"};
+            int dialogResult = JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar la lista " + jList2.getSelectedValue() + "?", "Borrar Lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (dialogResult == 0) {
                 JOptionPane.showMessageDialog(null, "Lista borrada");
-                borrarLista(jList2.getSelectedValue(), 0,true);
+                borrarLista(jList2.getSelectedValue(), 0, true);
                 mostrarListas();
             }
         });
         
         obtenerUsuariosDeLista(verContactos);
-        agregarLista.addActionListener((ActionEvent e) -> {            
-            Object[] options = { "Agregar", "Cancelar" };
-            int dialogResult =JOptionPane.showOptionDialog(null, "¿Seguro que quiere reestablecer la lista "+jList2.getSelectedValue()+"?", "Reestablecer Lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
-            if(dialogResult == 0)
-            {
+        agregarLista.addActionListener((ActionEvent e) -> {
+            Object[] options = {"Agregar", "Cancelar"};
+            int dialogResult = JOptionPane.showOptionDialog(null, "¿Seguro que quiere reestablecer la lista " + jList2.getSelectedValue() + "?", "Reestablecer Lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (dialogResult == 0) {
                 JOptionPane.showMessageDialog(null, "Lista reestablecida");
-                borrarLista(jList2.getSelectedValue(),1,true);
+                borrarLista(jList2.getSelectedValue(), 1, true);
                 mostrarListas();
             }
-           
+            
         });
         
-        enviarMensaje.addActionListener((ActionEvent e) -> {    
-            Mensajeria Mensajer= new Mensajeria();
+        enviarMensaje.addActionListener((ActionEvent e) -> {
+            Mensajeria Mensajer = new Mensajeria();
             Mensajeria.lblEnviadoPor.setText(cuenta);
             Mensajer.setVisible(true);
-           
-          /*  JTextField nombreListaField = new JTextField(30);
+
+            /*  JTextField nombreListaField = new JTextField(30);
             JTextField descripcionListaField = new JTextField(30);
             descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 200));
             
@@ -1271,10 +1098,7 @@ public  class IFEstandar extends javax.swing.JFrame {
             myPanel.add(descripcionListaField);
             myPanel.setLayout( new GridBagLayout() );
             myPanel.add(boton,new GridBagConstraints());*/
-            
-            
-                
-           /* boton.addMouseListener(new MouseAdapter(){
+ /* boton.addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent  e){
                    JFileChooser escogerImagen = new JFileChooser();
@@ -1332,1353 +1156,1073 @@ public  class IFEstandar extends javax.swing.JFrame {
                 
                     //MENSAJE
             }*/
-           
         });
         
-        
-         menu.show(jList2, evt.getPoint().x, evt.getPoint().y);     
+        menu.show(jList2, evt.getPoint().x, evt.getPoint().y);
     }//GEN-LAST:event_jList2MousePressed
 
     private void jList2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MouseMoved
         // TODO add your handling code here:
         jList2.setToolTipText(getToolTipText(evt));
     }//GEN-LAST:event_jList2MouseMoved
-
-    private void BandejaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejaEntradaActionPerformed
     
+    private void BandejaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejaEntradaActionPerformed
+       
+        List BandEntr = GestionarA.getInstance().obtenerMensajesReceptor(cuenta);
+        
+        
+        
+        
+        
+        
     }//GEN-LAST:event_BandejaEntradaActionPerformed
 
     private void BandejasalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejasalidaActionPerformed
-        // TODO add your handling code here:
+        GestionarA.getInstance().obtenerMensajesEmisor(cuenta);
     }//GEN-LAST:event_BandejasalidaActionPerformed
-   
     
-     public String getToolTipText(MouseEvent me) 
-     {        
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+    public String getToolTipText(MouseEvent me) {
+        String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
         
-        String descripcionString="(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
+        String descripcionString = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern descripcionPattern = Pattern.compile(descripcionString);
         
-        String listaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        String listaString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(listaString);
         
-        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)"; 
+        String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
-           
+        
         int index = jList2.locationToIndex(me.getPoint());
         
-        try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineas.get(i));
-              Matcher m1 = listaPattern.matcher(lineas.get(i));
-              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
-              Matcher m3 = rolE.matcher(lineas.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                    if(m.group(4).equals(cuenta))
-                    {
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineas.get(i));
+                Matcher m1 = listaPattern.matcher(lineas.get(i));
+                Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+                Matcher m3 = rolE.matcher(lineas.get(i));
+                if (m.find() && m1.find() && m2.find() && m3.find()) {
+                    if (m.group(4).equals(cuenta)) {
                         
-                        if(m1.group(4).equals((String) jList2.getModel().getElementAt(index)))
-                        {
-                        if(m3.group(4).contains("1"))
-                        {
-                            return m2.group(4);
-                        }
-                         else
-                        {
-                            return "Lista deshabilitada";
-                        }
+                        if (m1.group(4).equals((String) jList2.getModel().getElementAt(index))) {
+                            if (m3.group(4).contains("1")) {
+                                return m2.group(4);
+                            } else {
+                                return "Lista deshabilitada";
+                            }
                         }
                         
                     }
                 }
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-                 Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
-                 Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
-                 Matcher m2 = descripcionPattern.matcher(lineasDescList.get(i));
-                 Matcher m3 = rolE.matcher(lineasDescList.get(i));
-                 if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                 {
-                     if(m.group(4).equals(cuenta))
-                     {
-                         if(m1.group(4).equals((String) jList2.getModel().getElementAt(index)))
-                         {
-                             if(m3.group(4).contains("1"))
-                             {
-                                 return m2.group(4);
-                             }
-                             else
-                             {
-                                 return "Lista deshabilitada";
-                             }
-                         }
-                     }
-                 }
-             }
-         }
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
+                Matcher m2 = descripcionPattern.matcher(lineasDescList.get(i));
+                Matcher m3 = rolE.matcher(lineasDescList.get(i));
+                if (m.find() && m1.find() && m2.find() && m3.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals((String) jList2.getModel().getElementAt(index))) {
+                            if (m3.group(4).contains("1")) {
+                                return m2.group(4);
+                            } else {
+                                return "Lista deshabilitada";
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-            
-            return null;
-     }
+        return null;
+    }
     
-    
-    public int cantidadUsuarios(String nombreLista)
-    {
-        String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+    public int cantidadUsuarios(String nombreLista) {
+        String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern rolUsuario = Pattern.compile(patronUsuario);
         
-        String patronListas="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";   
+        String patronListas = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(patronListas);
         
-        String numeroUsuariosString="(Numero Usuarios)(\\:)(	| |)*(.+)(\\|)(E)";   
+        String numeroUsuariosString = "(Numero Usuarios)(\\:)(	| |)*(.+)(\\|)(E)";
         Pattern numeroUPattern = Pattern.compile(numeroUsuariosString);
         
-        int cantidadUsuarios=0;
+        int cantidadUsuarios = 0;
         
-         try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = rolUsuario.matcher(lineas.get(i));
-              Matcher m1 = listaPattern.matcher(lineas.get(i));
-              Matcher m2 = numeroUPattern.matcher(lineas.get(i));
-              
-                if(m.find()&&m1.find()&&m2.find())
-                {
-                    if(m.group(4).equals(cuenta))
-                    {
-                        if(m1.group(4).equals(nombreLista))
-                        {
-                         cantidadUsuarios+=Integer.parseInt(m2.group(4));
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = rolUsuario.matcher(lineas.get(i));
+                Matcher m1 = listaPattern.matcher(lineas.get(i));
+                Matcher m2 = numeroUPattern.matcher(lineas.get(i));
+                
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(nombreLista)) {
+                            cantidadUsuarios += Integer.parseInt(m2.group(4));
                         }
                     }
                 }
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-                 Matcher m = rolUsuario.matcher(lineasDescList.get(i));
-                 Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
-                 Matcher m2 = numeroUPattern.matcher(lineasDescList.get(i));
-                 if(m.find()&&m1.find()&&m2.find())
-                 {
-                     if(m.group(4).equals(cuenta))
-                     {
-                         if(m1.group(4).equals(nombreLista))
-                         {
-                             cantidadUsuarios+=Integer.parseInt(m2.group(4));
-                         }
-                     }
-                 }
-             }
-         }
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = rolUsuario.matcher(lineasDescList.get(i));
+                Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
+                Matcher m2 = numeroUPattern.matcher(lineasDescList.get(i));
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(nombreLista)) {
+                            cantidadUsuarios += Integer.parseInt(m2.group(4));
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return cantidadUsuarios;
     }
     
-    
-    
-    public int Max()
-    {
-        String patronDesc="(Max reorganizacion)(\\:)(	| |)*(\\d*)";
+    public int Max() {
+        String patronDesc = "(Max reorganizacion)(\\:)(	| |)*(\\d*)";
         Pattern maxReorganizacion = Pattern.compile(patronDesc);
-        try 
-        {
-             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
-             if(lineas.isEmpty())
-             {
-                 return 3;
-             }
-             Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size()-1));    
-             if(m.find())  
-             {
-                 return Integer.parseInt(m.group(4));   
-             }
-             else
-             {
-                 return 3;   
-             }
-        } 
-        catch (IOException ex) 
-        {
-    
+        try {
+            List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_usuario.txt"));
+            if (lineas.isEmpty()) {
+                return 3;
+            }
+            Matcher m = maxReorganizacion.matcher(lineas.get(lineas.size() - 1));
+            if (m.find()) {
+                return Integer.parseInt(m.group(4));
+            } else {
+                return 3;
+            }
+        } catch (IOException ex) {
+            
         }
         return 3;
     }
-     public void mostrarContactos()
-    {
-         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
-         Pattern rolUsuario = Pattern.compile(patronUsuario);
-         
-         String patronContacto="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
-         Pattern rolContacto = Pattern.compile(patronContacto);  
-         
-         String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
-         Pattern rolE = Pattern.compile(patronEstatus);
+    
+    public void mostrarContactos() {
+        String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+        Pattern rolUsuario = Pattern.compile(patronUsuario);
         
-         listaTodosLosContactos.clear();
-         listaContactosOcultar.clear();
-         listaContactosMostrar.clear();
-         List<String> lineas,lineasDescList;
-         try 
-         {
-           lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-           lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-           
-           if(lineas.isEmpty()&&lineasDescList.isEmpty())
-           {
-               //No tiene contactos, no existen contactos
-           }
-           else
-           {
-               for (int i = 0; i < lineas.size(); i++)
-               {
-                   Matcher m = rolUsuario.matcher(lineas.get(i));
-                   Matcher m1 = rolContacto.matcher(lineas.get(i));
-                   Matcher estadMatcher = rolE.matcher(lineas.get(i));
-                   if(m.find()&&m1.find()&&estadMatcher.find())
-                   {
-                       if(m.group(4).equals(cuenta))
-                       {
-                           if(estadMatcher.group(4).contains("1"))
-                           {
-                               listaContactosMostrar.addElement(m1.group(4));
-                           }
-                           else
-                           {
-                               listaContactosOcultar.addElement(m1.group(4));
-                           }
-                       }
-                   }
-               }
-               for (int i = 0; i < lineasDescList.size(); i++)
-               {  
-                   Matcher m2 = rolUsuario.matcher(lineasDescList.get(i));
-                   Matcher m3 = rolContacto.matcher(lineasDescList.get(i));
-                   Matcher estadMatcher = rolE.matcher(lineasDescList.get(i));
-                   if(m2.find()&&m3.find()&&estadMatcher.find())
-                   {
-                       if(m2.group(4).equals(cuenta))
-                       {        
-                         if(estadMatcher.group(4).contains("1"))
-                           {
-                           
-                               listaContactosMostrar.addElement(m3.group(4));
-                           }
-                           else
-                           {
-                               listaContactosOcultar.addElement(m3.group(4));
-                           }
-                       }
-                   }
-               }
-                listaContactosMostrar=new Globales().ordenarListaContactos(listaContactosMostrar); 
-                listaContactosOcultar=new Globales().ordenarListaContactos(listaContactosOcultar);
-               for (int i = 0; i < listaContactosMostrar.size(); i++) 
-                {
+        String patronContacto = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern rolContacto = Pattern.compile(patronContacto);
+        
+        String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
+        Pattern rolE = Pattern.compile(patronEstatus);
+        
+        listaTodosLosContactos.clear();
+        listaContactosOcultar.clear();
+        listaContactosMostrar.clear();
+        List<String> lineas, lineasDescList;
+        try {
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+            
+            if (lineas.isEmpty() && lineasDescList.isEmpty()) {
+                //No tiene contactos, no existen contactos
+            } else {
+                for (int i = 0; i < lineas.size(); i++) {
+                    Matcher m = rolUsuario.matcher(lineas.get(i));
+                    Matcher m1 = rolContacto.matcher(lineas.get(i));
+                    Matcher estadMatcher = rolE.matcher(lineas.get(i));
+                    if (m.find() && m1.find() && estadMatcher.find()) {
+                        if (m.group(4).equals(cuenta)) {
+                            if (estadMatcher.group(4).contains("1")) {
+                                listaContactosMostrar.addElement(m1.group(4));
+                            } else {
+                                listaContactosOcultar.addElement(m1.group(4));
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < lineasDescList.size(); i++) {
+                    Matcher m2 = rolUsuario.matcher(lineasDescList.get(i));
+                    Matcher m3 = rolContacto.matcher(lineasDescList.get(i));
+                    Matcher estadMatcher = rolE.matcher(lineasDescList.get(i));
+                    if (m2.find() && m3.find() && estadMatcher.find()) {
+                        if (m2.group(4).equals(cuenta)) {
+                            if (estadMatcher.group(4).contains("1")) {
+                                
+                                listaContactosMostrar.addElement(m3.group(4));
+                            } else {
+                                listaContactosOcultar.addElement(m3.group(4));
+                            }
+                        }
+                    }
+                }
+                listaContactosMostrar = new Globales().ordenarListaContactos(listaContactosMostrar);
+                listaContactosOcultar = new Globales().ordenarListaContactos(listaContactosOcultar);
+                for (int i = 0; i < listaContactosMostrar.size(); i++) {
                     listaTodosLosContactos.addElement(listaContactosMostrar.getElementAt(i));
                 }
-                for (int i = 0; i < listaContactosOcultar.size(); i++) 
-                {
+                for (int i = 0; i < listaContactosOcultar.size(); i++) {
                     listaTodosLosContactos.addElement(listaContactosOcultar.getElementAt(i));
                 }
                 
+                jList1.setModel(listaTodosLosContactos);
                 
-                jList1.setModel(listaTodosLosContactos);         
-                
-                for (int i = 0; i < jList1.getModel().getSize(); i++) 
-                {
-                    for (int j = 0; j < listaContactosOcultar.size(); j++)
-                    {
-                       if(jList1.getModel().getElementAt(i).equals(listaContactosOcultar.getElementAt(j)))
-                       {
-                        ImageIcon iconoIcon= new ImageIcon("src/main/java/Imagenes/desconectado.png");
-                        Image ajustarImgI = iconoIcon.getImage();                   
-                        Image ajustarTamañoI= ajustarImgI.getScaledInstance(30,30, Image.SCALE_SMOOTH);
-                        icons.put(jList1.getModel().getElementAt(i), new ImageIcon(ajustarTamañoI));
-                        jList1.setCellRenderer(new RenderDeIconos(icons));
-                       }
+                for (int i = 0; i < jList1.getModel().getSize(); i++) {
+                    for (int j = 0; j < listaContactosOcultar.size(); j++) {
+                        if (jList1.getModel().getElementAt(i).equals(listaContactosOcultar.getElementAt(j))) {
+                            ImageIcon iconoIcon = new ImageIcon("src/main/java/Imagenes/desconectado.png");
+                            Image ajustarImgI = iconoIcon.getImage();
+                            Image ajustarTamañoI = ajustarImgI.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+                            icons.put(jList1.getModel().getElementAt(i), new ImageIcon(ajustarTamañoI));
+                            jList1.setCellRenderer(new RenderDeIconos(icons));
+                        }
                     }
-                    for (int j = 0; j < listaContactosMostrar.size(); j++)
-                    {
-                        if(jList1.getModel().getElementAt(i).equals(listaContactosMostrar.getElementAt(j)))   
-                        {
-                          String ubicacion="C:\\MEIA\\Fotografias\\"+jList1.getModel().getElementAt(i)+".jpg";
-                          File f = new File(ubicacion);
-                          if(!(f.exists() && !f.isDirectory())) 
-                          {
-                              ubicacion="C:\\MEIA\\Fotografias\\"+jList1.getModel().getElementAt(i)+".png";
-                          }
-                        ImageIcon iconoIcon= new ImageIcon(ubicacion);
-                        Image ajustarImgI = iconoIcon.getImage();                   
-                        Image ajustarTamañoI= ajustarImgI.getScaledInstance(30,30, Image.SCALE_SMOOTH);
-                        icons.put(jList1.getModel().getElementAt(i), new ImageIcon(ajustarTamañoI));
-                        jList1.setCellRenderer(new RenderDeIconos(icons));
+                    for (int j = 0; j < listaContactosMostrar.size(); j++) {
+                        if (jList1.getModel().getElementAt(i).equals(listaContactosMostrar.getElementAt(j))) {
+                            String ubicacion = "C:\\MEIA\\Fotografias\\" + jList1.getModel().getElementAt(i) + ".jpg";
+                            File f = new File(ubicacion);
+                            if (!(f.exists() && !f.isDirectory())) {
+                                ubicacion = "C:\\MEIA\\Fotografias\\" + jList1.getModel().getElementAt(i) + ".png";
+                            }
+                            ImageIcon iconoIcon = new ImageIcon(ubicacion);
+                            Image ajustarImgI = iconoIcon.getImage();
+                            Image ajustarTamañoI = ajustarImgI.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+                            icons.put(jList1.getModel().getElementAt(i), new ImageIcon(ajustarTamañoI));
+                            jList1.setCellRenderer(new RenderDeIconos(icons));
                         }
                     }
                 }
-         }
-         }
-         catch (IOException ex)
-         {
-           Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
-         }
-           
-    }
-      public void mostrarListas()
-    {
-         String patronUsuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
-         Pattern rolUsuario = Pattern.compile(patronUsuario);
-         
-         String patronListas="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
-         Pattern listaPattern = Pattern.compile(patronListas);
-         
-         
-         String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
-         Pattern rolE = Pattern.compile(patronEstatus);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-         listaTodasLasListas.clear();
-         listaListasOcultar.clear();
-         listaListasMostrar.clear();
-         List<String> lineas,lineasDescList;
-         try 
-         {
-           lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-           lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-           
-           if(lineas.isEmpty()&&lineasDescList.isEmpty())
-           {
-               //No tiene contactos, no existen contactos
-           }
-           else
-           {
-               for (int i = 0; i < lineas.size(); i++)
-               {
-                   Matcher m = rolUsuario.matcher(lineas.get(i));
-                   Matcher m1 = listaPattern.matcher(lineas.get(i));
-                   Matcher estadMatcher = rolE.matcher(lineas.get(i));
-                   if(m.find()&&estadMatcher.find()&&m1.find())
-                   {
-                       if(m.group(4).equals(cuenta))
-                       {
-                           if(estadMatcher.group(4).contains("1"))
-                           {
-                               listaListasMostrar.addElement(m1.group(4));
-                           }
-                           else
-                           {
-                               listaListasOcultar.addElement(m1.group(4));
-                           }
-                       }
-                   }
-               }
-               for (int i = 0; i < lineasDescList.size(); i++)
-               {  
-                   Matcher m2 = rolUsuario.matcher(lineasDescList.get(i));
-                   Matcher m3 = listaPattern.matcher(lineasDescList.get(i));
-                   Matcher estadMatcher = rolE.matcher(lineasDescList.get(i));
-                   if(m2.find()&&m3.find()&&estadMatcher.find())
-                   {
-                       if(m2.group(4).equals(cuenta))
-                       {        
-                         if(estadMatcher.group(4).contains("1"))
-                           {
-                           
-                               listaListasMostrar.addElement(m3.group(4));
-                           }
-                           else
-                           {
-                               listaListasOcultar.addElement(m3.group(4));
-                           }
-                       }
-                   }
-               }
-               
-                listaListasMostrar=new Globales().ordenarListaContactos(listaListasMostrar); 
-                listaListasOcultar=new Globales().ordenarListaContactos(listaListasOcultar);
-               for (int i = 0; i < listaListasMostrar.size(); i++) 
-                {
+    }
+    
+    public void mostrarListas() {
+        String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern rolUsuario = Pattern.compile(patronUsuario);
+        
+        String patronListas = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        Pattern listaPattern = Pattern.compile(patronListas);
+        
+        String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
+        Pattern rolE = Pattern.compile(patronEstatus);
+        
+        listaTodasLasListas.clear();
+        listaListasOcultar.clear();
+        listaListasMostrar.clear();
+        List<String> lineas, lineasDescList;
+        try {
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            
+            if (lineas.isEmpty() && lineasDescList.isEmpty()) {
+                //No tiene contactos, no existen contactos
+            } else {
+                for (int i = 0; i < lineas.size(); i++) {
+                    Matcher m = rolUsuario.matcher(lineas.get(i));
+                    Matcher m1 = listaPattern.matcher(lineas.get(i));
+                    Matcher estadMatcher = rolE.matcher(lineas.get(i));
+                    if (m.find() && estadMatcher.find() && m1.find()) {
+                        if (m.group(4).equals(cuenta)) {
+                            if (estadMatcher.group(4).contains("1")) {
+                                listaListasMostrar.addElement(m1.group(4));
+                            } else {
+                                listaListasOcultar.addElement(m1.group(4));
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < lineasDescList.size(); i++) {
+                    Matcher m2 = rolUsuario.matcher(lineasDescList.get(i));
+                    Matcher m3 = listaPattern.matcher(lineasDescList.get(i));
+                    Matcher estadMatcher = rolE.matcher(lineasDescList.get(i));
+                    if (m2.find() && m3.find() && estadMatcher.find()) {
+                        if (m2.group(4).equals(cuenta)) {
+                            if (estadMatcher.group(4).contains("1")) {
+                                
+                                listaListasMostrar.addElement(m3.group(4));
+                            } else {
+                                listaListasOcultar.addElement(m3.group(4));
+                            }
+                        }
+                    }
+                }
+                
+                listaListasMostrar = new Globales().ordenarListaContactos(listaListasMostrar);
+                listaListasOcultar = new Globales().ordenarListaContactos(listaListasOcultar);
+                for (int i = 0; i < listaListasMostrar.size(); i++) {
                     listaTodasLasListas.addElement(listaListasMostrar.getElementAt(i));
                 }
-                for (int i = 0; i < listaListasOcultar.size(); i++) 
-                {
+                for (int i = 0; i < listaListasOcultar.size(); i++) {
                     listaTodasLasListas.addElement(listaListasOcultar.getElementAt(i));
                 }
                 
-                
                 jList2.setModel(listaTodasLasListas);
                 
-                for (int i = 0; i < jList2.getModel().getSize(); i++) 
-                {
-                    for (int j = 0; j < listaListasOcultar.size(); j++)
-                    {
-                       if(jList2.getModel().getElementAt(i).equals(listaListasOcultar.getElementAt(j)))
-                       {
-                        Image ajustarImgI =  ImageIO.read(new File("src/main/java/Imagenes/desconectado.png"));
-                        Image ajustarTamañoI= ajustarImgI.getScaledInstance(30,30, Image.SCALE_SMOOTH);
-                        ImageIcon icon = new ImageIcon(ajustarTamañoI);
-                        numerosMap.put(jList2.getModel().getElementAt(i),icon);
-                        jList2.setCellRenderer(new RenderNumeros(numerosMap));
-                       }
-                    } 
-                    for (int j = 0; j < listaListasMostrar.size(); j++)
-                    {
-                        if(jList2.getModel().getElementAt(i).equals(listaListasMostrar.getElementAt(j)))   
-                        {
-                            if(cantidadUsuarios(jList2.getModel().getElementAt(i))>9)
-                            {
-                                numerosMap.put(jList2.getModel().getElementAt(i), new DynamicIcon(cantidadUsuarios(jList2.getModel().getElementAt(i))+" "));
+                for (int i = 0; i < jList2.getModel().getSize(); i++) {
+                    for (int j = 0; j < listaListasOcultar.size(); j++) {
+                        if (jList2.getModel().getElementAt(i).equals(listaListasOcultar.getElementAt(j))) {
+                            Image ajustarImgI = ImageIO.read(new File("src/main/java/Imagenes/desconectado.png"));
+                            Image ajustarTamañoI = ajustarImgI.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+                            ImageIcon icon = new ImageIcon(ajustarTamañoI);
+                            numerosMap.put(jList2.getModel().getElementAt(i), icon);
+                            jList2.setCellRenderer(new RenderNumeros(numerosMap));
+                        }
+                    }
+                    for (int j = 0; j < listaListasMostrar.size(); j++) {
+                        if (jList2.getModel().getElementAt(i).equals(listaListasMostrar.getElementAt(j))) {
+                            if (cantidadUsuarios(jList2.getModel().getElementAt(i)) > 9) {
+                                numerosMap.put(jList2.getModel().getElementAt(i), new DynamicIcon(cantidadUsuarios(jList2.getModel().getElementAt(i)) + " "));
                                 jList2.setCellRenderer(new RenderNumeros(numerosMap));
-                            }
-                            else
-                            {
-                                numerosMap.put(jList2.getModel().getElementAt(i), new DynamicIcon(cantidadUsuarios(jList2.getModel().getElementAt(i))+"  "));
+                            } else {
+                                numerosMap.put(jList2.getModel().getElementAt(i), new DynamicIcon(cantidadUsuarios(jList2.getModel().getElementAt(i)) + "  "));
                                 jList2.setCellRenderer(new RenderNumeros(numerosMap));
                             }
                         }
                     }
-                   
+                    
                 }
                 
-                
-           }
-         }
-         catch (IOException ex)
-         {
-           Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
-         }
-    }
-    public boolean buscarContacto(String contactoB)
-    {
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
-        Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
-        Pattern contacPattern = Pattern.compile(contactoString);
-         try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineas.get(i));
-              Matcher m1 = contacPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find())
-                {
-                    if(m.group(4).equals(cuenta))
-                    {
-                        if(m1.group(4).equals(contactoB))
-                        {
-                         JOptionPane.showMessageDialog(null, "Ya tienes a "+contactoB+" como contacto");
-                         return false;
-                        }
-                    }
-                }   
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
-              Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
-              if(m.find()&&m1.find())  
-              {
-                  if(m.group(4).equals(cuenta))
-                  {
-                      if(m1.group(4).equals(contactoB))   
-                      {
-                         JOptionPane.showMessageDialog(null, "Ya tienes a "+contactoB+" como contacto");
-                         return false;
-                      }
-                  }
-              }   
-             }
-         }
-           
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         return true;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public void borrarContactos(String contactoB,int operacion)
-    {
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+    public boolean buscarContacto(String contactoB) {
+        String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-        String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+        String contactoString = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern contacPattern = Pattern.compile(contactoString);
-         try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineas.get(i));
-              Matcher m1 = contacPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find())
-                {
-                    if(m.group(4).equals(cuenta))
-                    {
-                        if(m1.group(4).equals(contactoB))
-                        {
-                         lineas.remove(i);
-                         Path out = Paths.get("C:\\MEIA\\contactos.txt");
-              Files.write(out,lineas); 
-              Iterator<String> i2It = lineas.iterator();
-              while (i2It.hasNext())
-              {
-                  String line = i2It.next();
-                  if (line.trim().isEmpty())
-                      i2It.remove();       
-              }              
-              Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);
-                         agregarContacto(contactoB, operacion);
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineas.get(i));
+                Matcher m1 = contacPattern.matcher(lineas.get(i));
+                if (m.find() && m1.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(contactoB)) {
+                            JOptionPane.showMessageDialog(null, "Ya tienes a " + contactoB + " como contacto");
+                            return false;
                         }
                     }
-                }   
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-                 Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
-                 Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
-                 if(m.find()&&m1.find())
-                 {
-                     if(m.group(4).equals(cuenta))
-                     {
-                         if(m1.group(4).equals(contactoB))
-                         {
-                             lineasDescList.remove(i);
-                             Path out1 = Paths.get("C:\\MEIA\\desc_contactos.txt");                
-                             Files.write(out1,lineasDescList);
-                             Iterator<String> it = lineasDescList.iterator();
-                             while (it.hasNext())
-                             {
-                                 String line = it.next();
-                                 if (line.trim().isEmpty())
-                                     it.remove();
-                             }
-                             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineasDescList);
-                             agregarContacto(contactoB, operacion);
-                      
-                         }
-                     }
-                 }
-             }
-         }
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
+                }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
+                if (m.find() && m1.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(contactoB)) {
+                            JOptionPane.showMessageDialog(null, "Ya tienes a " + contactoB + " como contacto");
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
+    
+    public void borrarContactos(String contactoB, int operacion) {
+        String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+        Pattern usuarioPattern = Pattern.compile(usuarioString);
+        String contactoString = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+        Pattern contacPattern = Pattern.compile(contactoString);
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineas.get(i));
+                Matcher m1 = contacPattern.matcher(lineas.get(i));
+                if (m.find() && m1.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(contactoB)) {
+                            lineas.remove(i);
+                            Path out = Paths.get("C:\\MEIA\\contactos.txt");
+                            Files.write(out, lineas);
+                            Iterator<String> i2It = lineas.iterator();
+                            while (i2It.hasNext()) {
+                                String line = i2It.next();
+                                if (line.trim().isEmpty()) {
+                                    i2It.remove();
+                                }
+                            }
+                            Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);
+                            agregarContacto(contactoB, operacion);
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
+                if (m.find() && m1.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(contactoB)) {
+                            lineasDescList.remove(i);
+                            Path out1 = Paths.get("C:\\MEIA\\desc_contactos.txt");
+                            Files.write(out1, lineasDescList);
+                            Iterator<String> it = lineasDescList.iterator();
+                            while (it.hasNext()) {
+                                String line = it.next();
+                                if (line.trim().isEmpty()) {
+                                    it.remove();
+                                }
+                            }
+                            Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineasDescList);
+                            agregarContacto(contactoB, operacion);
+                            
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     int posicionReemplazar;
-    public void borrarUsuarioDeLista(String usuarioAsociadoString,String nombreLista,int operacion)
-    {
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+    
+    public void borrarUsuarioDeLista(String usuarioAsociadoString, String nombreLista, int operacion) {
+        String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-       
-        String usuarioAsociado="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        
+        String usuarioAsociado = "(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
         Pattern usuarioAsociadoPattern = Pattern.compile(usuarioAsociado);
         
-        String descripcionString="(Descripcion)(\\:)(	| |)*(.+)(\\|)(F)";
+        String descripcionString = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern descripcionPattern = Pattern.compile(descripcionString);
         
-        String listaString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
+        String listaString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
         Pattern listaPattern = Pattern.compile(listaString);
         
-        if("Todas".equals(nombreLista))
-        {  
-         try 
-         {
-             List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioAsociadoPattern.matcher(lineas.get(i));
-              Matcher m1 = listaPattern.matcher(lineas.get(i));
-              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
-              Matcher m3 = usuarioPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                        if(m.group(4).equals(usuarioAsociadoString))
-                        {
-                            if(m3.group(4).equals(cuenta))
-                            {
-                                posicionReemplazar=i;
+        if ("Todas".equals(nombreLista)) {
+            try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++) {
+                    Matcher m = usuarioAsociadoPattern.matcher(lineas.get(i));
+                    Matcher m1 = listaPattern.matcher(lineas.get(i));
+                    Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+                    Matcher m3 = usuarioPattern.matcher(lineas.get(i));
+                    if (m.find() && m1.find() && m2.find() && m3.find()) {
+                        if (m.group(4).equals(usuarioAsociadoString)) {
+                            if (m3.group(4).equals(cuenta)) {
+                                posicionReemplazar = i;
                                 AgregarIndice(m1.group(4), usuarioAsociadoString, operacion);
-                                manejarPos=999999;
-                            }
-                        }
-                }
-             }
-         }
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        }
-        else
-        {
-         try 
-         {
-             List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioAsociadoPattern.matcher(lineas.get(i));
-              Matcher m1 = listaPattern.matcher(lineas.get(i));
-              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
-              Matcher m3 = usuarioPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                    if(m1.group(4).equals(nombreLista))
-                    {
-                        if(m.group(4).equals(usuarioAsociadoString))
-                        {
-                            if(m3.group(4).equals(cuenta))
-                            {
-                                posicionReemplazar=i;
-                                AgregarIndice(nombreLista, usuarioAsociadoString, operacion);
+                                manejarPos = 999999;
                             }
                         }
                     }
                 }
-             }
-         }
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
+            } catch (IOException ex) {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++) {
+                    Matcher m = usuarioAsociadoPattern.matcher(lineas.get(i));
+                    Matcher m1 = listaPattern.matcher(lineas.get(i));
+                    Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+                    Matcher m3 = usuarioPattern.matcher(lineas.get(i));
+                    if (m.find() && m1.find() && m2.find() && m3.find()) {
+                        if (m1.group(4).equals(nombreLista)) {
+                            if (m.group(4).equals(usuarioAsociadoString)) {
+                                if (m3.group(4).equals(cuenta)) {
+                                    posicionReemplazar = i;
+                                    AgregarIndice(nombreLista, usuarioAsociadoString, operacion);
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
-    public void borrarLista(String nombreLista,int operacion,boolean actualizarValor)
-    {
-        String usuarioString="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+    public void borrarLista(String nombreLista, int operacion, boolean actualizarValor) {
+        String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
         
-        String descripcionString="(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
+        String descripcionString = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern descripcionPattern = Pattern.compile(descripcionString);
         
-        String listaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        String listaString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(listaString);
-        int cantidadUsuariosActual=cantidadUsuarios(nombreLista);
-         try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioPattern.matcher(lineas.get(i));
-              Matcher m1 = listaPattern.matcher(lineas.get(i));
-              Matcher m2 = descripcionPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find()&&m2.find())
-                {
-                    if(m.group(4).equals(cuenta))
-                    {
-                        if(m1.group(4).equals(nombreLista))
-                        {
-                         lineas.remove(i);
-                         Path out = Paths.get("C:\\MEIA\\lista.txt");
-                         Files.write(out,lineas);
-                         Iterator<String> i2It = lineas.iterator();
-                         while (i2It.hasNext())
-                         {
-                             String line = i2It.next();
-                             if (line.trim().isEmpty())
-                                 i2It.remove();
-                         }
-                         Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);
-                         if (actualizarValor)
-                         {
-                             agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuariosActual);
-                         }
-                         else
-                         {
-                             if(operacion==1)
-                             {
-                                 agregarLista(nombreLista, m2.group(4), operacion, ActualizarCantidadCuentasAsociadas(nombreLista, true,cantidadUsuariosActual));
-                             }
-                             else
-                             {
-                                 agregarLista(nombreLista, m2.group(4), operacion, ActualizarCantidadCuentasAsociadas(nombreLista, false,cantidadUsuariosActual));
-                             }
+        int cantidadUsuariosActual = cantidadUsuarios(nombreLista);
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineas.get(i));
+                Matcher m1 = listaPattern.matcher(lineas.get(i));
+                Matcher m2 = descripcionPattern.matcher(lineas.get(i));
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(nombreLista)) {
+                            lineas.remove(i);
+                            Path out = Paths.get("C:\\MEIA\\lista.txt");
+                            Files.write(out, lineas);
+                            Iterator<String> i2It = lineas.iterator();
+                            while (i2It.hasNext()) {
+                                String line = i2It.next();
+                                if (line.trim().isEmpty()) {
+                                    i2It.remove();
+                                }
+                            }
+                            Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);
+                            if (actualizarValor) {
+                                agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuariosActual);
+                            } else {
+                                if (operacion == 1) {
+                                    agregarLista(nombreLista, m2.group(4), operacion, ActualizarCantidadCuentasAsociadas(nombreLista, true, cantidadUsuariosActual));
+                                } else {
+                                    agregarLista(nombreLista, m2.group(4), operacion, ActualizarCantidadCuentasAsociadas(nombreLista, false, cantidadUsuariosActual));
+                                }
+                                
+                            }
                             
-                         }
-                         
-                        
                         }
                     }
                 }
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-                 Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
-                 Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
-                 Matcher m2 = descripcionPattern.matcher(lineasDescList.get(i));
-                 if(m.find()&&m1.find()&&m2.find())
-                 {
-                     if(m.group(4).equals(cuenta))
-                     {
-                         if(m1.group(4).equals(nombreLista))
-                         {
-                             lineasDescList.remove(i);
-                             Path out1 = Paths.get("C:\\MEIA\\desc_lista.txt");                
-                             Files.write(out1,lineasDescList);
-                             Iterator<String> it = lineasDescList.iterator();
-                             while (it.hasNext())
-                             {
-                                 String line = it.next();
-                                 if (line.trim().isEmpty())
-                                     it.remove();
-                             }
-                             Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineasDescList);
-                             if (actualizarValor)
-                             {
-                             agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuariosActual);
-                             }
-                             else
-                             {
-                             if(operacion==1)
-                             {
-                                 agregarLista(nombreLista, m2.group(4), 1, ActualizarCantidadCuentasAsociadas(nombreLista, true,cantidadUsuariosActual));
-                             }
-                             else
-                             {
-                                 agregarLista(nombreLista, m2.group(4), 1, ActualizarCantidadCuentasAsociadas(nombreLista, false,cantidadUsuariosActual));
-                             }
-                            
-                             }
-                         }
-                     }
-                 }
-             }
-         }
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = usuarioPattern.matcher(lineasDescList.get(i));
+                Matcher m1 = listaPattern.matcher(lineasDescList.get(i));
+                Matcher m2 = descripcionPattern.matcher(lineasDescList.get(i));
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(nombreLista)) {
+                            lineasDescList.remove(i);
+                            Path out1 = Paths.get("C:\\MEIA\\desc_lista.txt");
+                            Files.write(out1, lineasDescList);
+                            Iterator<String> it = lineasDescList.iterator();
+                            while (it.hasNext()) {
+                                String line = it.next();
+                                if (line.trim().isEmpty()) {
+                                    it.remove();
+                                }
+                            }
+                            Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineasDescList);
+                            if (actualizarValor) {
+                                agregarLista(nombreLista, m2.group(4), operacion, cantidadUsuariosActual);
+                            } else {
+                                if (operacion == 1) {
+                                    agregarLista(nombreLista, m2.group(4), 1, ActualizarCantidadCuentasAsociadas(nombreLista, true, cantidadUsuariosActual));
+                                } else {
+                                    agregarLista(nombreLista, m2.group(4), 1, ActualizarCantidadCuentasAsociadas(nombreLista, false, cantidadUsuariosActual));
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public void agregarContacto(String contactoN,int operacion)
-    {
-        String patron="(Estatus)(\\:)(	| |)*(\\d)";
+    public void agregarContacto(String contactoN, int operacion) {
+        String patron = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
         
         Path p = Paths.get("C:\\MEIA\\desc_contactos.txt");
         
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        String s = System.lineSeparator() + "Usuario:"+cuenta+"|"+ "Contacto:"+contactoN+"|"
-                 + "Fecha de transaccion:"+jfecha+"|"+ "Usuario transaccion:"+cuenta+"|"+ "Estatus:"+operacion;
+        String s = System.lineSeparator() + "Usuario:" + cuenta + "|" + "Contacto:" + contactoN + "|"
+                + "Fecha de transaccion:" + jfecha + "|" + "Usuario transaccion:" + cuenta + "|" + "Estatus:" + operacion;
         
-        try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
-        {
-               writer.write(s);
-               writer.close();
+        try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+            writer.write(s);
+            writer.close();
+        } catch (IOException ioe) {
+            System.err.format("IOException: %s%n", ioe);
         }
-         
-        catch (IOException ioe) 
-        {
-               System.err.format("IOException: %s%n", ioe);
-        }
-        int cantidadCuentas=0;
-        int cantidadActivos=0;
-        int cantidadInactivos=0;
-        try 
-        {
+        int cantidadCuentas = 0;
+        int cantidadActivos = 0;
+        int cantidadInactivos = 0;
+        try {
             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-            for (int i = 0; i < lineas.size(); i++)
-            {
+            for (int i = 0; i < lineas.size(); i++) {
                 Matcher m = estatus.matcher(lineas.get(i));
-                if(m.find())
-                {
+                if (m.find()) {
                     cantidadCuentas++;
-                    if(m.group(4).contains("1"))
-                    {
-                     //Esta activo
+                    if (m.group(4).contains("1")) {
+                        //Esta activo
                         cantidadActivos++;
-                    }   
-                    else   
-                    {
-                      //No esta activo
+                    } else {
+                        //No esta activo
                         cantidadInactivos++;
                     }
-                }   
-            }   
+                }
+            }
             
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
-            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
             return;
-        }  
-        
+        }
+
         /////////////////////////////////////////////////////////////////////////
-        try 
-            {
-               
-         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
-             String nombresimbolicoString;
-             
-             if (operacion==1)             
-             {
-                 nombresimbolicoString="crear contacto";  
-             }
-             else
-             {
-                 nombresimbolicoString="borrar contacto";
-             }
-             List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-             lineas.set(0, "Nombre simbolico:"+nombresimbolicoString+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
-                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadActivos+"|"+
-                             "Registros Inactivos:"+cantidadInactivos+"|"+"Max reorganizacion:"+maximaReorganizacion);
-                
-             Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");
-             Files.write(out,lineas);
-             
-                      
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-             Iterator<String> i = lineas.iterator();
-             while (i.hasNext())
-             {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();       
-             }
-             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);             
-             
-             }
-             catch (IOException ex) 
-             {
-                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
-             }
+        try {
+
+            //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+            String nombresimbolicoString;
+            
+            if (operacion == 1) {
+                nombresimbolicoString = "crear contacto";
+            } else {
+                nombresimbolicoString = "borrar contacto";
+            }
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+            lineas.set(0, "Nombre simbolico:" + nombresimbolicoString + "|" + "Fecha Creacion:" + jfecha + "|" + "Usuario Creacion:"
+                    + cuenta + "|" + "# Registros:" + cantidadCuentas + "|" + "Registros Activos:" + cantidadActivos + "|"
+                    + "Registros Inactivos:" + cantidadInactivos + "|" + "Max reorganizacion:" + maximaReorganizacion);
+            
+            Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");
+            Files.write(out, lineas);
+            
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+            Iterator<String> i = lineas.iterator();
+            while (i.hasNext()) {
+                String line = i.next();
+                if (line.trim().isEmpty()) {
+                    i.remove();
+                }
+            }
+            Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        
-        if(cantidadCuentas>=maximaReorganizacion)
-        {
+        if (cantidadCuentas >= maximaReorganizacion) {
             //JOptionPane.showMessageDialog(null,"Cantidad de cuentas:"+cantidadCuentas );
-            try
-            {
-         
-                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+            try {
+                
+                String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
                 List<String> cuentasList = new ArrayList<String>();
-                for (int i = 0; i < lineas.size(); i++)
-                {   
+                for (int i = 0; i < lineas.size(); i++) {
                     Matcher m10 = rolE.matcher(lineas.get(i));
-                    if(m10.find())
-                    {
+                    if (m10.find()) {
                         cuentasList.add(lineas.get(i));
                         lineas.remove(i);
-                        i=0;
+                        i = 0;
                     }
                 }
-                Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");   
-                Files.write(out,lineas);
+                Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");
+                Files.write(out, lineas);
                 
-                             
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));             
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
                 Iterator<String> i = lineas.iterator();
-                while (i.hasNext())
-                {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();
+                while (i.hasNext()) {
+                    String line = i.next();
+                    if (line.trim().isEmpty()) {
+                        i.remove();
+                    }
                 }
-             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);   
+                Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);
                 
                 p = Paths.get("C:\\MEIA\\contactos.txt");
-        
-        
-                try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))
-                {
-                    for(String str: cuentasList) 
-                    {
-                        writer.write(System.lineSeparator()+str);
+                
+                try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+                    for (String str : cuentasList) {
+                        writer.write(System.lineSeparator() + str);
                     }
                 }
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));             
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
                 Iterator<String> i2It = lineas.iterator();
-                while (i2It.hasNext())
-                {
-                 String line = i2It.next();
-                 if (line.trim().isEmpty())
-                     i2It.remove();
+                while (i2It.hasNext()) {
+                    String line = i2It.next();
+                    if (line.trim().isEmpty()) {
+                        i2It.remove();
+                    }
                 }
-             Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);  
+                Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);
                 
-             }
-             catch (IOException ex) 
-             {
-                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
-             }
+            } catch (IOException ex) {
+                Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         mostrarContactos();
     }
-    public boolean buscarEnLista(String nombreLista)
-    {
-        String nombreListaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+    
+    public boolean buscarEnLista(String nombreLista) {
+        String nombreListaString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(nombreListaString);
-        String usuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+        String usuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuario);
-         try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = listaPattern.matcher(lineas.get(i));
-              Matcher m1 = usuarioPattern.matcher(lineas.get(i));
-                if(m.find()&&m1.find())
-                {
-                    if(m.group(4).equals(nombreLista))
-                    {
-                        if(m1.group(4).equals(cuenta))
-                        {
-                         JOptionPane.showMessageDialog(null, "Ya tienes una lista llamada "+nombreLista);
-                         return false;
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = listaPattern.matcher(lineas.get(i));
+                Matcher m1 = usuarioPattern.matcher(lineas.get(i));
+                if (m.find() && m1.find()) {
+                    if (m.group(4).equals(nombreLista)) {
+                        if (m1.group(4).equals(cuenta)) {
+                            JOptionPane.showMessageDialog(null, "Ya tienes una lista llamada " + nombreLista);
+                            return false;
                         }
                     }
-                }   
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-              Matcher m = listaPattern.matcher(lineasDescList.get(i));
-              Matcher m1 = usuarioPattern.matcher(lineasDescList.get(i));
-              if(m.find()&&m1.find())  
-              {
-                  if(m.group(4).equals(nombreLista))
-                  {
-                      if(m1.group(4).equals(cuenta))   
-                      {
-                         JOptionPane.showMessageDialog(null, "Ya tienes una lista llamada "+nombreLista);
-                         return false;
-                      }
-                  }
-              }   
-             }
-         }
-           
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         return true;
+                }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = listaPattern.matcher(lineasDescList.get(i));
+                Matcher m1 = usuarioPattern.matcher(lineasDescList.get(i));
+                if (m.find() && m1.find()) {
+                    if (m.group(4).equals(nombreLista)) {
+                        if (m1.group(4).equals(cuenta)) {
+                            JOptionPane.showMessageDialog(null, "Ya tienes una lista llamada " + nombreLista);
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
-    public boolean estadoContacto(String contacto)
-    {
-        String usuarioContactos="(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
+    
+    public boolean estadoContacto(String contacto) {
+        String usuarioContactos = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
         Pattern usuarioContactosPattern = Pattern.compile(usuarioContactos);
         
-        String contactoString="(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
+        String contactoString = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern contactosPattern = Pattern.compile(contactoString);
         
-        String estatusContacto="(Estatus)(\\:)(	| |)*(.+)";
+        String estatusContacto = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern estatusContactoPattern = Pattern.compile(estatusContacto);
         
-         try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = usuarioContactosPattern.matcher(lineas.get(i));
-              Matcher m1 = contactosPattern.matcher(lineas.get(i));
-              Matcher m2 = estatusContactoPattern.matcher(lineas.get(i));
-              
-                if(m.find()&&m1.find()&&m2.find())
-                {
-                    if(m.group(4).equals(cuenta))
-                    {
-                        if(m1.group(4).equals(contacto))
-                        {
-                         if(m2.group(4).contains("1"))
-                         {
-                             return true;
-                         }
-                         else
-                         {
-                             return false;
-                         }
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = usuarioContactosPattern.matcher(lineas.get(i));
+                Matcher m1 = contactosPattern.matcher(lineas.get(i));
+                Matcher m2 = estatusContactoPattern.matcher(lineas.get(i));
+                
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(contacto)) {
+                            if (m2.group(4).contains("1")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
                         }
                     }
-                }   
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-              Matcher m = usuarioContactosPattern.matcher(lineasDescList.get(i));
-              Matcher m1 = contactosPattern.matcher(lineasDescList.get(i));            
-              Matcher m2 = estatusContactoPattern.matcher(lineasDescList.get(i));
-             
-              if(m.find()&&m1.find()&&m2.find())
-              {  
-                  if(m.group(4).equals(cuenta))
-                  {
-                      if(m1.group(4).equals(contacto))
-                        {
-                         if(m2.group(4).contains("1"))
-                         {
-                             return true;
-                         }
-                         else
-                         {
-                             return false;
-                         }
+                }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = usuarioContactosPattern.matcher(lineasDescList.get(i));
+                Matcher m1 = contactosPattern.matcher(lineasDescList.get(i));
+                Matcher m2 = estatusContactoPattern.matcher(lineasDescList.get(i));
+                
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m.group(4).equals(cuenta)) {
+                        if (m1.group(4).equals(contacto)) {
+                            if (m2.group(4).contains("1")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
                         }
-                  }
-              }   
-             }
-         }
-           
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return false;
     }
     
-    public void obtenerLista(JMenu menu)
-    {
-        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+    public void obtenerLista(JMenu menu) {
+        String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
-        String nombreListaString="(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
+        String nombreListaString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(nombreListaString);
-        String usuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
+        String usuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuario);
         
-         try 
-         {
-             List<String> lineas,lineasDescList;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
-             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = rolE.matcher(lineas.get(i));
-              Matcher m1 = usuarioPattern.matcher(lineas.get(i));
-              Matcher m2 = listaPattern.matcher(lineas.get(i));
-              
-                if(m.find()&&m1.find()&&m2.find())
-                {
-                    if(m1.group(4).equals(cuenta))
-                    {
-                        if(m.group(4).contains("1"))
-                        {    
-                            menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));   
+        try {
+            List<String> lineas, lineasDescList;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+            lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = rolE.matcher(lineas.get(i));
+                Matcher m1 = usuarioPattern.matcher(lineas.get(i));
+                Matcher m2 = listaPattern.matcher(lineas.get(i));
+                
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m1.group(4).equals(cuenta)) {
+                        if (m.group(4).contains("1")) {
+                            menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));
                         }
                     }
-                }   
-             }
-             for (int i = 0; i < lineasDescList.size(); i++)
-             {
-              Matcher m = rolE.matcher(lineasDescList.get(i));
-              Matcher m1 = usuarioPattern.matcher(lineasDescList.get(i));            
-              Matcher m2 = listaPattern.matcher(lineasDescList.get(i));
-             
-              if(m.find()&&m1.find()&&m2.find())
-              {  
-                  if(m1.group(4).equals(cuenta))
-                  {
-                      menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));   
-                  }
-              }   
-             }
-         }
-           
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-       
+                }
+            }
+            for (int i = 0; i < lineasDescList.size(); i++) {
+                Matcher m = rolE.matcher(lineasDescList.get(i));
+                Matcher m1 = usuarioPattern.matcher(lineasDescList.get(i));
+                Matcher m2 = listaPattern.matcher(lineasDescList.get(i));
+                
+                if (m.find() && m1.find() && m2.find()) {
+                    if (m1.group(4).equals(cuenta)) {
+                        menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
-    public void obtenerUsuariosDeLista(JMenu menu)
-    {
-        String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+    public void obtenerUsuariosDeLista(JMenu menu) {
+        String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
-        String nombreListaString="(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
+        String nombreListaString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
         Pattern listaPattern = Pattern.compile(nombreListaString);
-        String usuarioAsociado="(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
+        String usuarioAsociado = "(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
         Pattern usuarioAsociadoPattern = Pattern.compile(usuarioAsociado);
-        String usuario="(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
+        String usuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern usuarioPattern = Pattern.compile(usuario);
         
-        try 
-         {
-             List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
-             for (int i = 0; i < lineas.size(); i++)
-             {
-              Matcher m = rolE.matcher(lineas.get(i));
-              Matcher m1 = usuarioAsociadoPattern.matcher(lineas.get(i));
-              Matcher m2 = listaPattern.matcher(lineas.get(i));
-              Matcher m3 = usuarioPattern.matcher(lineas.get(i));
-              
-                if(m.find()&&m1.find()&&m2.find()&&m3.find())
-                {
-                    if(m3.group(4).equals(cuenta))
-                    {
-                       if(m2.group(4).equals(jList2.getSelectedValue()))
-                       {
-                        if(m.group(4).contains("1"))
-                        {
-                            if(estadoContacto(m1.group(4)))
-                            {
-                                menu.add(new JMenuItem(new ContactosEnLasListas(m1.group(4))));
+        try {
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
+            for (int i = 0; i < lineas.size(); i++) {
+                Matcher m = rolE.matcher(lineas.get(i));
+                Matcher m1 = usuarioAsociadoPattern.matcher(lineas.get(i));
+                Matcher m2 = listaPattern.matcher(lineas.get(i));
+                Matcher m3 = usuarioPattern.matcher(lineas.get(i));
+                
+                if (m.find() && m1.find() && m2.find() && m3.find()) {
+                    if (m3.group(4).equals(cuenta)) {
+                        if (m2.group(4).equals(jList2.getSelectedValue())) {
+                            if (m.group(4).contains("1")) {
+                                if (estadoContacto(m1.group(4))) {
+                                    menu.add(new JMenuItem(new ContactosEnLasListas(m1.group(4))));
+                                }
                             }
                         }
-                       }
                     }
-                }   
-             }
-         }
-           
-         catch (IOException ex)
-         {
-             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-         }
-       
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
-    public void agregarLista(String nombreListaString,String descripcionString,int operacion,int numeroUsuarios)
-    {
-        String patron="(Estatus)(\\:)(	| |)*(\\d)";
+    
+    public void agregarLista(String nombreListaString, String descripcionString, int operacion, int numeroUsuarios) {
+        String patron = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
         
         Path p = Paths.get("C:\\MEIA\\desc_lista.txt");
         
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        String s = System.lineSeparator() + "Nombre Lista:"+nombreListaString+"|"+ "Usuario:"+cuenta+"|"
-                 + "Fecha Creacion:"+jfecha+"|"+ "Descripcion:"+descripcionString+"|"+"Numero Usuarios:"+numeroUsuarios+"|"+ "Estatus:"+operacion;
+        String s = System.lineSeparator() + "Nombre Lista:" + nombreListaString + "|" + "Usuario:" + cuenta + "|"
+                + "Fecha Creacion:" + jfecha + "|" + "Descripcion:" + descripcionString + "|" + "Numero Usuarios:" + numeroUsuarios + "|" + "Estatus:" + operacion;
         
-        try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))   
-        {
-               writer.write(s);
-               writer.close();
+        try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+            writer.write(s);
+            writer.close();
+        } catch (IOException ioe) {
+            System.err.format("IOException: %s%n", ioe);
         }
-         
-        catch (IOException ioe) 
-        {
-               System.err.format("IOException: %s%n", ioe);
-        }
-        int cantidadCuentas=0;
-        int cantidadActivos=0;
-        int cantidadInactivos=0;
-        try 
-        {
+        int cantidadCuentas = 0;
+        int cantidadActivos = 0;
+        int cantidadInactivos = 0;
+        try {
             List<String> lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-            for (int i = 0; i < lineas.size(); i++)
-            {
+            for (int i = 0; i < lineas.size(); i++) {
                 Matcher m = estatus.matcher(lineas.get(i));
-                if(m.find())
-                {
+                if (m.find()) {
                     cantidadCuentas++;
-                    if(m.group(4).contains("1"))
-                    {
-                     //Esta activo
+                    if (m.group(4).contains("1")) {
+                        //Esta activo
                         cantidadActivos++;
-                    }   
-                    else   
-                    {
-                      //No esta activo
+                    } else {
+                        //No esta activo
                         cantidadInactivos++;
                     }
-                }   
-            }   
+                }
+            }
             
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex); 
-            JOptionPane.showMessageDialog(null,"Ocurrio un error" );
+        } catch (IOException ex) {
+            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
             return;
-        }  
-        
+        }
+
         /////////////////////////////////////////////////////////////////////////
-        try 
-            {
-               
-         //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
-             String nombresimbolicoString;
-             
-             if (operacion==1)             
-             {
-                 nombresimbolicoString="Crear lista";  
-             }
-             else
-             {
-                 nombresimbolicoString="Borrar lista";
-             }
-             List<String> lineas;
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             lineas.set(0, "Nombre simbolico:"+nombresimbolicoString+"|"+"Fecha Creacion:"+jfecha+"|"+"Usuario Creacion:"+
-                     cuenta+"|"+"# Registros:"+cantidadCuentas+"|"+"Registros Activos:"+cantidadActivos+"|"+
-                             "Registros Inactivos:"+cantidadInactivos+"|"+"Max reorganizacion:"+maximaReorganizacion);
-                
-             Path out = Paths.get("C:\\MEIA\\desc_lista.txt");
-             Files.write(out,lineas);
-             
-             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-             Iterator<String> i = lineas.iterator();
-             while (i.hasNext())
-             {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();       
-             }
-             Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas);             
-             
-             }
-             catch (IOException ex) 
-             {
-                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
-             }
+        try {
+
+            //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
+            String nombresimbolicoString;
+            
+            if (operacion == 1) {
+                nombresimbolicoString = "Crear lista";
+            } else {
+                nombresimbolicoString = "Borrar lista";
+            }
+            List<String> lineas;
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            lineas.set(0, "Nombre simbolico:" + nombresimbolicoString + "|" + "Fecha Creacion:" + jfecha + "|" + "Usuario Creacion:"
+                    + cuenta + "|" + "# Registros:" + cantidadCuentas + "|" + "Registros Activos:" + cantidadActivos + "|"
+                    + "Registros Inactivos:" + cantidadInactivos + "|" + "Max reorganizacion:" + maximaReorganizacion);
+            
+            Path out = Paths.get("C:\\MEIA\\desc_lista.txt");
+            Files.write(out, lineas);
+            
+            lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
+            Iterator<String> i = lineas.iterator();
+            while (i.hasNext()) {
+                String line = i.next();
+                if (line.trim().isEmpty()) {
+                    i.remove();
+                }
+            }
+            Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        
-        if(cantidadCuentas>=maximaReorganizacion)
-        {
+        if (cantidadCuentas >= maximaReorganizacion) {
             //JOptionPane.showMessageDialog(null,"Cantidad de cuentas:"+cantidadCuentas );
-            try
-            {
-                String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";
+            try {
+                String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
                 List<String> cuentasList = new ArrayList<String>();
-                for (int i = 0; i < lineas.size(); i++)
-                {   
+                for (int i = 0; i < lineas.size(); i++) {
                     Matcher m10 = rolE.matcher(lineas.get(i));
-                    if(m10.find())
-                    {
+                    if (m10.find()) {
                         cuentasList.add(lineas.get(i));
                         lineas.remove(i);
-                        i=0;
+                        i = 0;
                     }
                 }
-                Path out = Paths.get("C:\\MEIA\\desc_lista.txt");   
-                Files.write(out,lineas);
+                Path out = Paths.get("C:\\MEIA\\desc_lista.txt");
+                Files.write(out, lineas);
                 
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));             
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
                 Iterator<String> i = lineas.iterator();
-                while (i.hasNext())
-                {
-                 String line = i.next();
-                 if (line.trim().isEmpty())
-                     i.remove();
-                }
-                
-                Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas); 
-                p = Paths.get("C:\\MEIA\\lista.txt");
-        
-        
-                try (BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND))
-                {
-                    for(String str: cuentasList) 
-                    {
-                        writer.write(System.lineSeparator()+str);
+                while (i.hasNext()) {
+                    String line = i.next();
+                    if (line.trim().isEmpty()) {
+                        i.remove();
                     }
                 }
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));             
-                Iterator<String> i2It = lineas.iterator();
-                while (i2It.hasNext())
-                {
-                 String line = i2It.next();
-                 if (line.trim().isEmpty())
-                     i2It.remove();
-                }
-             Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);  
                 
-             }
-             catch (IOException ex) 
-             {
-                        Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
-             }
+                Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas);
+                p = Paths.get("C:\\MEIA\\lista.txt");
+                
+                try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+                    for (String str : cuentasList) {
+                        writer.write(System.lineSeparator() + str);
+                    }
+                }
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
+                Iterator<String> i2It = lineas.iterator();
+                while (i2It.hasNext()) {
+                    String line = i2It.next();
+                    if (line.trim().isEmpty()) {
+                        i2It.remove();
+                    }
+                }
+                Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);
+                
+            } catch (IOException ex) {
+                Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-       mostrarListas();
+        mostrarListas();
     }
-
-
+    
     private class AccionesEnLasListas extends AbstractAction {
+        
         public AccionesEnLasListas(String name) {
             super(name);
         }
-
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             //System.out.println("Menu item: " + e.getActionCommand());
-            Object[] options = { "Agregar", "Cancelar" };         
+            Object[] options = {"Agregar", "Cancelar"};
             
-            int dialogResult =JOptionPane.showOptionDialog(null, "¿Agregar "+jList1.getSelectedValue()+" a la lista "+e.getActionCommand()+"?", "Agregar contacto a lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
-            if(dialogResult == 0)
-            {
+            int dialogResult = JOptionPane.showOptionDialog(null, "¿Agregar " + jList1.getSelectedValue() + " a la lista " + e.getActionCommand() + "?", "Agregar contacto a lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (dialogResult == 0) {
                 //Si
-                 if(BuscarListaUsuario(e.getActionCommand(), jList1.getSelectedValue()))
-                    {
-                         JOptionPane.showMessageDialog(null, "Agregado");
-                         manejarPos=0;
-                         AgregarIndice(e.getActionCommand(), jList1.getSelectedValue(),1);
-                         
-                    }
-                
-              
+                if (BuscarListaUsuario(e.getActionCommand(), jList1.getSelectedValue())) {
+                    JOptionPane.showMessageDialog(null, "Agregado");
+                    manejarPos = 0;
+                    AgregarIndice(e.getActionCommand(), jList1.getSelectedValue(), 1);
+                    
+                }
+
                 //codigo 
-            }
-            else
-            {
+            } else {
                 
             }
-                       
+            
         }
     }
-     private class ContactosEnLasListas extends AbstractAction {
+    
+    private class ContactosEnLasListas extends AbstractAction {
+        
         public ContactosEnLasListas(String name) {
             super(name);
         }
-
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             //System.out.println("Menu item: " + e.getActionCommand());
-            Object[] options = { "Borrar", "Cancelar" };         
+            Object[] options = {"Borrar", "Cancelar"};
             
-            int dialogResult =JOptionPane.showOptionDialog(null, "¿Borrar "+e.getActionCommand()+" de la lista "+jList2.getSelectedValue()+"?", "Borrar contacto de lista",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,options, options[0]);
-            if(dialogResult == 0)
-            {
+            int dialogResult = JOptionPane.showOptionDialog(null, "¿Borrar " + e.getActionCommand() + " de la lista " + jList2.getSelectedValue() + "?", "Borrar contacto de lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (dialogResult == 0) {
                 //Si
-                JOptionPane.showMessageDialog(null,"El usuario "+e.getActionCommand()+" fue borrado de la lista "+jList2.getSelectedValue());
-                 borrarUsuarioDeLista(e.getActionCommand(), jList2.getSelectedValue(), 0);
-              
+                JOptionPane.showMessageDialog(null, "El usuario " + e.getActionCommand() + " fue borrado de la lista " + jList2.getSelectedValue());
+                borrarUsuarioDeLista(e.getActionCommand(), jList2.getSelectedValue(), 0);
+
                 //codigo 
-            }
-            else
-            {
+            } else {
                 
             }
-                       
+            
         }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -2716,9 +2260,9 @@ public  class IFEstandar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea BandejaEn;
+    public static javax.swing.JList<String> BanSali;
+    public static javax.swing.JList<String> BandEntr;
     private javax.swing.JButton BandejaEntrada;
-    private javax.swing.JTextArea BandejaSa;
     private javax.swing.JButton Bandejasalida;
     private javax.swing.JLabel btnBuscar;
     private javax.swing.JLabel btnMod;
@@ -2732,7 +2276,7 @@ public  class IFEstandar extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblBienvenido;
     // End of variables declaration//GEN-END:variables
 }

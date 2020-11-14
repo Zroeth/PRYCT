@@ -4,64 +4,93 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Cathy
  */
 public class GestionarA {
-    
-    File archivo = new File("C:\\MEIA\\arbol.dat"); 
-    public  void Agregar(){  
-    Mensaje mensaje= new Mensaje();
-   // mensaje.setNo_registro();
-   
-    try{
-    FileOutputStream bin=new FileOutputStream(archivo,true);
-    ObjectOutputStream bina=new ObjectOutputStream(bin);
-    bina.writeObject(mensaje);
-    bina.close();
-    bin.close();
-    
-    
-    }catch(Exception e){
-        System.out.println("Error");
-        e.printStackTrace();
-    }
-    
-    }
-    public void leer(){
-    try{
-        FileInputStream lbin=new FileInputStream(archivo);
-        ObjectInputStream lbina;
-        while(lbin.available()>0){
-        lbina=new ObjectInputStream(lbin);
-        Mensaje mensaje=(Mensaje) lbina.readObject();
-        System.out.println(mensaje);
+
+    public List<Mensaje> ListaMensajes;
+    private static GestionarA instance = null;
+
+    public static GestionarA getInstance() {
+        if (instance == null) {
+            instance = new GestionarA();
         }
-    }catch(Exception e){
-    System.out.println("Error");
-    e.printStackTrace();
+
+        return instance;
     }
-    
+
+    public GestionarA() {
+        ListaMensajes = new ArrayList<Mensaje>();
     }
-    /* List<Mensaje> msj= new ArrayList();
-    public void AgregarDatos(Mensaje Mjs){
-     msj.add(Mjs);
-     
-}
-    public void mostrarArray(){
-    for(int i=0;i<msj.size();i++){
-     JOptionPane.showMessageDialog(null,msj.get(i));
-    } 
+
+    public void Agregar() {
+
+        // mensaje.setNo_registro();
+        File archivo = new File("C:\\MEIA\\arbol.dat");
+        try {
+            FileOutputStream bin = new FileOutputStream(archivo);
+            ObjectOutputStream bina = new ObjectOutputStream(bin);
+            for (Mensaje mjs : ListaMensajes) {
+                bina.writeObject(mjs);
+            }
+            bina.close();
+            bin.close();
+
+        } catch (Exception e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+
     }
-    public void eliminar(int i){
-    msj.remove(i);
-    }*/
+
+    public void leer() {
+        File archivo = new File("C:\\MEIA\\arbol.dat");
+        try {
+            FileInputStream lbin = new FileInputStream(archivo);
+            ObjectInputStream lbina;
+            while (lbin.available() > 0) {
+                lbina = new ObjectInputStream(lbin);
+                Mensaje mensaje = (Mensaje) lbina.readObject();
+                System.out.println(mensaje.toString());
+                GestionarA.getInstance().ListaMensajes.add(mensaje);
+            }
+        } catch (Exception e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+
+    }
+
+    public ArrayList<Mensaje> obtenerMensajesEmisor(String cuenta) {
+        ArrayList<Mensaje> mensajesEmisor = new ArrayList<Mensaje>();
+        for (Mensaje mjs : ListaMensajes) {
+            if (mjs.getEmisor().equalsIgnoreCase(cuenta)) {
+                mensajesEmisor.add(mjs);
+            }
+
+        }
+        return mensajesEmisor;
+
+    }
+        public ArrayList<Mensaje> obtenerMensajesReceptor(String cuenta) {
+        ArrayList<Mensaje> mensajesReceptor = new ArrayList<Mensaje>();
+        for (Mensaje mjs : ListaMensajes) {
+            if (mjs.getReceptor().equalsIgnoreCase(cuenta)) {
+                mensajesReceptor.add(mjs);
+            }
+
+        }
+        return mensajesReceptor;
+
+    }
 }

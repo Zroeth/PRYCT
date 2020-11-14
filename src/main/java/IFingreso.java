@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,9 +73,13 @@ public class IFingreso extends javax.swing.JFrame {
         File crearIndice = new File("C:\\MEIA\\indice.txt");
         File crearDescIndice = new File("C:\\MEIA\\desc_indice.txt");
         
+                
+        File crearArbol = new File("C:\\MEIA\\arbol.dat"); 
         
         try 
         {
+            
+            crearArbol.createNewFile();
             crearBitacora.createNewFile();
             crearUsuario.createNewFile();
             crearDescUsuario.createNewFile();

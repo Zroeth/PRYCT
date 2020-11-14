@@ -1,6 +1,7 @@
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.swing.JList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -169,4 +170,6 @@ public class Mensaje implements Serializable{
     return "Registro: "+no_registro+"|"+"Izq: "+izq+"|"+"Der: "+der+"|"+"Emisor: "+emisor+"|"+"Receptor: "+receptor+"|"+
             "Fech_transac: "+fecha+"|"+"Asunto:"+asunto+"|"+"Mensaje: "+Mensaje+"|"+"Adjunto: "+adjunto+"|"+"Estatus: "+estatus+"|";
     }
+
+   
 }
