@@ -2,7 +2,7 @@
 
 
 
-
+import java.util.Date;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -69,6 +69,7 @@ public class Mensajeria extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         ArchivoAdjunto = new javax.swing.JTextPane();
         Vista = new javax.swing.JLabel();
+        Fecha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setForeground(java.awt.Color.white);
@@ -106,7 +107,7 @@ public class Mensajeria extends javax.swing.JFrame {
         NombreArchivo.setLayout(NombreArchivoLayout);
         NombreArchivoLayout.setHorizontalGroup(
             NombreArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 353, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
         );
         NombreArchivoLayout.setVerticalGroup(
             NombreArchivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,6 +138,8 @@ public class Mensajeria extends javax.swing.JFrame {
         Vista.setFont(new java.awt.Font("Copperplate Gothic Bold", 2, 14)); // NOI18N
         Vista.setText("Archivo Adjunto");
 
+        Fecha.setText("Fecha: ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,7 +166,7 @@ public class Mensajeria extends javax.swing.JFrame {
                         .addComponent(lblEnviadoPor, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                             .addComponent(FotoE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -176,7 +179,9 @@ public class Mensajeria extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(191, 191, 191)
-                        .addComponent(EscribirCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(EscribirCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(122, 122, 122)
+                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,13 +192,18 @@ public class Mensajeria extends javax.swing.JFrame {
                                 .addComponent(Enviar)
                                 .addGap(30, 30, 30)
                                 .addComponent(btnCancelar)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(EscribirCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(EscribirCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
@@ -241,21 +251,34 @@ public class Mensajeria extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_AdjuntarActionPerformed
- String Asunto, Mensaje;
+ public static String getFechaActual() {
+    Date ahora = new Date();
+    SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+    return formateador.format(ahora);
+}
     private void EnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnviarActionPerformed
+      
        VistaMensaje vistaM = new VistaMensaje();
+       Mensaje mjs = new Mensaje();
        String asunrecibido = AsuntoT.getText();
        VistaMensaje.AsuntoRecibido.setText(asunrecibido);
+       mjs.setAsunto(asunrecibido);
        String Msjrecibido = CuerpoMsj.getText();
        VistaMensaje.MensajeRecibido.setText(Msjrecibido);
+       mjs.setMensaje(Msjrecibido);
        String txt=mostrarAd.getText();
+       String p=ArchivoAdjunto.getText();
        VistaMensaje.AdjuntoRecibido.setText(txt);
+       mjs.setAdjunto(p);
        String emi=lblEnviadoPor.getText();
        VistaMensaje.Emisor.setText(emi);
+       mjs.setEmisor(emi);
        Icon img=FotoE.getIcon();
        VistaMensaje.FotoA.setIcon(img);
-       vistaM.setVisible(true);
-        dispose();
+       mjs.getFecha().getTime();
+       GestionarA.getInstance().ListaMensajes.add(mjs);
+       GestionarA.getInstance().Agregar();  
+       dispose();
     }//GEN-LAST:event_EnviarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -308,6 +331,7 @@ public class Mensajeria extends javax.swing.JFrame {
     private javax.swing.JLabel EnviadoPor;
     private javax.swing.JButton Enviar;
     private javax.swing.JLabel EscribirCorreo;
+    public static javax.swing.JLabel Fecha;
     public static javax.swing.JLabel FotoE;
     private javax.swing.JLabel LabelAsunto1;
     private javax.swing.JLabel LabelMensaje;
