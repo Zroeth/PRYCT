@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -251,6 +252,8 @@ public class Mensajeria extends javax.swing.JFrame {
        VistaMensaje.AdjuntoRecibido.setText(txt);
        String emi=lblEnviadoPor.getText();
        VistaMensaje.Emisor.setText(emi);
+       Icon img=FotoE.getIcon();
+       VistaMensaje.FotoA.setIcon(img);
        vistaM.setVisible(true);
         dispose();
     }//GEN-LAST:event_EnviarActionPerformed
