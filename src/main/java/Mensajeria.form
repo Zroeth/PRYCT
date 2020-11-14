@@ -63,8 +63,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                      <Component id="Vista" min="-2" pref="114" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                      <Component id="Vista" min="-2" pref="143" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -304,7 +304,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Copperplate Gothic Bold" size="14" style="2"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Enviado Por"/>
+        <Property name="text" type="java.lang.String" value="Archivo Adjunto"/>
       </Properties>
     </Component>
   </SubComponents>

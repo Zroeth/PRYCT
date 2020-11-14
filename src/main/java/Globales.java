@@ -48,6 +48,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class Globales {
     
+    
     public void Ordenar()
     {
         String patronEstatus="(Estatus)(\\:)(	| |)*(.+)";  
@@ -179,4 +180,6 @@ public class Globales {
        });
     return model;
     }
+     
+     
 }

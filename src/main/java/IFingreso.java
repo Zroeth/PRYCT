@@ -1,4 +1,8 @@
-
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Scanner;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -67,6 +71,7 @@ public class IFingreso extends javax.swing.JFrame {
         File crearLlaveUsuarioAso = new File("C:\\MEIA\\llave_usuarioAso.txt");
         File crearIndice = new File("C:\\MEIA\\indice.txt");
         File crearDescIndice = new File("C:\\MEIA\\desc_indice.txt");
+        
         
         try 
         {

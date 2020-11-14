@@ -135,7 +135,7 @@ public class Mensajeria extends javax.swing.JFrame {
         jScrollPane3.setViewportView(ArchivoAdjunto);
 
         Vista.setFont(new java.awt.Font("Copperplate Gothic Bold", 2, 14)); // NOI18N
-        Vista.setText("Enviado Por");
+        Vista.setText("Archivo Adjunto");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,8 +169,8 @@ public class Mensajeria extends javax.swing.JFrame {
                             .addComponent(FotoE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addComponent(Vista, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(80, 80, 80)
+                        .addComponent(Vista, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
