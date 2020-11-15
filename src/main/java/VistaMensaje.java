@@ -78,8 +78,8 @@ public class VistaMensaje extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(AsuntoRecibido, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                    .addComponent(Emisor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(MensajeRecibido))
+                    .addComponent(MensajeRecibido)
+                    .addComponent(Emisor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -112,8 +112,11 @@ public class VistaMensaje extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void AdjuntoRecibidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdjuntoRecibidoActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_AdjuntoRecibidoActionPerformed
 
     private void AsuntoRecibidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsuntoRecibidoActionPerformed

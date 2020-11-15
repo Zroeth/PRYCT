@@ -630,14 +630,14 @@ public class IFEstandar extends javax.swing.JFrame {
             }
 
         });
-
+        String usuarioA=jList1.getSelectedValue();
         enviarMensaje.addActionListener((ActionEvent e) -> {
             Mensaje mjs = new Mensaje();
             Mensajeria Mensajer = new Mensajeria();
             Mensajeria.lblEnviadoPor.setText(cuenta);
                     
            
-            mjs.setReceptor(jList1.getSelectedValue());
+            mjs.setReceptor(usuarioA);
             GestionarA.getInstance().ListaMensajes.add(mjs);
             GestionarA.getInstance().Agregar();
             GestionarA.getInstance().Agregartxt();

@@ -34,8 +34,8 @@
               <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Component id="AsuntoRecibido" pref="326" max="32767" attributes="0"/>
-                  <Component id="Emisor" alignment="0" min="-2" pref="279" max="-2" attributes="0"/>
                   <Component id="MensajeRecibido" alignment="1" max="32767" attributes="0"/>
+                  <Component id="Emisor" alignment="0" max="32767" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">

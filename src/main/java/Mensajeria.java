@@ -10,11 +10,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -97,6 +99,11 @@ public class Mensajeria extends javax.swing.JFrame {
 
         Enviar.setBackground(new java.awt.Color(204, 0, 0));
         Enviar.setText("Enviar");
+        Enviar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                EnviarMouseClicked(evt);
+            }
+        });
         Enviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EnviarActionPerformed(evt);
@@ -257,9 +264,25 @@ public class Mensajeria extends javax.swing.JFrame {
     return formateador.format(ahora);
 }
     private void EnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnviarActionPerformed
-       VistaMensaje vistaM = new VistaMensaje();
+      Mensaje mjs = new Mensaje();
+ 
+      
+       int registro =0;
+      int status=0;
+      int izqu=0;
+      int derc=0;
+      
+         
+      registro= registro+1;
+      izqu=registro-2;
+      derc=registro+2;
+      status=1;
+      mjs.setDer(derc);
+      mjs.setIzq(izqu);
+      mjs.setNo_registro(registro);
+      mjs.setEstatus(status);
+        VistaMensaje vistaM = new VistaMensaje();
 
-       Mensaje mjs = new Mensaje();
        String asunrecibido = AsuntoT.getText();
        VistaMensaje.AsuntoRecibido.setText(asunrecibido);
        mjs.setAsunto(asunrecibido);
@@ -282,10 +305,18 @@ public class Mensajeria extends javax.swing.JFrame {
        dispose();
     }//GEN-LAST:event_EnviarActionPerformed
 
+
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void EnviarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EnviarMouseClicked
+        // TODO add your handling code here:
+      
+    
+     
+    }//GEN-LAST:event_EnviarMouseClicked
 
    
      

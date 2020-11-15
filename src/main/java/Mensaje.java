@@ -8,12 +8,11 @@ import javax.swing.JList;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Cathy
  */
-public class Mensaje implements Serializable{
+public class Mensaje implements Serializable {
 
     /**
      * @return the no_registro
@@ -145,6 +144,7 @@ public class Mensaje implements Serializable{
      * @return the estatus
      */
     public int getEstatus() {
+
         return estatus;
     }
 
@@ -152,6 +152,7 @@ public class Mensaje implements Serializable{
      * @param estatus the estatus to set
      */
     public void setEstatus(int estatus) {
+
         this.estatus = estatus;
     }
     //izq y der son el numero de registro del usuario
@@ -165,11 +166,13 @@ public class Mensaje implements Serializable{
     private String Mensaje;
     private String adjunto;
     private int estatus;
-    
-    public String toString(){
-    return System.lineSeparator()+"Registro: "+no_registro+"|"+"Izq: "+izq+"|"+"Der: "+der+"|"+"Emisor: "+emisor+"|"+"Receptor: "+receptor+"|"+
-            "Fech_transac: "+fecha+"|"+"Asunto:"+asunto+"|"+"Mensaje: "+Mensaje+"|"+"Adjunto: "+adjunto+"|"+"Estatus: "+estatus+"|";
-    }
 
-   
+    public String toString() {
+        String s = "Registro: "+no_registro+"|"+"Izq: " + izq + "|" + "Der: " + der + "|" + "Emisor: " + emisor + "|" + "Receptor: " + receptor + "|" + "|" + "Asunto:" + asunto + "|" + "Mensaje: " + Mensaje + "|" + "Adjunto: " + adjunto+"|"+"Estatus: "+estatus+ System.lineSeparator();
+
+        return s;
+    }
+    /*return System.lineSeparator()+"Registro: "+no_registro+"|"+"Izq: "+izq+"|"+"Der: "+der+"|"+"Emisor: "+emisor+"|"+"Receptor: "+receptor+"|"+
+            "Fech_transac: "+fecha+"|"+"Asunto:"+asunto+"|"+"Mensaje: "+Mensaje+"|"+"Adjunto: "+adjunto+"|"+"Estatus: "+estatus+"|";*/
+
 }

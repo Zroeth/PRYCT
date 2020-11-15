@@ -1,11 +1,18 @@
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -52,16 +59,17 @@ public class GestionarA {
         }
 
     }
+
     public void Agregartxt() {
 
         // mensaje.setNo_registro();
         File archivo = new File("C:\\MEIA\\arbol.txt");
-        
+
         try {
             FileOutputStream bin = new FileOutputStream(archivo);
             ObjectOutputStream bina = new ObjectOutputStream(bin);
             for (Mensaje mjs : ListaMensajes) {
-                bina.writeChars(mjs.toString());
+                bina.writeBytes(mjs.toString());
             }
             bina.close();
             bin.close();
@@ -102,10 +110,11 @@ public class GestionarA {
         return mensajesEmisor;
 
     }
-        public ArrayList<Mensaje> obtenerMensajesReceptor(String cuenta) {
+
+    public ArrayList<Mensaje> obtenerMensajesReceptor(String cuenta) {
         ArrayList<Mensaje> mensajesReceptor = new ArrayList<Mensaje>();
         for (Mensaje mjs : ListaMensajes) {
-            if (mjs.getEmisor() != null && mjs.getReceptor().equalsIgnoreCase(cuenta)) {
+            if (mjs.getReceptor() != null && mjs.getReceptor().equalsIgnoreCase(cuenta)) {
                 mensajesReceptor.add(mjs);
             }
 
