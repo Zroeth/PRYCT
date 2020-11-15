@@ -52,6 +52,26 @@ public class GestionarA {
         }
 
     }
+    public void Agregartxt() {
+
+        // mensaje.setNo_registro();
+        File archivo = new File("C:\\MEIA\\arbol.txt");
+        
+        try {
+            FileOutputStream bin = new FileOutputStream(archivo);
+            ObjectOutputStream bina = new ObjectOutputStream(bin);
+            for (Mensaje mjs : ListaMensajes) {
+                bina.writeChars(mjs.toString());
+            }
+            bina.close();
+            bin.close();
+
+        } catch (Exception e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+
+    }
 
     public void leer() {
         File archivo = new File("C:\\MEIA\\arbol.dat");
@@ -74,7 +94,7 @@ public class GestionarA {
     public ArrayList<Mensaje> obtenerMensajesEmisor(String cuenta) {
         ArrayList<Mensaje> mensajesEmisor = new ArrayList<Mensaje>();
         for (Mensaje mjs : ListaMensajes) {
-            if (mjs.getEmisor().equalsIgnoreCase(cuenta)) {
+            if (mjs.getEmisor() != null && mjs.getEmisor().equalsIgnoreCase(cuenta)) {
                 mensajesEmisor.add(mjs);
             }
 
@@ -85,7 +105,7 @@ public class GestionarA {
         public ArrayList<Mensaje> obtenerMensajesReceptor(String cuenta) {
         ArrayList<Mensaje> mensajesReceptor = new ArrayList<Mensaje>();
         for (Mensaje mjs : ListaMensajes) {
-            if (mjs.getReceptor().equalsIgnoreCase(cuenta)) {
+            if (mjs.getEmisor() != null && mjs.getReceptor().equalsIgnoreCase(cuenta)) {
                 mensajesReceptor.add(mjs);
             }
 

@@ -67,7 +67,7 @@ import javax.swing.plaf.metal.MetalIconFactory;
  * and open the template in the editor.
  */
 public class IFEstandar extends javax.swing.JFrame {
-    
+
     static String cuenta;
     static boolean valorRol;
     static String cuentaMod;
@@ -78,35 +78,35 @@ public class IFEstandar extends javax.swing.JFrame {
     DefaultListModel listaTodosLosContactos = new DefaultListModel();
     DefaultListModel listaContactosOcultar = new DefaultListModel();
     DefaultListModel listaContactosMostrar = new DefaultListModel();
-    
+
     DefaultListModel listaTodasLasListas = new DefaultListModel();
     DefaultListModel listaListasOcultar = new DefaultListModel();
     DefaultListModel listaListasMostrar = new DefaultListModel();
-    
+
     Map<Object, ImageIcon> icons = new HashMap<>();
-    
+
     Map<Object, Icon> numerosMap = new HashMap<>();
-    
+
     public IFEstandar(String usuario) {
-        
+
         setUndecorated(true);
         initComponents();
-        
+
         getContentPane().setBackground(Color.white);
-        
+
         cuenta = "Nueva";
-        
+
         lblBienvenido.setText("Bienvenido usuario " + cuenta);
-        
+
         ImageIcon imIc3 = new ImageIcon("src/main/java/Imagenes/btnAgregar.gif");
         btnBuscar.setIcon(imIc3);
-        
+
         ImageIcon imIc4 = new ImageIcon("src/main/java/Imagenes/btnModificar.gif");
         btnMod.setIcon(imIc4);
-        
+
         ImageIcon imIc5 = new ImageIcon("src/main/java/Imagenes/btnSalir.gif");
         btnSalir.setIcon(imIc5);
-        
+
         mostrarContactos();
         mostrarListas();
         String patron = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
@@ -114,20 +114,20 @@ public class IFEstandar extends javax.swing.JFrame {
         Pattern rol = Pattern.compile(patron);
         Pattern rolPath = Pattern.compile(patronPathFoto);
         maximaReorganizacion = Max();
-        
+
         try {
             List<String> lineas;
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
             for (int i = 0; i < lineas.size(); i++) {
                 Matcher m = rol.matcher(lineas.get(i));
                 Matcher m9 = rolPath.matcher(lineas.get(i));
-                
+
                 if (m.find() && m9.find()) {
                     if (m.group(4).contains(cuenta)) {
                         pathFotografia = m9.group(4);
                         ImageIcon imIc = new ImageIcon(pathFotografia);
                         Image ajustarImg = imIc.getImage();
-                        
+
                         return;
                     }
                 }
@@ -136,7 +136,7 @@ public class IFEstandar extends javax.swing.JFrame {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ":D");
         }
-        
+
     }
 
     /**
@@ -382,7 +382,7 @@ public class IFEstandar extends javax.swing.JFrame {
         // TODO add your handling code here:
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
-        
+
         setLocation(x - xx, y - xy);
     }//GEN-LAST:event_formMouseDragged
 
@@ -391,10 +391,10 @@ public class IFEstandar extends javax.swing.JFrame {
         xx = evt.getX();
         xy = evt.getY();
     }//GEN-LAST:event_formMousePressed
-    
+
 
     private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
-        
+
         JTextField usuarioBuscarField = new JTextField(30);
         usuarioBuscarField.setPreferredSize(new java.awt.Dimension(30, 50));
         JPanel myPanel = new JPanel();
@@ -406,7 +406,7 @@ public class IFEstandar extends javax.swing.JFrame {
             Pattern rol = Pattern.compile(patronUsuario);
             String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
             Pattern rolE = Pattern.compile(patronEstatus);
-            
+
             try {
                 List<String> lineas;
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
@@ -438,7 +438,7 @@ public class IFEstandar extends javax.swing.JFrame {
                                 //pues no   System.out.println("No");
                                 return;
                             }
-                            
+
                         } else {
                             //El usuario no existe :D
                             //  JOptionPane.showMessageDialog(null, "Este usuario no existe");
@@ -451,12 +451,12 @@ public class IFEstandar extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
 
     }//GEN-LAST:event_btnBuscarMouseClicked
-    
+
 
     private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
         jList1.setSelectedIndex(jList1.locationToIndex(evt.getPoint()));
@@ -469,7 +469,7 @@ public class IFEstandar extends javax.swing.JFrame {
         JMenuItem enviarMensaje = new JMenuItem("Enviar Mensaje");
         JMenu agregarALista = new JMenu("Agregar a una lista");
         JMenuItem NuevaLista = new JMenuItem("Agregar nueva lista");
-        
+
         try {
             String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
             Pattern usuarioPattern = Pattern.compile(patronUsuario);
@@ -477,11 +477,11 @@ public class IFEstandar extends javax.swing.JFrame {
             Pattern rolE = Pattern.compile(patronEstatus);
             String contactoString = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
             Pattern contacPattern = Pattern.compile(contactoString);
-            
+
             List<String> lineaDescList, lineasList;
             lineasList = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
             lineaDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-            
+
             for (int i = 0; i < lineaDescList.size(); i++) {
                 Matcher m1 = contacPattern.matcher(lineaDescList.get(i));
                 Matcher m10 = rolE.matcher(lineaDescList.get(i));
@@ -547,7 +547,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 }
             } catch (IOException exception) {
             }
-            
+
             Object[] options = {"Agregar", "Cancelar"};
             int dialogResult = JOptionPane.showOptionDialog(null, "¿Seguro que quiere agregar de nuevo a " + jList1.getSelectedValue() + "?", "Agregar contacto", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
             if (dialogResult == 0) {
@@ -558,7 +558,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 mostrarContactos();
                 mostrarListas();
             }
-            
+
         });
         //
         borrarContactoItem.addActionListener((ActionEvent e) -> {
@@ -578,12 +578,12 @@ public class IFEstandar extends javax.swing.JFrame {
         });
         //LISTAS
         obtenerLista(agregarALista);
-        
+
         NuevaLista.addActionListener((ActionEvent e) -> {
             JTextField nombreListaField = new JTextField(30);
             JTextField descripcionListaField = new JTextField(30);
             descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 70));
-            
+
             JPanel myPanel = new JPanel();
             myPanel.add(new JLabel("Nombre de la lista:"));
             myPanel.add(nombreListaField);
@@ -592,7 +592,7 @@ public class IFEstandar extends javax.swing.JFrame {
             myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
             myPanel.add(descripcionListaField);
             int result = JOptionPane.showConfirmDialog(null, myPanel, "Ingrese los datos de la nueva lista", JOptionPane.OK_CANCEL_OPTION);
-            
+
             if (result == JOptionPane.OK_OPTION) {
                 if (nombreListaField.getText().length() < 3 || nombreListaField.getText().length() > 30) {
                     JOptionPane.showMessageDialog(null, "El nombre de la lista debe ser mayor a 3 caracteres y menor a 30");
@@ -621,11 +621,11 @@ public class IFEstandar extends javax.swing.JFrame {
                         AgregarIndice(nombreListaField.getText(), jList1.getSelectedValue(), 1);
                     }
                 }
-                
+
             }
-            
+
         });
-        
+
         enviarMensaje.addActionListener((ActionEvent e) -> {
             Mensaje mjs = new Mensaje();
             Mensajeria Mensajer = new Mensajeria();
@@ -633,6 +633,7 @@ public class IFEstandar extends javax.swing.JFrame {
             mjs.setReceptor(jList1.getSelectedValue());
             GestionarA.getInstance().ListaMensajes.add(mjs);
             GestionarA.getInstance().Agregar();
+            GestionarA.getInstance().Agregartxt();
             Mensajer.setVisible(true);
             /*  JTextField nombreListaField = new JTextField(30);
             JTextField descripcionListaField = new JTextField(30);
@@ -712,15 +713,15 @@ public class IFEstandar extends javax.swing.JFrame {
                     //MENSAJE
             }*/
         });
-        
+
         menu.show(jList1, evt.getPoint().x, evt.getPoint().y);
 
     }//GEN-LAST:event_jList1MousePressed
-    
+
     public int ActualizarCantidadCuentasAsociadas(String nombreLista, boolean Operacion, int cantidadUsuariosActual) {
-        
+
         if (cantidadUsuariosActual != 0) {
-            
+
             if (Operacion == true) {
                 return cantidadUsuariosActual + 1;
             } else {
@@ -735,17 +736,17 @@ public class IFEstandar extends javax.swing.JFrame {
         }
     }
     int manejarPos;
-    
+
     public void AgregarIndice(String nombreLista, String usuarioAsociado, int Operacion) {
         String patron = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
-        
+
         String descripcionAhuahsasudjaus = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern descripcionPattern = Pattern.compile(descripcionAhuahsasudjaus);
-        
+
         String nombreString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(nombreString);
-        
+
         String descripcionString = "";
         try {
             List<String> lineas, lineasDesc;
@@ -772,11 +773,11 @@ public class IFEstandar extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         Path p = Paths.get("C:\\MEIA\\lista_usuario.txt");
-        
+
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         String s = System.lineSeparator() + "Nombre lista:" + nombreLista + "|" + "Usuario:" + cuenta + "|"
                 + "Usuario asociado:" + usuarioAsociado + "|" + "Descripcion:" + descripcionString + "|" + "Fecha creacion:" + jfecha + "|" + "Estatus:" + Operacion;
-        
+
         if (Operacion == 1) {
             if (manejarPos == 0) {
                 try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
@@ -792,7 +793,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     lineas.set(posicionReemplazar, s);
                     Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
                 } catch (IOException e) {
-                    
+
                 }
             }
         } else {
@@ -802,12 +803,12 @@ public class IFEstandar extends javax.swing.JFrame {
                 lineas.set(posicionReemplazar, s);
                 Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
             } catch (IOException e) {
-                
+
             }
         }
-        
+
         List<String> lineas;
-        
+
         try {
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
             Iterator<String> i2It = lineas.iterator();
@@ -819,14 +820,14 @@ public class IFEstandar extends javax.swing.JFrame {
             }
             Files.write(Path.of("C:\\MEIA\\lista_usuario.txt"), lineas);
         } catch (IOException e) {
-            
+
         }
-        
+
         borrarLista(nombreLista, Operacion, false);
         generarIndex();
-        
+
     }
-    
+
     public void generarIndex() {
         String nombreListasString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
         Pattern nombreListaPattern = Pattern.compile(nombreListasString);
@@ -834,19 +835,19 @@ public class IFEstandar extends javax.swing.JFrame {
         Pattern usuarioPattern = Pattern.compile(usuarioString);
         String contactoString = "(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
         Pattern contacPattern = Pattern.compile(contactoString);
-        
+
         String estatusString = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatusPattern = Pattern.compile(estatusString);
-        
+
         String s = "";
-        
+
         int numeroRegistro = 0;
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         try {
             List<String> lineasIndiceList;
             lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
             Path p = Paths.get("C:\\MEIA\\indice.txt");
-            
+
             for (int i = 0; i < lineasIndiceList.size(); i++) {
                 Matcher m = usuarioPattern.matcher(lineasIndiceList.get(i));
                 Matcher m1 = contacPattern.matcher(lineasIndiceList.get(i));
@@ -854,16 +855,16 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m3 = estatusPattern.matcher(lineasIndiceList.get(i));
                 if (m.find() && m1.find() && m2.find() && m3.find()) {
                     if (m3.group(4).contains("1")) {
-                        
+
                         s += System.lineSeparator() + "Nombre Lista:" + m2.group(4) + "|" + "Usuario:" + cuenta + "|" + "Usuario asociado:" + m1.group(4) + "|" + "Fecha creacion:" + jfecha + "|" + "Estatus:" + 1 + "|" + "Registro:" + (numeroRegistro + 1) + "|" + "Posicion:1." + (numeroRegistro + 1);
-                        
+
                         numeroRegistro++;
                     }
                 }
             }
-            
+
             try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.TRUNCATE_EXISTING)) {
-                
+
                 writer.write(s);
                 writer.close();
                 lineasIndiceList = Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
@@ -875,7 +876,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     }
                 }
                 Files.write(Path.of("C:\\MEIA\\indice.txt"), lineasIndiceList);
-                
+
             } catch (IOException ioe) {
                 System.err.format("IOException: %s%n", ioe);
             }
@@ -883,19 +884,19 @@ public class IFEstandar extends javax.swing.JFrame {
             int menor = 0;
             String regisString = "(Registro)(\\:)(	| |)*(.+)(\\|)(P)";
             Pattern registroPattern = Pattern.compile(regisString);
-            
+
             String temporal;
-            
+
             for (int i = 0; i < lineasIndiceList.size(); i++) {
                 for (int j = 1; j < lineasIndiceList.size(); j++) {
-                    
+
                     if (lineasIndiceList.get(i).compareTo(lineasIndiceList.get(j)) > 0) {
                         temporal = lineasIndiceList.get(i);
                         lineasIndiceList.set(i, lineasIndiceList.get(j));
                         lineasIndiceList.set(j, temporal);
-                        
+
                     }
-                    
+
                 }
             }
             if (!lineasIndiceList.isEmpty()) {
@@ -904,12 +905,12 @@ public class IFEstandar extends javax.swing.JFrame {
                     menor = Integer.parseInt(m.group(4));
                 }
             }
-            
+
             int cantidadCuentas = 0;
-            
+
             try {
                 List<String> lineas2 = Files.readAllLines(Path.of("C:\\MEIA\\indice.txt"));
-                
+
                 for (int i = 0; i < lineas2.size(); i++) {
                     Matcher m2 = estatusPattern.matcher(lineas2.get(i));
                     if (m2.find()) {
@@ -930,7 +931,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 writer.write(s1);
                 writer.close();
             }
-            
+
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_indice.txt"));
             Iterator<String> i = lineas.iterator();
             while (i.hasNext()) {
@@ -940,12 +941,12 @@ public class IFEstandar extends javax.swing.JFrame {
                 }
             }
             Files.write(Path.of("C:\\MEIA\\desc_indice.txt"), lineas);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public boolean BuscarListaUsuario(String nombreLista, String usuarioAsociado) {
         String nombreListasString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario)(\\:)";
         Pattern nombreListaPattern = Pattern.compile(nombreListasString);
@@ -953,10 +954,10 @@ public class IFEstandar extends javax.swing.JFrame {
         Pattern usuarioPattern = Pattern.compile(usuarioString);
         String contactoString = "(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
         Pattern contacPattern = Pattern.compile(contactoString);
-        
+
         String estatusString = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatusPattern = Pattern.compile(estatusString);
-        
+
         try {
             List<String> lineas;
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
@@ -969,7 +970,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     if (m2.group(4).equals(nombreLista)) {
                         if (m.group(4).equals(cuenta)) {
                             if (m1.group(4).equals(usuarioAsociado)) {
-                                
+
                                 if (m3.group(4).contains("0")) {
                                     Object[] options = {"Reestablecer", "Cancelar"};
                                     int dialogResult = JOptionPane.showOptionDialog(null, "Puedes reestablecer el contacto " + usuarioAsociado + " en la lista " + nombreLista, "Reestablecer contacto en lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -982,7 +983,7 @@ public class IFEstandar extends javax.swing.JFrame {
                                 }
                                 return false;
                             }
-                            
+
                         }
                     }
                 }
@@ -991,7 +992,7 @@ public class IFEstandar extends javax.swing.JFrame {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
-        
+
     }
     private void jList2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MousePressed
         jList2.setSelectedIndex(jList2.locationToIndex(evt.getPoint()));
@@ -1003,7 +1004,7 @@ public class IFEstandar extends javax.swing.JFrame {
         JMenuItem agregarLista = new JMenuItem("Activar Lista");
         JMenuItem enviarMensaje = new JMenuItem("Enviar Mensaje");
         JMenu verContactos = new JMenu("Ver Contactos");
-        
+
         try {
             String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
             Pattern usuarioPattern = Pattern.compile(patronUsuario);
@@ -1011,11 +1012,11 @@ public class IFEstandar extends javax.swing.JFrame {
             Pattern rolE = Pattern.compile(patronEstatus);
             String contactoString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
             Pattern contacPattern = Pattern.compile(contactoString);
-            
+
             List<String> lineasDescList, lineasList;
             lineasList = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-            
+
             for (int i = 0; i < lineasDescList.size(); i++) {
                 Matcher m1 = contacPattern.matcher(lineasDescList.get(i));
                 Matcher m10 = rolE.matcher(lineasDescList.get(i));
@@ -1052,7 +1053,7 @@ public class IFEstandar extends javax.swing.JFrame {
             }
         } catch (IOException exception) {
         }
-        
+
         borrarLista.addActionListener((ActionEvent e) -> {
             Object[] options = {"Borrar", "Cancelar"};
             int dialogResult = JOptionPane.showOptionDialog(null, "¿Seguro que quiere borrar la lista " + jList2.getSelectedValue() + "?", "Borrar Lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -1062,7 +1063,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 mostrarListas();
             }
         });
-        
+
         obtenerUsuariosDeLista(verContactos);
         agregarLista.addActionListener((ActionEvent e) -> {
             Object[] options = {"Agregar", "Cancelar"};
@@ -1072,12 +1073,17 @@ public class IFEstandar extends javax.swing.JFrame {
                 borrarLista(jList2.getSelectedValue(), 1, true);
                 mostrarListas();
             }
-            
+
         });
-        
+
         enviarMensaje.addActionListener((ActionEvent e) -> {
+            Mensaje mjs = new Mensaje();
             Mensajeria Mensajer = new Mensajeria();
             Mensajeria.lblEnviadoPor.setText(cuenta);
+            mjs.setReceptor(jList2.getSelectedValue());
+            GestionarA.getInstance().ListaMensajes.add(mjs);
+            GestionarA.getInstance().Agregar();
+            GestionarA.getInstance().Agregartxt();
             Mensajer.setVisible(true);
 
             /*  JTextField nombreListaField = new JTextField(30);
@@ -1157,7 +1163,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     //MENSAJE
             }*/
         });
-        
+
         menu.show(jList2, evt.getPoint().x, evt.getPoint().y);
     }//GEN-LAST:event_jList2MousePressed
 
@@ -1165,37 +1171,45 @@ public class IFEstandar extends javax.swing.JFrame {
         // TODO add your handling code here:
         jList2.setToolTipText(getToolTipText(evt));
     }//GEN-LAST:event_jList2MouseMoved
-    
+
     private void BandejaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejaEntradaActionPerformed
-       
-        List BandEntr = GestionarA.getInstance().obtenerMensajesReceptor(cuenta);
-        
-        
-        
-        
-        
-        
+
+        ArrayList<Mensaje> entrada = GestionarA.getInstance().obtenerMensajesReceptor(cuenta);
+        DefaultListModel modeloLista = new DefaultListModel();
+        this.BandEntr.setModel(modeloLista);
+        modeloLista.clear();
+        for (Mensaje msj : entrada) {
+            modeloLista.addElement(msj);
+        }
+
+
     }//GEN-LAST:event_BandejaEntradaActionPerformed
 
     private void BandejasalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejasalidaActionPerformed
-        GestionarA.getInstance().obtenerMensajesEmisor(cuenta);
+        ArrayList<Mensaje> salida = GestionarA.getInstance().obtenerMensajesEmisor(cuenta);
+        DefaultListModel modeloLista = new DefaultListModel();
+        this.BanSali.setModel(modeloLista);
+        modeloLista.clear();
+        for (Mensaje msj : salida) {
+            modeloLista.addElement(msj);
+        }
     }//GEN-LAST:event_BandejasalidaActionPerformed
-    
+
     public String getToolTipText(MouseEvent me) {
         String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-        
+
         String descripcionString = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern descripcionPattern = Pattern.compile(descripcionString);
-        
+
         String listaString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(listaString);
-        
+
         String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
-        
+
         int index = jList2.locationToIndex(me.getPoint());
-        
+
         try {
             List<String> lineas, lineasDescList;
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
@@ -1207,7 +1221,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m3 = rolE.matcher(lineas.get(i));
                 if (m.find() && m1.find() && m2.find() && m3.find()) {
                     if (m.group(4).equals(cuenta)) {
-                        
+
                         if (m1.group(4).equals((String) jList2.getModel().getElementAt(index))) {
                             if (m3.group(4).contains("1")) {
                                 return m2.group(4);
@@ -1215,7 +1229,7 @@ public class IFEstandar extends javax.swing.JFrame {
                                 return "Lista deshabilitada";
                             }
                         }
-                        
+
                     }
                 }
             }
@@ -1239,22 +1253,22 @@ public class IFEstandar extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
-    
+
     public int cantidadUsuarios(String nombreLista) {
         String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern rolUsuario = Pattern.compile(patronUsuario);
-        
+
         String patronListas = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(patronListas);
-        
+
         String numeroUsuariosString = "(Numero Usuarios)(\\:)(	| |)*(.+)(\\|)(E)";
         Pattern numeroUPattern = Pattern.compile(numeroUsuariosString);
-        
+
         int cantidadUsuarios = 0;
-        
+
         try {
             List<String> lineas, lineasDescList;
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
@@ -1263,7 +1277,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m = rolUsuario.matcher(lineas.get(i));
                 Matcher m1 = listaPattern.matcher(lineas.get(i));
                 Matcher m2 = numeroUPattern.matcher(lineas.get(i));
-                
+
                 if (m.find() && m1.find() && m2.find()) {
                     if (m.group(4).equals(cuenta)) {
                         if (m1.group(4).equals(nombreLista)) {
@@ -1289,7 +1303,7 @@ public class IFEstandar extends javax.swing.JFrame {
         }
         return cantidadUsuarios;
     }
-    
+
     public int Max() {
         String patronDesc = "(Max reorganizacion)(\\:)(	| |)*(\\d*)";
         Pattern maxReorganizacion = Pattern.compile(patronDesc);
@@ -1305,21 +1319,21 @@ public class IFEstandar extends javax.swing.JFrame {
                 return 3;
             }
         } catch (IOException ex) {
-            
+
         }
         return 3;
     }
-    
+
     public void mostrarContactos() {
         String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
         Pattern rolUsuario = Pattern.compile(patronUsuario);
-        
+
         String patronContacto = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern rolContacto = Pattern.compile(patronContacto);
-        
+
         String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
-        
+
         listaTodosLosContactos.clear();
         listaContactosOcultar.clear();
         listaContactosMostrar.clear();
@@ -1327,7 +1341,7 @@ public class IFEstandar extends javax.swing.JFrame {
         try {
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
-            
+
             if (lineas.isEmpty() && lineasDescList.isEmpty()) {
                 //No tiene contactos, no existen contactos
             } else {
@@ -1352,7 +1366,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     if (m2.find() && m3.find() && estadMatcher.find()) {
                         if (m2.group(4).equals(cuenta)) {
                             if (estadMatcher.group(4).contains("1")) {
-                                
+
                                 listaContactosMostrar.addElement(m3.group(4));
                             } else {
                                 listaContactosOcultar.addElement(m3.group(4));
@@ -1368,9 +1382,9 @@ public class IFEstandar extends javax.swing.JFrame {
                 for (int i = 0; i < listaContactosOcultar.size(); i++) {
                     listaTodosLosContactos.addElement(listaContactosOcultar.getElementAt(i));
                 }
-                
+
                 jList1.setModel(listaTodosLosContactos);
-                
+
                 for (int i = 0; i < jList1.getModel().getSize(); i++) {
                     for (int j = 0; j < listaContactosOcultar.size(); j++) {
                         if (jList1.getModel().getElementAt(i).equals(listaContactosOcultar.getElementAt(j))) {
@@ -1400,19 +1414,19 @@ public class IFEstandar extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public void mostrarListas() {
         String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern rolUsuario = Pattern.compile(patronUsuario);
-        
+
         String patronListas = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(patronListas);
-        
+
         String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
-        
+
         listaTodasLasListas.clear();
         listaListasOcultar.clear();
         listaListasMostrar.clear();
@@ -1420,7 +1434,7 @@ public class IFEstandar extends javax.swing.JFrame {
         try {
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
             lineasDescList = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
-            
+
             if (lineas.isEmpty() && lineasDescList.isEmpty()) {
                 //No tiene contactos, no existen contactos
             } else {
@@ -1445,7 +1459,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     if (m2.find() && m3.find() && estadMatcher.find()) {
                         if (m2.group(4).equals(cuenta)) {
                             if (estadMatcher.group(4).contains("1")) {
-                                
+
                                 listaListasMostrar.addElement(m3.group(4));
                             } else {
                                 listaListasOcultar.addElement(m3.group(4));
@@ -1453,7 +1467,7 @@ public class IFEstandar extends javax.swing.JFrame {
                         }
                     }
                 }
-                
+
                 listaListasMostrar = new Globales().ordenarListaContactos(listaListasMostrar);
                 listaListasOcultar = new Globales().ordenarListaContactos(listaListasOcultar);
                 for (int i = 0; i < listaListasMostrar.size(); i++) {
@@ -1462,9 +1476,9 @@ public class IFEstandar extends javax.swing.JFrame {
                 for (int i = 0; i < listaListasOcultar.size(); i++) {
                     listaTodasLasListas.addElement(listaListasOcultar.getElementAt(i));
                 }
-                
+
                 jList2.setModel(listaTodasLasListas);
-                
+
                 for (int i = 0; i < jList2.getModel().getSize(); i++) {
                     for (int j = 0; j < listaListasOcultar.size(); j++) {
                         if (jList2.getModel().getElementAt(i).equals(listaListasOcultar.getElementAt(j))) {
@@ -1486,15 +1500,15 @@ public class IFEstandar extends javax.swing.JFrame {
                             }
                         }
                     }
-                    
+
                 }
-                
+
             }
         } catch (IOException ex) {
             Logger.getLogger(IFEstandar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public boolean buscarContacto(String contactoB) {
         String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
@@ -1533,7 +1547,7 @@ public class IFEstandar extends javax.swing.JFrame {
         }
         return true;
     }
-    
+
     public void borrarContactos(String contactoB, int operacion) {
         String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
@@ -1583,7 +1597,7 @@ public class IFEstandar extends javax.swing.JFrame {
                             }
                             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineasDescList);
                             agregarContacto(contactoB, operacion);
-                            
+
                         }
                     }
                 }
@@ -1593,20 +1607,20 @@ public class IFEstandar extends javax.swing.JFrame {
         }
     }
     int posicionReemplazar;
-    
+
     public void borrarUsuarioDeLista(String usuarioAsociadoString, String nombreLista, int operacion) {
         String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-        
+
         String usuarioAsociado = "(Usuario asociado)(\\:)(	| |)*(.+)(\\|)(D)";
         Pattern usuarioAsociadoPattern = Pattern.compile(usuarioAsociado);
-        
+
         String descripcionString = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern descripcionPattern = Pattern.compile(descripcionString);
-        
+
         String listaString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
         Pattern listaPattern = Pattern.compile(listaString);
-        
+
         if ("Todas".equals(nombreLista)) {
             try {
                 List<String> lineas;
@@ -1654,14 +1668,14 @@ public class IFEstandar extends javax.swing.JFrame {
             }
         }
     }
-    
+
     public void borrarLista(String nombreLista, int operacion, boolean actualizarValor) {
         String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuarioString);
-        
+
         String descripcionString = "(Descripcion)(\\:)(	| |)*(.+)(\\|)(N)";
         Pattern descripcionPattern = Pattern.compile(descripcionString);
-        
+
         String listaString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(listaString);
         int cantidadUsuariosActual = cantidadUsuarios(nombreLista);
@@ -1695,9 +1709,9 @@ public class IFEstandar extends javax.swing.JFrame {
                                 } else {
                                     agregarLista(nombreLista, m2.group(4), operacion, ActualizarCantidadCuentasAsociadas(nombreLista, false, cantidadUsuariosActual));
                                 }
-                                
+
                             }
-                            
+
                         }
                     }
                 }
@@ -1728,7 +1742,7 @@ public class IFEstandar extends javax.swing.JFrame {
                                 } else {
                                     agregarLista(nombreLista, m2.group(4), 1, ActualizarCantidadCuentasAsociadas(nombreLista, false, cantidadUsuariosActual));
                                 }
-                                
+
                             }
                         }
                     }
@@ -1738,17 +1752,17 @@ public class IFEstandar extends javax.swing.JFrame {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void agregarContacto(String contactoN, int operacion) {
         String patron = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
-        
+
         Path p = Paths.get("C:\\MEIA\\desc_contactos.txt");
-        
+
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         String s = System.lineSeparator() + "Usuario:" + cuenta + "|" + "Contacto:" + contactoN + "|"
                 + "Fecha de transaccion:" + jfecha + "|" + "Usuario transaccion:" + cuenta + "|" + "Estatus:" + operacion;
-        
+
         try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
             writer.write(s);
             writer.close();
@@ -1773,7 +1787,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     }
                 }
             }
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -1785,7 +1799,7 @@ public class IFEstandar extends javax.swing.JFrame {
 
             //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
             String nombresimbolicoString;
-            
+
             if (operacion == 1) {
                 nombresimbolicoString = "crear contacto";
             } else {
@@ -1796,10 +1810,10 @@ public class IFEstandar extends javax.swing.JFrame {
             lineas.set(0, "Nombre simbolico:" + nombresimbolicoString + "|" + "Fecha Creacion:" + jfecha + "|" + "Usuario Creacion:"
                     + cuenta + "|" + "# Registros:" + cantidadCuentas + "|" + "Registros Activos:" + cantidadActivos + "|"
                     + "Registros Inactivos:" + cantidadInactivos + "|" + "Max reorganizacion:" + maximaReorganizacion);
-            
+
             Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");
             Files.write(out, lineas);
-            
+
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
             Iterator<String> i = lineas.iterator();
             while (i.hasNext()) {
@@ -1809,15 +1823,15 @@ public class IFEstandar extends javax.swing.JFrame {
                 }
             }
             Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (cantidadCuentas >= maximaReorganizacion) {
             //JOptionPane.showMessageDialog(null,"Cantidad de cuentas:"+cantidadCuentas );
             try {
-                
+
                 String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
                 Pattern rolE = Pattern.compile(patronEstatus);
                 List<String> lineas;
@@ -1833,7 +1847,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 }
                 Path out = Paths.get("C:\\MEIA\\desc_contactos.txt");
                 Files.write(out, lineas);
-                
+
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_contactos.txt"));
                 Iterator<String> i = lineas.iterator();
                 while (i.hasNext()) {
@@ -1843,9 +1857,9 @@ public class IFEstandar extends javax.swing.JFrame {
                     }
                 }
                 Files.write(Path.of("C:\\MEIA\\desc_contactos.txt"), lineas);
-                
+
                 p = Paths.get("C:\\MEIA\\contactos.txt");
-                
+
                 try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
                     for (String str : cuentasList) {
                         writer.write(System.lineSeparator() + str);
@@ -1860,14 +1874,14 @@ public class IFEstandar extends javax.swing.JFrame {
                     }
                 }
                 Files.write(Path.of("C:\\MEIA\\contactos.txt"), lineas);
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         mostrarContactos();
     }
-    
+
     public boolean buscarEnLista(String nombreLista) {
         String nombreListaString = "(Nombre Lista)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern listaPattern = Pattern.compile(nombreListaString);
@@ -1906,17 +1920,17 @@ public class IFEstandar extends javax.swing.JFrame {
         }
         return true;
     }
-    
+
     public boolean estadoContacto(String contacto) {
         String usuarioContactos = "(Usuario)(\\:)(	| |)*(.+)(\\|)(C)";
         Pattern usuarioContactosPattern = Pattern.compile(usuarioContactos);
-        
+
         String contactoString = "(Contacto)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern contactosPattern = Pattern.compile(contactoString);
-        
+
         String estatusContacto = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern estatusContactoPattern = Pattern.compile(estatusContacto);
-        
+
         try {
             List<String> lineas, lineasDescList;
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\contactos.txt"));
@@ -1925,7 +1939,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m = usuarioContactosPattern.matcher(lineas.get(i));
                 Matcher m1 = contactosPattern.matcher(lineas.get(i));
                 Matcher m2 = estatusContactoPattern.matcher(lineas.get(i));
-                
+
                 if (m.find() && m1.find() && m2.find()) {
                     if (m.group(4).equals(cuenta)) {
                         if (m1.group(4).equals(contacto)) {
@@ -1942,7 +1956,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m = usuarioContactosPattern.matcher(lineasDescList.get(i));
                 Matcher m1 = contactosPattern.matcher(lineasDescList.get(i));
                 Matcher m2 = estatusContactoPattern.matcher(lineasDescList.get(i));
-                
+
                 if (m.find() && m1.find() && m2.find()) {
                     if (m.group(4).equals(cuenta)) {
                         if (m1.group(4).equals(contacto)) {
@@ -1958,10 +1972,10 @@ public class IFEstandar extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return false;
     }
-    
+
     public void obtenerLista(JMenu menu) {
         String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
@@ -1969,7 +1983,7 @@ public class IFEstandar extends javax.swing.JFrame {
         Pattern listaPattern = Pattern.compile(nombreListaString);
         String usuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
         Pattern usuarioPattern = Pattern.compile(usuario);
-        
+
         try {
             List<String> lineas, lineasDescList;
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista.txt"));
@@ -1978,7 +1992,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m = rolE.matcher(lineas.get(i));
                 Matcher m1 = usuarioPattern.matcher(lineas.get(i));
                 Matcher m2 = listaPattern.matcher(lineas.get(i));
-                
+
                 if (m.find() && m1.find() && m2.find()) {
                     if (m1.group(4).equals(cuenta)) {
                         if (m.group(4).contains("1")) {
@@ -1991,7 +2005,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m = rolE.matcher(lineasDescList.get(i));
                 Matcher m1 = usuarioPattern.matcher(lineasDescList.get(i));
                 Matcher m2 = listaPattern.matcher(lineasDescList.get(i));
-                
+
                 if (m.find() && m1.find() && m2.find()) {
                     if (m1.group(4).equals(cuenta)) {
                         menu.add(new JMenuItem(new AccionesEnLasListas(m2.group(4))));
@@ -2001,9 +2015,9 @@ public class IFEstandar extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public void obtenerUsuariosDeLista(JMenu menu) {
         String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
@@ -2013,7 +2027,7 @@ public class IFEstandar extends javax.swing.JFrame {
         Pattern usuarioAsociadoPattern = Pattern.compile(usuarioAsociado);
         String usuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(U)";
         Pattern usuarioPattern = Pattern.compile(usuario);
-        
+
         try {
             List<String> lineas;
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\lista_usuario.txt"));
@@ -2022,7 +2036,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 Matcher m1 = usuarioAsociadoPattern.matcher(lineas.get(i));
                 Matcher m2 = listaPattern.matcher(lineas.get(i));
                 Matcher m3 = usuarioPattern.matcher(lineas.get(i));
-                
+
                 if (m.find() && m1.find() && m2.find() && m3.find()) {
                     if (m3.group(4).equals(cuenta)) {
                         if (m2.group(4).equals(jList2.getSelectedValue())) {
@@ -2038,19 +2052,19 @@ public class IFEstandar extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public void agregarLista(String nombreListaString, String descripcionString, int operacion, int numeroUsuarios) {
         String patron = "(Estatus)(\\:)(	| |)*(\\d)";
         Pattern estatus = Pattern.compile(patron);
-        
+
         Path p = Paths.get("C:\\MEIA\\desc_lista.txt");
-        
+
         String jfecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         String s = System.lineSeparator() + "Nombre Lista:" + nombreListaString + "|" + "Usuario:" + cuenta + "|"
                 + "Fecha Creacion:" + jfecha + "|" + "Descripcion:" + descripcionString + "|" + "Numero Usuarios:" + numeroUsuarios + "|" + "Estatus:" + operacion;
-        
+
         try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
             writer.write(s);
             writer.close();
@@ -2075,7 +2089,7 @@ public class IFEstandar extends javax.swing.JFrame {
                     }
                 }
             }
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -2087,7 +2101,7 @@ public class IFEstandar extends javax.swing.JFrame {
 
             //HAY ARCHIVOS,VERIFICAR SI EXISTE UN ADMIN
             String nombresimbolicoString;
-            
+
             if (operacion == 1) {
                 nombresimbolicoString = "Crear lista";
             } else {
@@ -2098,10 +2112,10 @@ public class IFEstandar extends javax.swing.JFrame {
             lineas.set(0, "Nombre simbolico:" + nombresimbolicoString + "|" + "Fecha Creacion:" + jfecha + "|" + "Usuario Creacion:"
                     + cuenta + "|" + "# Registros:" + cantidadCuentas + "|" + "Registros Activos:" + cantidadActivos + "|"
                     + "Registros Inactivos:" + cantidadInactivos + "|" + "Max reorganizacion:" + maximaReorganizacion);
-            
+
             Path out = Paths.get("C:\\MEIA\\desc_lista.txt");
             Files.write(out, lineas);
-            
+
             lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
             Iterator<String> i = lineas.iterator();
             while (i.hasNext()) {
@@ -2111,11 +2125,11 @@ public class IFEstandar extends javax.swing.JFrame {
                 }
             }
             Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (cantidadCuentas >= maximaReorganizacion) {
             //JOptionPane.showMessageDialog(null,"Cantidad de cuentas:"+cantidadCuentas );
             try {
@@ -2134,7 +2148,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 }
                 Path out = Paths.get("C:\\MEIA\\desc_lista.txt");
                 Files.write(out, lineas);
-                
+
                 lineas = Files.readAllLines(Path.of("C:\\MEIA\\desc_lista.txt"));
                 Iterator<String> i = lineas.iterator();
                 while (i.hasNext()) {
@@ -2143,10 +2157,10 @@ public class IFEstandar extends javax.swing.JFrame {
                         i.remove();
                     }
                 }
-                
+
                 Files.write(Path.of("C:\\MEIA\\desc_lista.txt"), lineas);
                 p = Paths.get("C:\\MEIA\\lista.txt");
-                
+
                 try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
                     for (String str : cuentasList) {
                         writer.write(System.lineSeparator() + str);
@@ -2161,25 +2175,25 @@ public class IFEstandar extends javax.swing.JFrame {
                     }
                 }
                 Files.write(Path.of("C:\\MEIA\\lista.txt"), lineas);
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         mostrarListas();
     }
-    
+
     private class AccionesEnLasListas extends AbstractAction {
-        
+
         public AccionesEnLasListas(String name) {
             super(name);
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             //System.out.println("Menu item: " + e.getActionCommand());
             Object[] options = {"Agregar", "Cancelar"};
-            
+
             int dialogResult = JOptionPane.showOptionDialog(null, "¿Agregar " + jList1.getSelectedValue() + " a la lista " + e.getActionCommand() + "?", "Agregar contacto a lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
             if (dialogResult == 0) {
                 //Si
@@ -2187,28 +2201,28 @@ public class IFEstandar extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Agregado");
                     manejarPos = 0;
                     AgregarIndice(e.getActionCommand(), jList1.getSelectedValue(), 1);
-                    
+
                 }
 
                 //codigo 
             } else {
-                
+
             }
-            
+
         }
     }
-    
+
     private class ContactosEnLasListas extends AbstractAction {
-        
+
         public ContactosEnLasListas(String name) {
             super(name);
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             //System.out.println("Menu item: " + e.getActionCommand());
             Object[] options = {"Borrar", "Cancelar"};
-            
+
             int dialogResult = JOptionPane.showOptionDialog(null, "¿Borrar " + e.getActionCommand() + " de la lista " + jList2.getSelectedValue() + "?", "Borrar contacto de lista", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
             if (dialogResult == 0) {
                 //Si
@@ -2217,9 +2231,9 @@ public class IFEstandar extends javax.swing.JFrame {
 
                 //codigo 
             } else {
-                
+
             }
-            
+
         }
     }
 
@@ -2253,7 +2267,7 @@ public class IFEstandar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new IFEstandar(IFingreso.cuenta).setVisible(true);
             }
         });

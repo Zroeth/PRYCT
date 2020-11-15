@@ -257,8 +257,8 @@ public class Mensajeria extends javax.swing.JFrame {
     return formateador.format(ahora);
 }
     private void EnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnviarActionPerformed
-      
        VistaMensaje vistaM = new VistaMensaje();
+
        Mensaje mjs = new Mensaje();
        String asunrecibido = AsuntoT.getText();
        VistaMensaje.AsuntoRecibido.setText(asunrecibido);
@@ -275,9 +275,10 @@ public class Mensajeria extends javax.swing.JFrame {
        mjs.setEmisor(emi);
        Icon img=FotoE.getIcon();
        VistaMensaje.FotoA.setIcon(img);
-       mjs.getFecha().getTime();
        GestionarA.getInstance().ListaMensajes.add(mjs);
-       GestionarA.getInstance().Agregar();  
+       GestionarA.getInstance().Agregar(); 
+       GestionarA.getInstance().Agregartxt();
+              vistaM.setVisible(true);
        dispose();
     }//GEN-LAST:event_EnviarActionPerformed
 
