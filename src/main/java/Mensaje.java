@@ -167,7 +167,7 @@ public class Mensaje implements Serializable{
     private int estatus;
     
     public String toString(){
-    return "Registro: "+no_registro+"|"+"Izq: "+izq+"|"+"Der: "+der+"|"+"Emisor: "+emisor+"|"+"Receptor: "+receptor+"|"+
+    return System.lineSeparator()+"Registro: "+no_registro+"|"+"Izq: "+izq+"|"+"Der: "+der+"|"+"Emisor: "+emisor+"|"+"Receptor: "+receptor+"|"+
             "Fech_transac: "+fecha+"|"+"Asunto:"+asunto+"|"+"Mensaje: "+Mensaje+"|"+"Adjunto: "+adjunto+"|"+"Estatus: "+estatus+"|";
     }
 

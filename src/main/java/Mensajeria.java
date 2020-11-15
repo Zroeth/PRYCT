@@ -278,7 +278,7 @@ public class Mensajeria extends javax.swing.JFrame {
        GestionarA.getInstance().ListaMensajes.add(mjs);
        GestionarA.getInstance().Agregar(); 
        GestionarA.getInstance().Agregartxt();
-              vistaM.setVisible(true);
+              
        dispose();
     }//GEN-LAST:event_EnviarActionPerformed
 
@@ -327,8 +327,8 @@ public class Mensajeria extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Adjuntar;
     public static javax.swing.JTextPane ArchivoAdjunto;
-    private javax.swing.JTextArea AsuntoT;
-    private javax.swing.JTextArea CuerpoMsj;
+    public static javax.swing.JTextArea AsuntoT;
+    public static javax.swing.JTextArea CuerpoMsj;
     private javax.swing.JLabel EnviadoPor;
     private javax.swing.JButton Enviar;
     private javax.swing.JLabel EscribirCorreo;

@@ -271,6 +271,11 @@ public class IFEstandar extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        BanSali.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BanSaliMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(BanSali);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -630,6 +635,8 @@ public class IFEstandar extends javax.swing.JFrame {
             Mensaje mjs = new Mensaje();
             Mensajeria Mensajer = new Mensajeria();
             Mensajeria.lblEnviadoPor.setText(cuenta);
+                    
+           
             mjs.setReceptor(jList1.getSelectedValue());
             GestionarA.getInstance().ListaMensajes.add(mjs);
             GestionarA.getInstance().Agregar();
@@ -1194,6 +1201,28 @@ public class IFEstandar extends javax.swing.JFrame {
             modeloLista.addElement(msj);
         }
     }//GEN-LAST:event_BandejasalidaActionPerformed
+
+    private void BanSaliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BanSaliMouseClicked
+        // TODO add your handling code here:
+        VistaMensaje vistaM = new VistaMensaje();
+        Mensaje mjs = new Mensaje();
+       String asunrecibido = mjs.getAsunto();
+       VistaMensaje.AsuntoRecibido.setText(asunrecibido);
+      
+       String Msjrecibido = mjs.getMensaje();
+       VistaMensaje.MensajeRecibido.setText(Msjrecibido);
+       
+       String txt=mjs.getAdjunto();    
+       VistaMensaje.AdjuntoRecibido.setText(txt);
+       
+      
+       String emi=mjs.getEmisor();
+       VistaMensaje.Emisor.setText(emi);
+     
+     
+        vistaM.setVisible(true);
+        
+    }//GEN-LAST:event_BanSaliMouseClicked
 
     public String getToolTipText(MouseEvent me) {
         String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";
