@@ -650,109 +650,7 @@ public class IFEstandar extends javax.swing.JFrame {
             Mensajeria.lblEnviadoPor.setText(cuenta);
 
             Mensajer.setVisible(true);
-            /*   String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
-            String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
-            Pattern rol = Pattern.compile(patronUsuario);
-            Pattern rolE = Pattern.compile(patronEstatus);
-            try {
-                List<String> lineas;
-                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
-                for (int i = 0; i < lineas.size(); i++) {
-                    Matcher m = rol.matcher(lineas.get(i));
-                    Matcher m10 = rolE.matcher(lineas.get(i));
-                    if (m.find()) {
-                        if (m.group(4).equals(jList1.getSelectedValue())) {
-                            //Usuario  existe
-                            if (m10.find()) {
-                                if (m10.group(4).contains("0")) {
-                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado, no puedes agregar de nuevo a este contacto");
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (IOException exception) {
-            }
-             */
 
- /*  JTextField nombreListaField = new JTextField(30);
-            JTextField descripcionListaField = new JTextField(30);
-            descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 200));
-            
-            JLabel boton=new JLabel();
-            ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnMensaje.gif");
-        
-            boton.setIcon(imIc3);
-            boton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Asunto:"));
-            myPanel.add(nombreListaField);
-            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
-            myPanel.add(new JLabel("Mensaje:"));
-            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
-            myPanel.add(descripcionListaField);
-            myPanel.setLayout( new GridBagLayout() );
-            myPanel.add(boton,new GridBagConstraints());*/
-
- /* boton.addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseClicked(MouseEvent  e){
-                   JFileChooser escogerImagen = new JFileChooser();
-                   FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
-                   escogerImagen.setFileFilter(filtro);
-                   int seleccionado=escogerImagen.showOpenDialog(null);
-                   if(seleccionado==JFileChooser.APPROVE_OPTION)  
-                   {
-                       File archivo=escogerImagen.getSelectedFile();
-                       String obtener = archivo.getAbsolutePath();
-                       ImageIcon imIc= new ImageIcon(obtener);
-                       
-                       Image ajustarImg = imIc.getImage();
-                       Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
-                       Foto.setIcon(new ImageIcon(ajustarTamaño));
-                       JOptionPane.showMessageDialog(null, "Algo");
-                  /*     try
-                       {
-                           ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
-                           pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
-                       }
-                       catch (IOException ex)
-                       {
-                           Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-                       }
-                       
-                   }
-                }
-            });
-            
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Enviar mensaje", JOptionPane.OK_CANCEL_OPTION);
-            
-            if (result == JOptionPane.OK_OPTION)
-            {
-                if(nombreListaField.getText().length()<3||nombreListaField.getText().length()>30)
-                {
-                    JOptionPane.showMessageDialog(null, "El asunto del mensaje debe ser mayor a 3 caracteres y menor a 30");
-                    return;
-                }
-                if(nombreListaField.getText().contains("|"))
-                {
-                    JOptionPane.showMessageDialog(null, "El asunto del mensaje no puede contener | ");
-                    return;
-                }
-                if(descripcionListaField.getText().length()<1)
-                {
-                    JOptionPane.showMessageDialog(null, "El mensaje no puede estar vacio");
-                    return;
-                }
-                if(descripcionListaField.getText().contains("|"))
-                {
-                    JOptionPane.showMessageDialog(null, "El mensaje no puede contener |");
-                } 
-                
-                
-                    //MENSAJE
-            }*/
         });
 
         menu.show(jList1, evt.getPoint().x, evt.getPoint().y);
@@ -1036,6 +934,7 @@ public class IFEstandar extends javax.swing.JFrame {
 
     }
     private void jList2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MousePressed
+        ArrayList<String> contactosEnLaLista = new ArrayList<>();
         jList2.setSelectedIndex(jList2.locationToIndex(evt.getPoint()));
         JPopupMenu menu = new JPopupMenu();
         jList2.setSelectedIndex(jList2.getSelectedIndex());
@@ -1085,6 +984,8 @@ public class IFEstandar extends javax.swing.JFrame {
                         if (m1.group(4).equals(jList2.getSelectedValue())) {
                             if (m10.group(4).contains("1")) {
                                 menu.add(borrarLista);
+                                menu.add(enviarMensaje);
+                                menu.add(verContactos);
                             } else {
                                 menu.add(agregarLista);
                             }
@@ -1119,89 +1020,16 @@ public class IFEstandar extends javax.swing.JFrame {
 
         enviarMensaje.addActionListener((ActionEvent e) -> {
             Mensajeria Mensajer = new Mensajeria();
+
             String send = jList2.getSelectedValue();
             Mensajeria.Para.setText(send);
 
             Mensajeria.lblEnviadoPor.setText(cuenta);
-
+            Mensajer.setEsLista("S");
+            Mensajer.setContactosLista(GestionarA.getInstance().contactosLista);
             Mensajer.setVisible(true);
 
-            /*  JTextField nombreListaField = new JTextField(30);
-            JTextField descripcionListaField = new JTextField(30);
-            descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 200));
             
-            JLabel boton=new JLabel();
-            ImageIcon imIc3= new ImageIcon("src/main/java/Imagenes/btnMensaje.gif");
-        
-            boton.setIcon(imIc3);
-            boton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-            JPanel myPanel = new JPanel();
-            myPanel.add(new JLabel("Asunto:"));
-            myPanel.add(nombreListaField);
-            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
-            myPanel.add(new JLabel("Mensaje:"));
-            myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
-            myPanel.add(descripcionListaField);
-            myPanel.setLayout( new GridBagLayout() );
-            myPanel.add(boton,new GridBagConstraints());*/
- /* boton.addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseClicked(MouseEvent  e){
-                   JFileChooser escogerImagen = new JFileChooser();
-                   FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos","jpg","png","jpeg");
-                   escogerImagen.setFileFilter(filtro);
-                   int seleccionado=escogerImagen.showOpenDialog(null);
-                   if(seleccionado==JFileChooser.APPROVE_OPTION)  
-                   {
-                       File archivo=escogerImagen.getSelectedFile();
-                       String obtener = archivo.getAbsolutePath();
-                       ImageIcon imIc= new ImageIcon(obtener);
-                       
-                       Image ajustarImg = imIc.getImage();
-                       Image ajustarTamaño= ajustarImg.getScaledInstance(Foto.getWidth(),Foto.getHeight(), Image.SCALE_SMOOTH);
-                       Foto.setIcon(new ImageIcon(ajustarTamaño));
-                       JOptionPane.showMessageDialog(null, "Algo");
-                  /*     try
-                       {
-                           ImageIO.write(ImageIO.read(archivo),(getFileExtension(archivo)),new File("C:\\MEIA\\Fotografias\\" + txtUsuario.getText()+"."+getFileExtension(archivo)));
-                           pathFotografia= "C:\\MEIA\\Fotografias\\"+ txtUsuario.getText()+"."+getFileExtension(archivo);
-                       }
-                       catch (IOException ex)
-                       {
-                           Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-                       }
-                       
-                   }
-                }
-            });
-            
-            int result = JOptionPane.showConfirmDialog(null, myPanel,"Enviar mensaje", JOptionPane.OK_CANCEL_OPTION);
-            
-            if (result == JOptionPane.OK_OPTION)
-            {
-                if(nombreListaField.getText().length()<3||nombreListaField.getText().length()>30)
-                {
-                    JOptionPane.showMessageDialog(null, "El asunto del mensaje debe ser mayor a 3 caracteres y menor a 30");
-                    return;
-                }
-                if(nombreListaField.getText().contains("|"))
-                {
-                    JOptionPane.showMessageDialog(null, "El asunto del mensaje no puede contener | ");
-                    return;
-                }
-                if(descripcionListaField.getText().length()<1)
-                {
-                    JOptionPane.showMessageDialog(null, "El mensaje no puede estar vacio");
-                    return;
-                }
-                if(descripcionListaField.getText().contains("|"))
-                {
-                    JOptionPane.showMessageDialog(null, "El mensaje no puede contener |");
-                } 
-                
-                
-                    //MENSAJE
-            }*/
         });
 
         menu.show(jList2, evt.getPoint().x, evt.getPoint().y);
@@ -1969,8 +1797,7 @@ public class IFEstandar extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(IFingreso.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        mostrarContactos();
+        }     mostrarContactos();
     }
 
     public boolean buscarEnLista(String nombreLista) {
@@ -2110,6 +1937,7 @@ public class IFEstandar extends javax.swing.JFrame {
     }
 
     public void obtenerUsuariosDeLista(JMenu menu) {
+        ArrayList<String> ListaContactos = new ArrayList<>();
         String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
         Pattern rolE = Pattern.compile(patronEstatus);
         String nombreListaString = "(Nombre lista)(\\:)(	| |)*(.+)(\\|)(Usuario:)";
@@ -2134,6 +1962,7 @@ public class IFEstandar extends javax.swing.JFrame {
                             if (m.group(4).contains("1")) {
                                 if (estadoContacto(m1.group(4))) {
                                     menu.add(new JMenuItem(new ContactosEnLasListas(m1.group(4))));
+                                    ListaContactos.add(m1.group(4));
                                 }
                             }
                         }
@@ -2143,7 +1972,7 @@ public class IFEstandar extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        GestionarA.getInstance().contactosLista = ListaContactos;
     }
 
     public void agregarLista(String nombreListaString, String descripcionString, int operacion, int numeroUsuarios) {

@@ -37,6 +37,8 @@ public class GestionarA {
 
     public List<Mensaje> ListaMensajes;
     public String cuenta;
+    public ArrayList<String> contactosLista;
+    
     private static GestionarA instance = null;
 
     public static GestionarA getInstance() {

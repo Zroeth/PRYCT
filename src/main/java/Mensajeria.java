@@ -33,6 +33,17 @@ import javax.swing.JOptionPane;
  */
 public class Mensajeria extends javax.swing.JFrame {
 
+    private String esLista = "N";
+    public ArrayList<String> contactosLista = new ArrayList<>();
+
+    public void setEsLista(String valor) {
+        esLista = valor;
+    }
+
+    public void setContactosLista(ArrayList<String> contactos) {
+        contactosLista = contactos;
+    }
+
     /**
      * Creates new form Mensajeria
      */
@@ -275,36 +286,71 @@ public class Mensajeria extends javax.swing.JFrame {
         int status = 1;
         mjs.setEstatus(status);
 
-        int numeroRegistro = GestionarA.getInstance().ListaMensajes.size() + 1;
+        if (esLista == "N") {
+            int numeroRegistro = GestionarA.getInstance().ListaMensajes.size() + 1;
 
-        mjs.setNo_registro(numeroRegistro);
-        int Izq = numeroRegistro - 1;
-        mjs.setIzq(Izq);
-        int Der = numeroRegistro + 1;
-        mjs.setDer(Der);
-        VistaMensaje vistaM = new VistaMensaje();
-        String para = Para.getText();
-        mjs.setReceptor(para);
-        String asunrecibido = AsuntoT.getText();
-        VistaMensaje.AsuntoRecibido.setText(asunrecibido);
-        mjs.setAsunto(asunrecibido);
-        String Msjrecibido = CuerpoMsj.getText();
-        VistaMensaje.MensajeRecibido.setText(Msjrecibido);
-        mjs.setMensaje(Msjrecibido);
-        String txt = mostrarAd.getText();
-        String p = ArchivoAdjunto.getText();
-        VistaMensaje.AdjuntoRecibido.setText(txt);
-        mjs.setAdjunto(p);
-        String emi = lblEnviadoPor.getText();
-        VistaMensaje.Emisor.setText(emi);
-        mjs.setEmisor(emi);
-        Icon img = FotoE.getIcon();
-        VistaMensaje.FotoA.setIcon(img);
-        GestionarA.getInstance().ListaMensajes.add(mjs);
-        GestionarA.getInstance().Agregar(mjs);
-        GestionarA.getInstance().Agregartxt(mjs);
+            mjs.setNo_registro(numeroRegistro);
+            int Izq = numeroRegistro - 1;
+            mjs.setIzq(Izq);
+            int Der = numeroRegistro + 1;
+            mjs.setDer(Der);
+            VistaMensaje vistaM = new VistaMensaje();
+            String para = Para.getText();
+            mjs.setReceptor(para);
+            String asunrecibido = AsuntoT.getText();
+            VistaMensaje.AsuntoRecibido.setText(asunrecibido);
+            mjs.setAsunto(asunrecibido);
+            String Msjrecibido = CuerpoMsj.getText();
+            VistaMensaje.MensajeRecibido.setText(Msjrecibido);
+            mjs.setMensaje(Msjrecibido);
+            String txt = mostrarAd.getText();
+            String p = ArchivoAdjunto.getText();
+            VistaMensaje.AdjuntoRecibido.setText(txt);
+            mjs.setAdjunto(p);
+            String emi = lblEnviadoPor.getText();
+            VistaMensaje.Emisor.setText(emi);
+            mjs.setEmisor(emi);
+            Icon img = FotoE.getIcon();
+            VistaMensaje.FotoA.setIcon(img);
+            GestionarA.getInstance().ListaMensajes.add(mjs);
+            GestionarA.getInstance().Agregar(mjs);
+            GestionarA.getInstance().Agregartxt(mjs);
 
-        numeroRegistro++;
+            numeroRegistro++;
+        } else {
+            VistaMensaje vistaM = new VistaMensaje();
+            String para = Para.getText();
+            String asunrecibido = AsuntoT.getText();
+            VistaMensaje.AsuntoRecibido.setText(asunrecibido);
+            String Msjrecibido = CuerpoMsj.getText();
+            VistaMensaje.MensajeRecibido.setText(Msjrecibido);
+            String txt = mostrarAd.getText();
+            String p = ArchivoAdjunto.getText();
+            VistaMensaje.AdjuntoRecibido.setText(txt);
+            String emi = lblEnviadoPor.getText();
+            VistaMensaje.Emisor.setText(emi);
+            Icon img = FotoE.getIcon();
+            VistaMensaje.FotoA.setIcon(img);
+            for (String contacto : contactosLista) {
+                int numeroRegistro = GestionarA.getInstance().ListaMensajes.size() + 1;
+
+                mjs.setNo_registro(numeroRegistro);
+                int Izq = numeroRegistro - 1;
+                mjs.setIzq(Izq);
+                int Der = numeroRegistro + 1;
+                mjs.setDer(Der);
+                mjs.setReceptor(para);
+                mjs.setAsunto(asunrecibido);
+                mjs.setMensaje(Msjrecibido);
+                mjs.setAdjunto(p);
+                mjs.setEmisor(contacto);
+                GestionarA.getInstance().ListaMensajes.add(mjs);
+                GestionarA.getInstance().Agregar(mjs);
+                GestionarA.getInstance().Agregartxt(mjs);
+
+                numeroRegistro++;
+            }
+        }
         dispose();
 
     }
