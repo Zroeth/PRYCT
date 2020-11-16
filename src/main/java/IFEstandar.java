@@ -630,19 +630,43 @@ public class IFEstandar extends javax.swing.JFrame {
             }
 
         });
-        String usuarioA=jList1.getSelectedValue();
+
         enviarMensaje.addActionListener((ActionEvent e) -> {
-            Mensaje mjs = new Mensaje();
             Mensajeria Mensajer = new Mensajeria();
+
+            String send = jList1.getSelectedValue();
+            Mensajeria.Para.setText(send);
+
             Mensajeria.lblEnviadoPor.setText(cuenta);
-                    
-           
-            mjs.setReceptor(usuarioA);
-            GestionarA.getInstance().ListaMensajes.add(mjs);
-            GestionarA.getInstance().Agregar();
-            GestionarA.getInstance().Agregartxt();
+
             Mensajer.setVisible(true);
-            /*  JTextField nombreListaField = new JTextField(30);
+            /*   String patronUsuario = "(Usuario)(\\:)(	| |)*(.+)(\\|)(N)";
+            String patronEstatus = "(Estatus)(\\:)(	| |)*(.+)";
+            Pattern rol = Pattern.compile(patronUsuario);
+            Pattern rolE = Pattern.compile(patronEstatus);
+            try {
+                List<String> lineas;
+                lineas = Files.readAllLines(Path.of("C:\\MEIA\\usuario.txt"));
+                for (int i = 0; i < lineas.size(); i++) {
+                    Matcher m = rol.matcher(lineas.get(i));
+                    Matcher m10 = rolE.matcher(lineas.get(i));
+                    if (m.find()) {
+                        if (m.group(4).equals(jList1.getSelectedValue())) {
+                            //Usuario  existe
+                            if (m10.find()) {
+                                if (m10.group(4).contains("0")) {
+                                    JOptionPane.showMessageDialog(null, "Usuario deshabilitado, no puedes agregar de nuevo a este contacto");
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (IOException exception) {
+            }
+             */
+
+ /*  JTextField nombreListaField = new JTextField(30);
             JTextField descripcionListaField = new JTextField(30);
             descripcionListaField.setPreferredSize(new java.awt.Dimension(30, 200));
             
@@ -1084,13 +1108,12 @@ public class IFEstandar extends javax.swing.JFrame {
         });
 
         enviarMensaje.addActionListener((ActionEvent e) -> {
-            Mensaje mjs = new Mensaje();
             Mensajeria Mensajer = new Mensajeria();
+            String send = jList2.getSelectedValue();
+            Mensajeria.Para.setText(send);
+
             Mensajeria.lblEnviadoPor.setText(cuenta);
-            mjs.setReceptor(jList2.getSelectedValue());
-            GestionarA.getInstance().ListaMensajes.add(mjs);
-            GestionarA.getInstance().Agregar();
-            GestionarA.getInstance().Agregartxt();
+
             Mensajer.setVisible(true);
 
             /*  JTextField nombreListaField = new JTextField(30);
@@ -1193,10 +1216,16 @@ public class IFEstandar extends javax.swing.JFrame {
     }//GEN-LAST:event_BandejaEntradaActionPerformed
 
     private void BandejasalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejasalidaActionPerformed
+
         ArrayList<Mensaje> salida = GestionarA.getInstance().obtenerMensajesEmisor(cuenta);
+        ArrayList<String> listado = GestionarA.getInstance().leerTxt(cuenta);
         DefaultListModel modeloLista = new DefaultListModel();
+        DefaultListModel modeloListado = new DefaultListModel();
+        this.BanSali.setModel(modeloListado);
+        modeloListado.addElement(listado);
+        
         this.BanSali.setModel(modeloLista);
-        modeloLista.clear();
+        
         for (Mensaje msj : salida) {
             modeloLista.addElement(msj);
         }
@@ -1204,24 +1233,9 @@ public class IFEstandar extends javax.swing.JFrame {
 
     private void BanSaliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BanSaliMouseClicked
         // TODO add your handling code here:
-        VistaMensaje vistaM = new VistaMensaje();
-        Mensaje mjs = new Mensaje();
-       String asunrecibido = mjs.getAsunto();
-       VistaMensaje.AsuntoRecibido.setText(asunrecibido);
+      Mensajeria mjs=new Mensajeria();
       
-       String Msjrecibido = mjs.getMensaje();
-       VistaMensaje.MensajeRecibido.setText(Msjrecibido);
-       
-       String txt=mjs.getAdjunto();    
-       VistaMensaje.AdjuntoRecibido.setText(txt);
-       
-      
-       String emi=mjs.getEmisor();
-       VistaMensaje.Emisor.setText(emi);
-     
-     
-        vistaM.setVisible(true);
-        
+
     }//GEN-LAST:event_BanSaliMouseClicked
 
     public String getToolTipText(MouseEvent me) {

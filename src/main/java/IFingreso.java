@@ -73,9 +73,11 @@ public class IFingreso extends javax.swing.JFrame {
         File crearIndice = new File("C:\\MEIA\\indice.txt");
         File crearDescIndice = new File("C:\\MEIA\\desc_indice.txt");
         File crearArbol = new File("C:\\MEIA\\arbol.dat");
+         File crearArbolB = new File("C:\\MEIA\\arbolB.txt");
+        
 
         try {
-
+            crearArbolB.createNewFile();
             crearArbol.createNewFile();
             crearBitacora.createNewFile();
             crearUsuario.createNewFile();

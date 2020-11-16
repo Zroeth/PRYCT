@@ -1,7 +1,4 @@
 
-
-
-
 import java.util.Date;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -72,6 +69,7 @@ public class Mensajeria extends javax.swing.JFrame {
         ArchivoAdjunto = new javax.swing.JTextPane();
         Vista = new javax.swing.JLabel();
         Fecha = new javax.swing.JLabel();
+        Para = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setForeground(java.awt.Color.white);
@@ -147,6 +145,9 @@ public class Mensajeria extends javax.swing.JFrame {
 
         Fecha.setText("Fecha: ");
 
+        Para.setFont(new java.awt.Font("Cooper Black", 0, 12)); // NOI18N
+        Para.setText("Para");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -185,7 +186,9 @@ public class Mensajeria extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(191, 191, 191)
+                        .addGap(22, 22, 22)
+                        .addComponent(Para, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68)
                         .addComponent(EscribirCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(122, 122, 122)
                         .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -206,11 +209,13 @@ public class Mensajeria extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(EscribirCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(EscribirCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                            .addComponent(Para, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
@@ -249,62 +254,59 @@ public class Mensajeria extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void AdjuntarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdjuntarActionPerformed
         // TODO add your handling code here:
-        
-        AdjuntarArchivo AdjuntarA= new AdjuntarArchivo();
+
+        AdjuntarArchivo AdjuntarA = new AdjuntarArchivo();
         AdjuntarA.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_AdjuntarActionPerformed
- public static String getFechaActual() {
-    Date ahora = new Date();
-    SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
-    return formateador.format(ahora);
-}
+
+
     private void EnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnviarActionPerformed
-      Mensaje mjs = new Mensaje();
- 
-      
-       int registro =0;
-      int status=0;
-      int izqu=0;
-      int derc=0;
-      
-         
-      registro= registro+1;
-      izqu=registro-2;
-      derc=registro+2;
-      status=1;
-      mjs.setDer(derc);
-      mjs.setIzq(izqu);
-      mjs.setNo_registro(registro);
-      mjs.setEstatus(status);
-        VistaMensaje vistaM = new VistaMensaje();
+        TeclaEnviar();
 
-       String asunrecibido = AsuntoT.getText();
-       VistaMensaje.AsuntoRecibido.setText(asunrecibido);
-       mjs.setAsunto(asunrecibido);
-       String Msjrecibido = CuerpoMsj.getText();
-       VistaMensaje.MensajeRecibido.setText(Msjrecibido);
-       mjs.setMensaje(Msjrecibido);
-       String txt=mostrarAd.getText();
-       String p=ArchivoAdjunto.getText();
-       VistaMensaje.AdjuntoRecibido.setText(txt);
-       mjs.setAdjunto(p);
-       String emi=lblEnviadoPor.getText();
-       VistaMensaje.Emisor.setText(emi);
-       mjs.setEmisor(emi);
-       Icon img=FotoE.getIcon();
-       VistaMensaje.FotoA.setIcon(img);
-       GestionarA.getInstance().ListaMensajes.add(mjs);
-       GestionarA.getInstance().Agregar(); 
-       GestionarA.getInstance().Agregartxt();
-              
-       dispose();
     }//GEN-LAST:event_EnviarActionPerformed
+    public void TeclaEnviar() {
+        Mensaje mjs = new Mensaje();
 
+        int status = 1;
+        mjs.setEstatus(status);
+
+        int numeroRegistro = 1;
+
+        mjs.setNo_registro(numeroRegistro);
+        int Izq = numeroRegistro - 2;
+        mjs.setIzq(Izq);
+        int Der = numeroRegistro + 2;
+        mjs.setDer(Der);
+        VistaMensaje vistaM = new VistaMensaje();
+        String para = Para.getText();
+        mjs.setReceptor(para);
+        String asunrecibido = AsuntoT.getText();
+        VistaMensaje.AsuntoRecibido.setText(asunrecibido);
+        mjs.setAsunto(asunrecibido);
+        String Msjrecibido = CuerpoMsj.getText();
+        VistaMensaje.MensajeRecibido.setText(Msjrecibido);
+        mjs.setMensaje(Msjrecibido);
+        String txt = mostrarAd.getText();
+        String p = ArchivoAdjunto.getText();
+        VistaMensaje.AdjuntoRecibido.setText(txt);
+        mjs.setAdjunto(p);
+        String emi = lblEnviadoPor.getText();
+        VistaMensaje.Emisor.setText(emi);
+        mjs.setEmisor(emi);
+        Icon img = FotoE.getIcon();
+        VistaMensaje.FotoA.setIcon(img);
+        GestionarA.getInstance().ListaMensajes.add(mjs);
+        GestionarA.getInstance().Agregar();
+        GestionarA.getInstance().Agregartxt();
+        numeroRegistro++;
+        dispose();
+
+    }
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
@@ -313,13 +315,10 @@ public class Mensajeria extends javax.swing.JFrame {
 
     private void EnviarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EnviarMouseClicked
         // TODO add your handling code here:
-      
-    
-     
+
+
     }//GEN-LAST:event_EnviarMouseClicked
 
-   
-     
     /**
      * @param args the command line arguments
      */
@@ -368,6 +367,7 @@ public class Mensajeria extends javax.swing.JFrame {
     private javax.swing.JLabel LabelAsunto1;
     private javax.swing.JLabel LabelMensaje;
     private javax.swing.JPanel NombreArchivo;
+    public static javax.swing.JLabel Para;
     private javax.swing.JLabel Vista;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JScrollPane jScrollPane1;

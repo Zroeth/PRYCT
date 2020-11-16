@@ -1,5 +1,8 @@
 
+import java.io.BufferedWriter;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.Date;
 import javax.swing.JList;
 
@@ -32,6 +35,8 @@ public class Mensaje implements Serializable {
      * @return the izq
      */
     public int getIzq() {
+        
+        
         return izq;
     }
 
@@ -168,8 +173,13 @@ public class Mensaje implements Serializable {
     private int estatus;
 
     public String toString() {
-        String s = "Registro: "+no_registro+"|"+"Izq: " + izq + "|" + "Der: " + der + "|" + "Emisor: " + emisor + "|" + "Receptor: " + receptor + "|" + "|" + "Asunto:" + asunto + "|" + "Mensaje: " + Mensaje + "|" + "Adjunto: " + adjunto+"|"+"Estatus: "+estatus+ System.lineSeparator();
-
+        String s = "";
+       
+        
+        s +=System.lineSeparator()+ "Registro: "+no_registro+"|"+"Izq: " + izq + "|" + "Der: " + der + "|" + "Emisor: " + emisor + "|" + "Receptor: " + receptor + "|" + "|" + "Asunto:" + asunto + "|" + "Mensaje: " + Mensaje + "|" + "Adjunto: " + adjunto+"|"+"Estatus: "+estatus;
+      
+      
+          
         return s;
     }
     /*return System.lineSeparator()+"Registro: "+no_registro+"|"+"Izq: "+izq+"|"+"Der: "+der+"|"+"Emisor: "+emisor+"|"+"Receptor: "+receptor+"|"+

@@ -1,8 +1,10 @@
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,8 +12,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /*
@@ -62,23 +72,41 @@ public class GestionarA {
 
     public void Agregartxt() {
 
-        // mensaje.setNo_registro();
-        File archivo = new File("C:\\MEIA\\arbol.txt");
+        Path p = Paths.get("C:\\\\MEIA\\\\arbolB.txt");
 
-        try {
-            FileOutputStream bin = new FileOutputStream(archivo);
-            ObjectOutputStream bina = new ObjectOutputStream(bin);
-            for (Mensaje mjs : ListaMensajes) {
-                bina.writeBytes(mjs.toString());
+        for (Mensaje mjs : ListaMensajes) {
+
+            try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+                writer.write(mjs.toString());
+                JOptionPane.showMessageDialog(null, "Mensaje Enviado");
+                writer.close();
+            } catch (IOException ioe) {
+                System.err.format("IOException: %s%n", ioe);
             }
-            bina.close();
-            bin.close();
+        }
+    }
+
+    public ArrayList<String> leerTxt(String cuenta) {
+        ArrayList<String> lista = new ArrayList<String>();
+        try {
+            FileReader fr = new FileReader("C:\\\\MEIA\\\\arbolB.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String cadena;
+
+            while ((cadena = br.readLine()) != null) {
+                try {
+
+                    cadena = br.readLine();
+                    lista.add(cadena);
+
+                } catch (Exception e) {
+                }
+            }
 
         } catch (Exception e) {
-            System.out.println("Error");
-            e.printStackTrace();
-        }
 
+        }
+        return lista;
     }
 
     public void leer() {
@@ -100,9 +128,12 @@ public class GestionarA {
     }
 
     public ArrayList<Mensaje> obtenerMensajesEmisor(String cuenta) {
+
         ArrayList<Mensaje> mensajesEmisor = new ArrayList<Mensaje>();
+
         for (Mensaje mjs : ListaMensajes) {
             if (mjs.getEmisor() != null && mjs.getEmisor().equalsIgnoreCase(cuenta)) {
+
                 mensajesEmisor.add(mjs);
             }
 
@@ -113,6 +144,7 @@ public class GestionarA {
 
     public ArrayList<Mensaje> obtenerMensajesReceptor(String cuenta) {
         ArrayList<Mensaje> mensajesReceptor = new ArrayList<Mensaje>();
+
         for (Mensaje mjs : ListaMensajes) {
             if (mjs.getReceptor() != null && mjs.getReceptor().equalsIgnoreCase(cuenta)) {
                 mensajesReceptor.add(mjs);
