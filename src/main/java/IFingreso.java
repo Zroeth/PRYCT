@@ -378,6 +378,8 @@ public class IFingreso extends javax.swing.JFrame {
                                         cuenta = txtUsuario.getText();
                                         GestionarA.getInstance().cuenta = cuenta;
                                         IFEstandar estandar = new IFEstandar(cuenta);
+                                        estandar.MostrarBandejaEntrada();
+                                        estandar.MostrarBandejaSalida();
                                         estandar.setVisible(true);
                                         estandar.pack();
                                         estandar.setDefaultCloseOperation(EXIT_ON_CLOSE);

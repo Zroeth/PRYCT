@@ -176,7 +176,7 @@ public class Mensaje implements Serializable {
         String s = "";
        
         
-        s +="Registro: "+no_registro+"|"+"Izq: " + izq + "|" + "Der: " + der + "|" + "Emisor: " + emisor + "|" + "Receptor: " + receptor + "|" + "|" + "Asunto:" + asunto + "|" + "Mensaje: " + Mensaje + "|" + "Adjunto: " + adjunto+"|"+"Estatus: "+estatus+System.lineSeparator();
+        s +="Registro: "+no_registro+"|"+"Izq: " + izq + "|" + "Der: " + der + "|" + "Emisor: " + emisor + "|" + "Receptor: " + receptor +  "|" + "Asunto: " + asunto + "|" + "Mensaje: " + Mensaje + "|" + "Adjunto: " + adjunto+"|"+"Estatus: "+estatus+System.lineSeparator();
       
       
           

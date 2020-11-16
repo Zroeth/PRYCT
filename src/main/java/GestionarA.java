@@ -96,38 +96,42 @@ public class GestionarA {
             FileReader fr = new FileReader("C:\\\\MEIA\\\\arbolB.txt");
             BufferedReader br = new BufferedReader(fr);
             String cadena;
-
+            ListaMensajes.clear();
             while ((cadena = br.readLine()) != null) {
                 try {
-
-                    cadena = br.readLine();
                     if (cadena.isBlank() == false && cadena.isEmpty() == false) {
                         Mensaje mjs = new Mensaje();
-                        String[] token = cadena.split("|");
-                        String[] data = token[0].split(": ");
-                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                        String[] token = cadena.split(Pattern.quote("|"));
+                        String[] data = token[0].split(Pattern.quote(": "));
+                        if (data != null && data.length > 1 && data[1].isBlank() == false && data[1].isEmpty() == false) {
                             mjs.setNo_registro(Integer.parseInt(data[1]));
                         }
-                        data = token[1].split(": ");
-                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                        data = token[1].split(Pattern.quote(": "));
+                        if (data != null && data.length > 1 && data[1].isBlank() == false && data[1].isEmpty() == false) {
                             mjs.setIzq(Integer.parseInt(data[1]));
                         }
-                        data = token[2].split(": ");
-                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                        data = token[2].split(Pattern.quote(": "));
+                        if (data != null && data.length > 1 && data[1].isBlank() == false && data[1].isEmpty() == false) {
                             mjs.setDer(Integer.parseInt(data[1]));
                         }
-                        data = token[3].split(": ");
+                        data = token[3].split(Pattern.quote(": "));
                         mjs.setEmisor(data[1]);
-                        data = token[4].split(": ");
+                        data = token[4].split(Pattern.quote(": "));
                         mjs.setReceptor(data[1]);
-                        data = token[5].split(": ");
-                        mjs.setAsunto(data[1]);
-                        data = token[6].split(": ");
-                        mjs.setMensaje(data[1]);
-                        data = token[7].split(": ");
-                        mjs.setAdjunto(data[1]);
-                        data = token[8].split(": ");
-                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                        data = token[5].split(Pattern.quote(": "));
+                        if (data != null && data.length > 1 && data[1].isBlank() == false && data[1].isEmpty() == false) {
+                            mjs.setAsunto(data[1]);
+                        }
+                        data = token[6].split(Pattern.quote(": "));
+                        if (data != null && data.length > 1 && data[1].isBlank() == false && data[1].isEmpty() == false) {
+                            mjs.setMensaje(data[1]);
+                        }
+                        data = token[7].split(Pattern.quote(": "));
+                        if (data != null && data.length > 1 && data[1].isBlank() == false && data[1].isEmpty() == false) {
+                            mjs.setAdjunto(data[1]);
+                        }
+                        data = token[8].split(Pattern.quote(": "));
+                        if (data != null && data.length > 1 && data[1].isBlank() == false && data[1].isEmpty() == false) {
                             mjs.setEstatus(Integer.parseInt(data[1]));
                         }
                         ListaMensajes.add(mjs);
@@ -149,6 +153,7 @@ public class GestionarA {
         try {
             FileInputStream lbin = new FileInputStream(archivo);
             ObjectInputStream lbina = new ObjectInputStream(lbin);
+            ListaMensajes.clear();
             while (lbin.available() > 0) {
                 Mensaje mensaje = (Mensaje) lbina.readObject();
                 System.out.println(mensaje.toString());

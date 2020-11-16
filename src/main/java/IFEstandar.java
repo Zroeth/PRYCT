@@ -264,6 +264,11 @@ public class IFEstandar extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        BandEntr.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                BandEntrValueChanged(evt);
+            }
+        });
         jScrollPane5.setViewportView(BandEntr);
 
         BanSali.setModel(new javax.swing.AbstractListModel<String>() {
@@ -274,6 +279,11 @@ public class IFEstandar extends javax.swing.JFrame {
         BanSali.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BanSaliMouseClicked(evt);
+            }
+        });
+        BanSali.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                BanSaliValueChanged(evt);
             }
         });
         jScrollPane3.setViewportView(BanSali);
@@ -1202,7 +1212,7 @@ public class IFEstandar extends javax.swing.JFrame {
         jList2.setToolTipText(getToolTipText(evt));
     }//GEN-LAST:event_jList2MouseMoved
 
-    private void BandejaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejaEntradaActionPerformed
+    public void MostrarBandejaEntrada() {
         GestionarA.getInstance().leerTxt();
         ArrayList<Mensaje> entrada = GestionarA.getInstance().obtenerMensajesReceptor(cuenta);
         DefaultListModel modeloLista = new DefaultListModel();
@@ -1211,24 +1221,67 @@ public class IFEstandar extends javax.swing.JFrame {
         for (Mensaje msj : entrada) {
             modeloLista.addElement(msj);
         }
+    }
+
+    private void BandejaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejaEntradaActionPerformed
+        MostrarBandejaEntrada();
 
 
     }//GEN-LAST:event_BandejaEntradaActionPerformed
 
-    private void BandejasalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejasalidaActionPerformed
+    public void MostrarBandejaSalida() {
         GestionarA.getInstance().leerTxt();
         ArrayList<Mensaje> salida = GestionarA.getInstance().obtenerMensajesEmisor(cuenta);
         DefaultListModel modeloLista = new DefaultListModel();
         this.BanSali.setModel(modeloLista);
+        modeloLista.clear();
         for (Mensaje msj : salida) {
             modeloLista.addElement(msj);
         }
+    }
+    private void BandejasalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejasalidaActionPerformed
+        MostrarBandejaSalida();
     }//GEN-LAST:event_BandejasalidaActionPerformed
 
     private void BanSaliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BanSaliMouseClicked
         // TODO add your handling code here:
-      Mensajeria mjs=new Mensajeria();
+
     }//GEN-LAST:event_BanSaliMouseClicked
+
+    private void BandEntrValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_BandEntrValueChanged
+
+        if (!evt.getValueIsAdjusting()) {
+            Object seleccionado = BandEntr.getSelectedValue();
+            Mensaje mjs = (Mensaje) seleccionado;
+            if (mjs != null) {
+                VistaMensaje vistaM = new VistaMensaje();
+                VistaMensaje.AsuntoRecibido.setText(mjs.getAsunto());
+                VistaMensaje.MensajeRecibido.setText(mjs.getMensaje());
+                VistaMensaje.AdjuntoRecibido.setText(mjs.getAdjunto());
+                VistaMensaje.Emisor.setText(mjs.getEmisor());
+                vistaM.setVisible(Boolean.TRUE);
+            }
+        }
+
+
+    }//GEN-LAST:event_BandEntrValueChanged
+
+    private void BanSaliValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_BanSaliValueChanged
+        // TODO add your handling code here:
+        if (!evt.getValueIsAdjusting()) {
+            Object seleccionado = BanSali.getSelectedValue();
+            Mensaje mjs = (Mensaje) seleccionado;
+            if (mjs != null) {
+                VistaMensaje vistaM = new VistaMensaje();
+                VistaMensaje.AsuntoRecibido.setText(mjs.getAsunto());
+                VistaMensaje.MensajeRecibido.setText(mjs.getMensaje());
+                VistaMensaje.AdjuntoRecibido.setText(mjs.getAdjunto());
+                VistaMensaje.Emisor.setText(mjs.getEmisor());
+                vistaM.setVisible(Boolean.TRUE);
+            }
+
+        }
+    }//GEN-LAST:event_BanSaliValueChanged
 
     public String getToolTipText(MouseEvent me) {
         String usuarioString = "(Usuario)(\\:)(	| |)*(.+)(\\|)(F)";

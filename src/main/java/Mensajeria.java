@@ -275,12 +275,12 @@ public class Mensajeria extends javax.swing.JFrame {
         int status = 1;
         mjs.setEstatus(status);
 
-        int numeroRegistro = 1;
+        int numeroRegistro = GestionarA.getInstance().ListaMensajes.size() + 1;
 
         mjs.setNo_registro(numeroRegistro);
-        int Izq = numeroRegistro - 2;
+        int Izq = numeroRegistro - 1;
         mjs.setIzq(Izq);
-        int Der = numeroRegistro + 2;
+        int Der = numeroRegistro + 1;
         mjs.setDer(Der);
         VistaMensaje vistaM = new VistaMensaje();
         String para = Para.getText();
@@ -303,6 +303,9 @@ public class Mensajeria extends javax.swing.JFrame {
         GestionarA.getInstance().ListaMensajes.add(mjs);
         GestionarA.getInstance().Agregar(mjs);
         GestionarA.getInstance().Agregartxt(mjs);
+        IFEstandar estandar = new IFEstandar(GestionarA.getInstance().cuenta);
+        estandar.MostrarBandejaSalida();
+
         numeroRegistro++;
         dispose();
 
