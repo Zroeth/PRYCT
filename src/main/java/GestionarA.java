@@ -36,6 +36,7 @@ import javax.swing.JOptionPane;
 public class GestionarA {
 
     public List<Mensaje> ListaMensajes;
+    public String cuenta;
     private static GestionarA instance = null;
 
     public static GestionarA getInstance() {
@@ -48,18 +49,20 @@ public class GestionarA {
 
     public GestionarA() {
         ListaMensajes = new ArrayList<Mensaje>();
+        cuenta = "";
     }
 
-    public void Agregar() {
+    public void Agregar(Mensaje nuevomjs) {
 
         // mensaje.setNo_registro();
         File archivo = new File("C:\\MEIA\\arbol.dat");
         try {
-            FileOutputStream bin = new FileOutputStream(archivo);
+            FileOutputStream bin = new FileOutputStream(archivo, Boolean.TRUE);
             ObjectOutputStream bina = new ObjectOutputStream(bin);
-            for (Mensaje mjs : ListaMensajes) {
-                bina.writeObject(mjs);
-            }
+//            for (Mensaje mjs : ListaMensajes) {
+//                bina.writeObject(mjs);
+//            }
+            bina.writeObject(nuevomjs);
             bina.close();
             bin.close();
 
@@ -70,24 +73,25 @@ public class GestionarA {
 
     }
 
-    public void Agregartxt() {
+    public void Agregartxt(Mensaje nuevomjs) {
 
         Path p = Paths.get("C:\\\\MEIA\\\\arbolB.txt");
 
-        for (Mensaje mjs : ListaMensajes) {
-
-            try ( BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
-                writer.write(mjs.toString());
-                JOptionPane.showMessageDialog(null, "Mensaje Enviado");
-                writer.close();
-            } catch (IOException ioe) {
-                System.err.format("IOException: %s%n", ioe);
-            }
+        try (
+                 BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.APPEND)) {
+//            for (Mensaje mjs : ListaMensajes) {
+//                writer.write(mjs.toString());
+//            }
+            writer.write(nuevomjs.toString());
+            JOptionPane.showMessageDialog(null, "Mensaje Enviado");
+            writer.close();
+        } catch (IOException ioe) {
+            System.err.format("IOException: %s%n", ioe);
         }
+
     }
 
-    public ArrayList<String> leerTxt(String cuenta) {
-        ArrayList<String> lista = new ArrayList<String>();
+    public void leerTxt() {
         try {
             FileReader fr = new FileReader("C:\\\\MEIA\\\\arbolB.txt");
             BufferedReader br = new BufferedReader(fr);
@@ -97,29 +101,61 @@ public class GestionarA {
                 try {
 
                     cadena = br.readLine();
-                    lista.add(cadena);
-
+                    if (cadena.isBlank() == false && cadena.isEmpty() == false) {
+                        Mensaje mjs = new Mensaje();
+                        String[] token = cadena.split("|");
+                        String[] data = token[0].split(": ");
+                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                            mjs.setNo_registro(Integer.parseInt(data[1]));
+                        }
+                        data = token[1].split(": ");
+                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                            mjs.setIzq(Integer.parseInt(data[1]));
+                        }
+                        data = token[2].split(": ");
+                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                            mjs.setDer(Integer.parseInt(data[1]));
+                        }
+                        data = token[3].split(": ");
+                        mjs.setEmisor(data[1]);
+                        data = token[4].split(": ");
+                        mjs.setReceptor(data[1]);
+                        data = token[5].split(": ");
+                        mjs.setAsunto(data[1]);
+                        data = token[6].split(": ");
+                        mjs.setMensaje(data[1]);
+                        data = token[7].split(": ");
+                        mjs.setAdjunto(data[1]);
+                        data = token[8].split(": ");
+                        if (data[1].isBlank() == false && data[1].isEmpty() == false) {
+                            mjs.setEstatus(Integer.parseInt(data[1]));
+                        }
+                        ListaMensajes.add(mjs);
+                    }
                 } catch (Exception e) {
+//                    System.console().(e.getMessage());
                 }
             }
+            br.close();
+            fr.close();
 
         } catch (Exception e) {
 
         }
-        return lista;
     }
 
     public void leer() {
         File archivo = new File("C:\\MEIA\\arbol.dat");
         try {
             FileInputStream lbin = new FileInputStream(archivo);
-            ObjectInputStream lbina;
+            ObjectInputStream lbina = new ObjectInputStream(lbin);
             while (lbin.available() > 0) {
-                lbina = new ObjectInputStream(lbin);
                 Mensaje mensaje = (Mensaje) lbina.readObject();
                 System.out.println(mensaje.toString());
-                GestionarA.getInstance().ListaMensajes.add(mensaje);
+                ListaMensajes.add(mensaje);
             }
+            lbina.close();
+            lbin.close();
         } catch (Exception e) {
             System.out.println("Error");
             e.printStackTrace();

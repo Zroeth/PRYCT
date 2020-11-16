@@ -363,6 +363,7 @@ public class IFingreso extends javax.swing.JFrame {
                                     //contraseña coinciden
                                     if (m3.group(4).equals("1")) {
                                         cuenta = txtUsuario.getText();
+                                        GestionarA.getInstance().cuenta = cuenta;
                                         valorRol = true;
                                         //  JOptionPane.showMessageDialog(null,valorRol);
                                         lFAdmin administrar = new lFAdmin(cuenta, valorRol);
@@ -375,6 +376,7 @@ public class IFingreso extends javax.swing.JFrame {
                                     } else {
                                         valorRol = false;
                                         cuenta = txtUsuario.getText();
+                                        GestionarA.getInstance().cuenta = cuenta;
                                         IFEstandar estandar = new IFEstandar(cuenta);
                                         estandar.setVisible(true);
                                         estandar.pack();

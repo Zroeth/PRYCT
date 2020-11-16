@@ -94,7 +94,7 @@ public class IFEstandar extends javax.swing.JFrame {
 
         getContentPane().setBackground(Color.white);
 
-        cuenta = "Nueva";
+        cuenta = GestionarA.getInstance().cuenta;
 
         lblBienvenido.setText("Bienvenido usuario " + cuenta);
 
@@ -1203,7 +1203,7 @@ public class IFEstandar extends javax.swing.JFrame {
     }//GEN-LAST:event_jList2MouseMoved
 
     private void BandejaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejaEntradaActionPerformed
-
+        GestionarA.getInstance().leerTxt();
         ArrayList<Mensaje> entrada = GestionarA.getInstance().obtenerMensajesReceptor(cuenta);
         DefaultListModel modeloLista = new DefaultListModel();
         this.BandEntr.setModel(modeloLista);
@@ -1216,16 +1216,10 @@ public class IFEstandar extends javax.swing.JFrame {
     }//GEN-LAST:event_BandejaEntradaActionPerformed
 
     private void BandejasalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BandejasalidaActionPerformed
-
+        GestionarA.getInstance().leerTxt();
         ArrayList<Mensaje> salida = GestionarA.getInstance().obtenerMensajesEmisor(cuenta);
-        ArrayList<String> listado = GestionarA.getInstance().leerTxt(cuenta);
         DefaultListModel modeloLista = new DefaultListModel();
-        DefaultListModel modeloListado = new DefaultListModel();
-        this.BanSali.setModel(modeloListado);
-        modeloListado.addElement(listado);
-        
         this.BanSali.setModel(modeloLista);
-        
         for (Mensaje msj : salida) {
             modeloLista.addElement(msj);
         }
@@ -1234,8 +1228,6 @@ public class IFEstandar extends javax.swing.JFrame {
     private void BanSaliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BanSaliMouseClicked
         // TODO add your handling code here:
       Mensajeria mjs=new Mensajeria();
-      
-
     }//GEN-LAST:event_BanSaliMouseClicked
 
     public String getToolTipText(MouseEvent me) {

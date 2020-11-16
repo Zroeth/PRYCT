@@ -301,8 +301,8 @@ public class Mensajeria extends javax.swing.JFrame {
         Icon img = FotoE.getIcon();
         VistaMensaje.FotoA.setIcon(img);
         GestionarA.getInstance().ListaMensajes.add(mjs);
-        GestionarA.getInstance().Agregar();
-        GestionarA.getInstance().Agregartxt();
+        GestionarA.getInstance().Agregar(mjs);
+        GestionarA.getInstance().Agregartxt(mjs);
         numeroRegistro++;
         dispose();
 
