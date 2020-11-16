@@ -1219,7 +1219,9 @@ public class IFEstandar extends javax.swing.JFrame {
         this.BandEntr.setModel(modeloLista);
         modeloLista.clear();
         for (Mensaje msj : entrada) {
-            modeloLista.addElement(msj);
+            if (msj.getEstatus() == 1) {
+                modeloLista.addElement(msj);
+            }
         }
     }
 
@@ -1259,6 +1261,7 @@ public class IFEstandar extends javax.swing.JFrame {
                 VistaMensaje.MensajeRecibido.setText(mjs.getMensaje());
                 VistaMensaje.AdjuntoRecibido.setText(mjs.getAdjunto());
                 VistaMensaje.Emisor.setText(mjs.getEmisor());
+                vistaM.setMjs(mjs);
                 vistaM.setVisible(Boolean.TRUE);
             }
         }

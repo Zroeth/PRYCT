@@ -72,7 +72,28 @@ public class GestionarA {
         }
 
     }
+    
+    public void AgregarTodo() {
 
+        // mensaje.setNo_registro();
+        File archivo = new File("C:\\MEIA\\arbol.dat");
+        try {
+            FileOutputStream bin = new FileOutputStream(archivo, Boolean.FALSE);
+            ObjectOutputStream bina = new ObjectOutputStream(bin);
+            for (Mensaje mjs : ListaMensajes) {
+                bina.writeObject(mjs);
+            }
+            bina.close();
+            bin.close();
+
+        } catch (Exception e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+
+    }
+
+    
     public void Agregartxt(Mensaje nuevomjs) {
 
         Path p = Paths.get("C:\\\\MEIA\\\\arbolB.txt");
@@ -83,14 +104,31 @@ public class GestionarA {
 //                writer.write(mjs.toString());
 //            }
             writer.write(nuevomjs.toString());
-            JOptionPane.showMessageDialog(null, "Mensaje Enviado");
             writer.close();
+            JOptionPane.showMessageDialog(null, "Mensaje Enviado");
+            
         } catch (IOException ioe) {
             System.err.format("IOException: %s%n", ioe);
         }
 
     }
 
+    public void AgregarTodotxt() {
+
+        Path p = Paths.get("C:\\\\MEIA\\\\arbolB.txt");
+
+        try (
+                 BufferedWriter writer = Files.newBufferedWriter(p, StandardOpenOption.CREATE)) {
+            for (Mensaje mjs : ListaMensajes) {
+                writer.write(mjs.toString());
+            }
+            writer.close();
+            
+        } catch (IOException ioe) {
+            System.err.format("IOException: %s%n", ioe);
+        }
+
+    }
     public void leerTxt() {
         try {
             FileReader fr = new FileReader("C:\\\\MEIA\\\\arbolB.txt");

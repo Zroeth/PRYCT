@@ -303,8 +303,6 @@ public class Mensajeria extends javax.swing.JFrame {
         GestionarA.getInstance().ListaMensajes.add(mjs);
         GestionarA.getInstance().Agregar(mjs);
         GestionarA.getInstance().Agregartxt(mjs);
-        IFEstandar estandar = new IFEstandar(GestionarA.getInstance().cuenta);
-        estandar.MostrarBandejaSalida();
 
         numeroRegistro++;
         dispose();

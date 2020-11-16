@@ -1,14 +1,22 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Cathy
  */
 public class VistaMensaje extends javax.swing.JFrame {
+
+    private Mensaje mjs;
+
+    public void setMjs(Mensaje mensaje) {
+        mjs = mensaje;
+    }
 
     /**
      * Creates new form VistaMensaje
@@ -33,6 +41,7 @@ public class VistaMensaje extends javax.swing.JFrame {
         Emisor = new javax.swing.JLabel();
         salir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        BotonEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,6 +73,13 @@ public class VistaMensaje extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Cooper Black", 0, 14)); // NOI18N
         jLabel1.setText("      Archivo Adjunto");
 
+        BotonEliminar.setText("Eliminar");
+        BotonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,9 +87,15 @@ public class VistaMensaje extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addComponent(salir, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(AdjuntoRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(AdjuntoRecibido, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(BotonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -105,18 +127,19 @@ public class VistaMensaje extends javax.swing.JFrame {
                     .addComponent(FotoA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(AdjuntoRecibido))
                 .addGap(17, 17, 17)
-                .addComponent(salir)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(salir)
+                    .addComponent(BotonEliminar))
                 .addGap(47, 47, 47))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
+
     private void AdjuntoRecibidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdjuntoRecibidoActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_AdjuntoRecibidoActionPerformed
 
     private void AsuntoRecibidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsuntoRecibidoActionPerformed
@@ -124,8 +147,30 @@ public class VistaMensaje extends javax.swing.JFrame {
     }//GEN-LAST:event_AsuntoRecibidoActionPerformed
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
-    dispose();       
+        dispose();
     }//GEN-LAST:event_salirActionPerformed
+
+    private void BotonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEliminarActionPerformed
+        // TODO add your handling code here:
+        if (mjs != null) {
+            int index = 0;
+            for (Mensaje busqueda : GestionarA.getInstance().ListaMensajes) {
+                if (busqueda.getNo_registro() == mjs.getNo_registro()) {
+                    GestionarA.getInstance().ListaMensajes.remove(index);
+                    mjs.setEstatus(0);
+                    GestionarA.getInstance().ListaMensajes.add(mjs);
+                    mjs = null;
+                    GestionarA.getInstance().AgregarTodo();
+                    GestionarA.getInstance().AgregarTodotxt();
+                    JOptionPane.showMessageDialog(null, "Mensaje Eliminado");
+                    dispose();
+                    break;
+                }
+                index++;
+            }
+
+        }
+    }//GEN-LAST:event_BotonEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,6 +210,7 @@ public class VistaMensaje extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTextField AdjuntoRecibido;
     public static javax.swing.JTextField AsuntoRecibido;
+    private javax.swing.JButton BotonEliminar;
     public static javax.swing.JLabel Emisor;
     public static javax.swing.JLabel FotoA;
     public static javax.swing.JTextField MensajeRecibido;
